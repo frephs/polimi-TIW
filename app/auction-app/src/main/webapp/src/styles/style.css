@@ -154,9 +154,18 @@ table {
     border-collapse: collapse;
     width: 100%;
     border-radius: 10px;
+    overflow: hidden; /* Ensures the rounded corners are applied correctly */
     box-shadow: 10px 10px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px 10px 0px 0px;  
 }
 
+table:hover {
+    transform: scale(1.01);
+    transition: 0.3s;
+    outline: 2px solid #45a049;
+    outline-offset: 2px;
+    
+}
 
 table td {
     border: 1px solid #c0c0c0;
@@ -223,7 +232,16 @@ button:hover{
     outline-offset: 2px;
 }
 
+input {
+    outline-color: #006816;
+    transition: 0.3s;
+}
 
+input:hover {
+    outline-offset: 2px;    
+    outline: 1px solid #7aaf48;
+    box-shadow: 0 0 5px rgba(122, 175, 72, 0.5);
+}
 
 input[type="text"],
 input[type="email"],
@@ -268,10 +286,11 @@ input[type="time"]:focus {
 fieldset {
     border: 2px solid #7aaf48;
     border-radius: 10px;
-    display: inline-block;
     width: auto;
     padding: 40px;
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap:30px;
     box-shadow: 10px 10px 8px rgba(0, 0, 0, 0.1);
 }
@@ -313,6 +332,7 @@ input[type="range"] {
     width: 100%;
     margin-bottom: 10px;
     accent-color: #7aaf48;
+    border-radius: 10px;
     margin-bottom: 10px;
 
 }
@@ -335,6 +355,7 @@ input[type="radio"] {
     transform: scale(1.2);
     cursor: pointer;
     padding: 10px;
+    border-radius: 10px;
 }
 
 .breadcrumb {
@@ -346,7 +367,13 @@ input[type="radio"] {
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     gap: 10px;
+    transition: 0.3s;
     color: #45a049
+}
+
+.breadcrumb:hover {
+    outline: 2px solid #45a049;
+    outline-offset: 2px;
 }
 
 .breadcrumb a:hover {
@@ -369,3 +396,9 @@ img {
     margin: 20px 10px;
 }
 
+img:hover {
+    transform: scale(1.05);
+    transition: 0.3s;
+    outline: 2px solid #45a049;
+    outline-offset: 3px;
+}
