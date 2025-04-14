@@ -11,10 +11,11 @@
     --box-shadow: 10px 10px 8px rgba(0, 0, 0, 0.1);
     --transition-duration: 0.3s;
     --border-radius: 10px;
+    
     --error-color: 175, 73, 72;
     --success-color: 72, 122, 175;
-    --info-color: 72, 175, 175;  /* Updated from rgb() to direct values */
-    --warning-color: 175, 175, 72;  /* Updated from rgb() to direct values */
+    --info-color: 72, 175, 175;  
+    --warning-color: 175, 175, 72;
 }
 
 body {
@@ -311,6 +312,7 @@ fieldset {
     align-items: center;
     justify-content: center;
     gap: 30px;
+    margin: 20px 0px;
     box-shadow: 10px 10px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -506,4 +508,22 @@ img:hover {
     content: "Warning: ";
     font-weight: bold;
     color: rgb(var(--warning-color));
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: center;
+    gap: 40px;
+    margin: 20px 0px;
+
+}
+
+.flex-row div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 200px;
 }
