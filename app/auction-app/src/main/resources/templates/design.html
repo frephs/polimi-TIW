@@ -1,0 +1,201 @@
+                <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>page template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{styles/style.css}">
+    <link rel="stylesheet"  th:href="@{styles/main.css}">
+    <link rel="icon" th:href="@{icon.png}">
+</head>
+
+<body>
+    <header>
+    </header>
+    <nav>
+        <div
+            style="position: absolute; top: 15px; left: 60px; color:#2b2b2b; background-color: #e2e2e2; padding: 5px 10px; border-radius: 10px;">
+            <a th:href="@{/}">Your<span class="gradient">Auction</span></a>
+        </div>
+        <ul>
+            <ul>
+                <li>
+                    <a th:href="@{/}">Home</a>
+                </li>
+                <li>
+                    <a th:href="@{/sell}">Sell</a>
+                </li>
+                <li>
+                    <a th:href="@{/buy}">Buy</a>
+                </li>
+                <li>
+                    <a th:href="@{/login}">YourAccount</a>
+                </li>
+            </ul>
+        </ul>
+    </nav>
+    <main>
+        <section id="typography">
+            <h1>Typography</h1>
+            <h2>Heading 2</h2>
+            <h3>Heading 3</h3>
+            <h4>Heading 4</h4>
+            <h5>Heading 5</h5>
+            <h6>Heading 6</h6>
+            <p>This is a sample paragraph demonstrating the typography of the page. You can use this section to test
+                different font styles and sizes.</p>
+        </section>
+
+        <section>
+            <h1>Breadcrumb</h1>
+            <div class="breadcrumb">
+                <a href="#home">Home</a>
+                <span>></span>
+                <a href="#about">About</a>
+                <span>></span>
+                <a href="#contact">Contact</a>
+            </div>
+        </section>
+
+
+        <section>
+            <h1>Action buttons</h1>
+            <div style="display: flex;flex-direction: row; gap: 20px">
+
+                <a href="/bid">
+                    <div class="go-button">
+                        <span>Action 1</span>
+                        <div class="arrow-button">
+                            <div >
+                                <span class="arrow-button-description">
+                                    Action 1 text
+                                </span>
+                                &#8594;
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a href="/bid">
+                    <div class="go-button">
+                        <span>Action 2</span>
+                        <div class="arrow-button">
+                            <div >
+                                <span class="arrow-button-description">
+                                    Action 2 text
+                                </span>
+                                &#8594;
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+        </section>
+        <section>
+            <h1>Images</h1>
+            <p>Here are some sample images:</p>
+            <img src="https://picsum.photos/1200/900?grayscale&blur=2" alt="Sample Image 1" width="300">
+            <img src="https://picsum.photos/1200/900?grayscale&blur=2" alt="Sample Image 2" width="300">
+            <img src="https://picsum.photos/1200/900?grayscale&blur=2" alt="Sample Image 3" width="300">
+        </section>
+
+
+
+        <section id="tables">
+
+            <h1>Tables</h1>
+            <p>Here you can find various auction tables.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Bid Amount</th>
+                        <th>Time Remaining</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Item 1</td>
+                        <td>$100</td>
+                        <td>2h 30m</td>
+                    </tr>
+                    <tr>
+                        <td>Item 2</td>
+                        <td>$200</td>
+                        <td>1h 15m</td>
+                    </tr>
+                    <tr>
+                        <td>Item 3</td>
+                        <td>$150</td>
+                        <td>3h 45m</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section id="buttons">
+            <h1>Buttons</h1>
+            <p>Click the buttons below to perform actions.</p>
+            <button onclick="alert('Sell button clicked!')">Sell</button>
+            <button onclick="alert('Buy button clicked!')">Buy</button>
+            <button onclick="alert('Login button clicked!')">Login</button>
+            <button onclick="alert('Register button clicked!')">Register</button>
+        </section>
+        <section id="forms">
+            <h1>Forms</h1>
+            <form>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <br>
+                <label for="range">Range:</label>
+                <input type="range" id="range" name="range" min="0" max="10">
+                <fieldset>
+                    <legend>Fieldname</legend>
+                    <div style="display: inline-block;">
+
+                        <label for="date">Date</label>
+                        <input type="date" name="date-input" id="date" >
+                    </div>
+                    <div style="display: inline-block;">
+                        <label for="time">Time</label>
+                        <input type="time" name="time" id="time" >
+                    </div>
+                    <br>
+                    <div>
+                        <label for="terms">Consent</label>
+                        <input type="checkbox" name="terms" id="terms">
+                        <label style="display: inline;" for="terms">I agree to the terms and conditions</label>
+                    </div>
+                    <br>
+                    <button type="reset">Reset</button>
+                    <button type="submit">Submit</button>
+                </fieldset>
+
+            </form>
+        </section>
+        <section>
+            <h1>Messages</h1>
+            <div class="success">
+                <p>Success messages can be shown here.</p>
+            </div>
+            <div class="error">
+                <p>Error messages can be displayed here.</p>
+            </div>
+            <div class="warning">
+                <p>Warning messages can be shown here.</p>
+            </div>
+            <div class="info">
+                <p>Additional information can be displayed here.</p>
+            </div>
+        </section>
+
+    </main>
+    <footer>
+        <p>&copy; 2025 YourAuction. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

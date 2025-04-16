@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>YourAuction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{styles/style.css}">
+    <link rel="stylesheet"  th:href="@{styles/landing.css}">
+    <link rel="icon" th:href="@{icon.png}">
+</head>
+
+<body>
+    <header>
+        <h1>Your<span class="gradient">Auction</span></h1>
+        <h2>Not theirs, not his or hers: your auction!</h2>
+    </header>
+
+        <nav>
+        <ul>
+            <li>
+                <a th:href="@{/}">Home</a>
+                
+            </li>
+            <li>
+                <a th:href="@{/sell}">Sell</a>
+            </li>
+            <li>
+                <a th:href="@{/buy}">Buy</a>
+            </li>
+            <li>
+                <a th:href="@{/account}">YourAccount</a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <section id="go">
+            <a href="/sell">
+                <div class="go-button">
+                    <span>Sell</span>
+                    <div class="arrow-button">
+                        <div id="arrow-button-sell">
+                            <span class="arrow-button-description">
+                                Sell your items and earn money!
+                            </span>
+                            &#8594;
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <a href="/bid">
+                <div class="go-button">
+                    <span>Buy</span>
+                    <div class="arrow-button">
+                        <div id="arrow-button">
+                            <span class="arrow-button-description">
+                                Bid on items and win!
+                            </span>
+                            &#8594;
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </section>
+        <section id="messages" th:if="${session.message}" th:utext="${session.message}"></section>
+
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 YourAuction. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

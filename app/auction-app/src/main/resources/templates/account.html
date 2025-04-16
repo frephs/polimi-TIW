@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>page template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{styles/style.css}">
+    <link rel="stylesheet"  th:href="@{styles/main.css}">
+    <link rel="icon" th:href="@{icon.png}">
+</head>
+
+<body>
+    <header>
+    </header>
+    <nav>
+        <div
+            style="position: absolute; top: 15px; left: 60px; color:#2b2b2b; background-color: #e2e2e2; padding: 5px 10px; border-radius: 10px;">
+            <a th:href="@{/}">Your<span class="gradient">Auction</span></a>
+        </div>
+        <<ul>
+        <li>
+            <a th:href="@{/}">Home</a>
+
+        </li>
+        <li>
+            <a th:href="@{/sell}">Sell</a>
+        </li>
+        <li>
+            <a th:href="@{/buy}">Buy</a>
+        </li>
+        <li>
+            <a th:href="@{/account}">YourAccount</a>
+        </li>
+    </ul>
+    </nav>
+    <main>
+        <section>
+            <section id="messages" th:if="${session.message}" th:utext="${session.message}"></section>
+        </section>
+            <div class="flex-row">
+                <form th:action="@{/signup}" method="POST">
+                    <h1>Sign up</h1>
+                    <p>New here?</p>    
+                    <fieldset>
+                        <legend>Account Information</legend>
+
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                        <br>
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Personal Information</legend>
+                        <br>
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                        <label for="surname">Surname:</label>
+                        <input type="text" id="surname" name="surname" required>
+                        <br>
+                    </fieldset>
+                    <fieldset style="display: block">
+                        <legend>Address Information</legend>
+                        <label for="country">Country:</label>
+                        <input type="text" id="country" name="country" required>
+                        <label for="zip_code">Zip Code:</label>
+                        <input type="number" id="zip_code" name="zip_code" required>
+                        <label for="city">City:</label>
+                        <input type="text" id="city" name="city" required>
+                        <label for="street">Street:</label>
+                        <input type="text" id="street" name="street" required>
+                        <label for="street_number">Number:</label>
+                        <input type="number" id="street_number" name="street_number" required>
+                        <br>
+                    </fieldset>
+                    <button style="float: right" type="submit">Sign Up</button>
+                    <button type="reset" style="float: right">Cancel</button>
+                </form>
+                <form th:action="@{/login}" method="POST">
+                    <h1>Login</h1>
+                    <p>Already have an account?
+                    <fieldset style="display: block">
+                        <legend>Login</legend>
+                        <label for="login-username">Username:</label>
+                        <input type="text" id="login-username" name="username" required>
+                        <br>
+                        <label for="login-password">Password:</label>
+                        <input type="password" id="login-password" name="password" required>
+                        <br>
+                        <button type="reset">Reset</button>
+                        <button type="submit">Login</button>
+                    </fieldset>
+            </div>
+        </section>
+
+
+    </main>
+    <footer>
+        <p>&copy; 2025 YourAuction. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
