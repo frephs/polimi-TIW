@@ -2,14 +2,14 @@ package it.polimi.auctionapp.beans;
 
 public class Address {
     private String country;
-    private String zipCode;
+    private Integer zip_code;
     private String city;
     private String street;
     private Integer street_number;
 
-    public Address(String country, String zipCode, String city, String street, Integer street_number) {
+    public Address(String country, Integer zip_code, String city, String street, Integer street_number) {
         this.country = country;
-        this.zipCode = zipCode;
+        this.zip_code = zip_code;
         this.city = city;
         this.street = street;
         this.street_number = street_number;
@@ -19,8 +19,8 @@ public class Address {
         return country;
     }
 
-    public String getZipCode() {
-        return zipCode;
+    public Integer getZipCode() {
+        return zip_code;
     }
 
     public String getCity() {
