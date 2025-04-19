@@ -1,20 +1,18 @@
 -- Select the database to use
-DROP SCHEMA IF EXISTS `TIW - Auctions`;
-
-CREATE SCHEMA `TIW - Auctions`;
-
-USE `TIW - Auctions`;
+DROP SCHEMA IF EXISTS `your-auction`;
+CREATE SCHEMA `your-auction`;
+USE `your-auction`;
 
 CREATE TABLE `users` (
     `username` VARCHAR(20) PRIMARY KEY,
-    `password` VARCHAR(45),
-    `name` VARCHAR(45),
-    `surname` VARCHAR(45),
-    `street` VARCHAR(45),
-    `postcode` INTEGER,
-    `city` VARCHAR(45),
-    `region` VARCHAR(45),
-    `country` VARCHAR(45)
+    `password` CHAR(128) NOT NULL,
+    `name` VARCHAR(45) NOT NULL,
+    `surname` VARCHAR(45) NOT NULL,
+    `country` VARCHAR(45) NOT NULL,
+    `zip_code` INTEGER NOT NULL,
+    `city` VARCHAR(45) NOT NULL,
+    `street` VARCHAR(45) NOT NULL,
+    `street_number` INTEGER NOT NULL
 );
 
 CREATE TABLE `auctions` (
