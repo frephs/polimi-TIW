@@ -6,12 +6,12 @@ public enum MessageType {
     ERROR,
     SUCCESS;
 
-    public final String getClassName() {
+    public final String getCSSClassName() {
         return this.toString().toLowerCase();
     }
 
     public final String wrap(String message) {
-        return "<div class=\"" + this.getClassName() + "\"> <p>" + message + "</p></div>";
+        return "<div class=\"" + this.getCSSClassName() + "\"> <p>" + message + "</p> </div>";
     }
 
 
