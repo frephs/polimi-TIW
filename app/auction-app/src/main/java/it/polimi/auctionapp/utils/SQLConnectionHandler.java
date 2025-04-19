@@ -12,7 +12,10 @@ public class SQLConnectionHandler {
 
     public static Connection getConnection() {
         try {
-            if (connection == null || connection.isClosed()) {
+             if (connection == null || connection.isClosed()  ) {
+                 return connection = createConnection();
+             }else if (connection.isReadOnly() || !connection.isValid(200)) {
+                connection.close();
                 return connection = createConnection();
             } else {
                 return connection;
