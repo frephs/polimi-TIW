@@ -16,9 +16,9 @@ public class UserDAO {
         PreparedStatement preparedStatement = SQLConnectionHandler.getConnection().prepareStatement(query);
         preparedStatement.setString(1, username);
         ResultSet result = preparedStatement.executeQuery();
-            if (result.next()) {
-                throw new SQLWarning("Username already exists");
-            }
+        if (result.next()) {
+            throw new SQLWarning("Username already exists");
+        }
 
     }
 
@@ -51,7 +51,7 @@ public class UserDAO {
     public void updateAccountDetails(
             User user
     ) throws SQLException {
-        String query = "UPDATE  name = ?, surname = ?, country = ?, zip_code = ?, city = ?, street = ?, street_number = ? WHERE username = ?";
+        String query = "UPDATE users SET name = ?, surname = ?, country = ?, zip_code = ?, city = ?, street = ?, street_number = ? WHERE username = ?";
         PreparedStatement preparedStatement = SQLConnectionHandler.getConnection().prepareStatement(query);
         preparedStatement.setString(1, user.getName());
         preparedStatement.setString(2, user.getSurname());
@@ -62,7 +62,7 @@ public class UserDAO {
         preparedStatement.setInt(7, user.getAddress().getStreet_number());
         preparedStatement.setString(8, user.getUsername());
         try {
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new SQLException("There was a problem while updating your account details: " + e.getMessage());
         }
@@ -84,7 +84,7 @@ public class UserDAO {
         preparedStatement.setString(2, oldUsername);
         preparedStatement.setString(3, Hash.sha512(password));
         try {
-            preparedStatement.executeQuery();
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             try {
                 checkExists(oldUsername);
@@ -97,9 +97,12 @@ public class UserDAO {
 
     public void updatePassword(
             String username,
-            String newPassword,
-            String oldPassword
+            String oldPassword,
+            String newPassword
     ) throws SQLException {
+        if (newPassword.equals(oldPassword)) {
+            throw new SQLWarning("New password cannot be the same as the the possible old password");
+        }
         String query = "UPDATE users SET password = ? WHERE username = ? AND password = ?";
         PreparedStatement preparedStatement = SQLConnectionHandler.getConnection().prepareStatement(query);
         preparedStatement.setString(1, Hash.sha512(newPassword));
@@ -123,14 +126,17 @@ public class UserDAO {
         preparedStatement.setString(1, username);
         preparedStatement.setString(2, Hash.sha512(password));
         try {
-            preparedStatement.executeQuery();
-        } catch (SQLException e) {
-            try {
-                checkExists(username);
-            } catch (SQLException e1) {
-                throw new SQLWarning("Invalid password");
+            if (preparedStatement.executeUpdate() <= 0) {
+                try {
+                    checkExists(username);
+                } catch (SQLWarning e) {
+                    throw new SQLWarning("Invalid password");
+                } catch (SQLException e) {
+                    throw new SQLException("There was a problem while deleting your account: " + e.getMessage());
+                }
             }
-            throw new SQLException("There was a problem while deleting your account: " + e.getMessage());
+        }catch (SQLException e) {
+            throw e;
         }
     }
 
@@ -151,9 +157,9 @@ public class UserDAO {
 
             return new User(username, name, surname, new Address(country, zip_code, city, street, street_number));
         } else {
-            try{
+            try {
                 checkExists(username);
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 throw new SQLWarning("Incorrect password");
             }
             throw new SQLWarning("User not found");
