@@ -125,13 +125,17 @@ a {
     color: black
 }
 
+main{
+    display: block;
+}
 
 nav {
+    display: block;
     position: absolute;
     top: 0px;
     right: 0px;
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     font-size: 1.5em;
     font-weight: bold;
     color: #2b2b2b;
@@ -253,24 +257,25 @@ button:hover {
     outline-offset: 2px;
 }
 
+button.destructive, button[type="reset"] {
+    border: 1px solid #6b1414;
+    color: #6b1414;
+}
+
+button.destructive:hover, button[type="reset"]:hover{
+    background: linear-gradient(45deg, rgba(107, 20, 20, 0.8) 6.74%, rgba(199, 61, 61, 0.73) 82.36%);
+    color: white;
+    transform: scale(1.05);
+    outline: solid 2px #a04545;
+    outline-offset: 2px;
+}
+
 input {
-    outline-color: #006816;
     transition: 0.3s;
 }
 
-input:hover {
-    outline-offset: 2px;
-    outline: 1px solid #7aaf48;
-    box-shadow: 0 0 5px rgba(122, 175, 72, 0.5);
-}
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-input[type="file"],
-input[type="date"],
-input[type="time"] {
+input{
     width: 100%;
     padding: 17px;
     border: 1px solid rgba(122, 175, 72, 0.5);
@@ -282,6 +287,39 @@ input[type="time"] {
     box-shadow: 10px 10px 8px rgba(0, 0, 0, 0.1);
 }
 
+input:hover {
+    outline-offset: 2px;
+    outline: 1px solid #7aaf48;
+    box-shadow: 0 0 5px rgba(122, 175, 72, 0.5);
+}
+
+input:user-invalid {
+    outline: 1px solid #af4848;
+    border-color: #af4848;
+    box-shadow: 0 0 5px rgba(175, 72, 72, 0.5);
+}
+
+input:user-valid {
+    outline: 1px solid #4894af;
+    border-color: #4888af;
+    box-shadow: 0 0 5px rgba(72, 151, 175, 0.5);
+}
+
+input:disabled{
+    outline: #5e5e5e;
+    background-color : rgba(138, 138, 138, 0.23);
+    border: 1px solid gray;
+}
+
+input.destructive {
+    border: 1px solid #6b1414;
+    color: #6b1414;
+}
+
+input.destructive:hover, input.destructive:focus{
+    outline: solid 2px #a04545;
+}
+
 
 label {
     font-size: 1.2em;
@@ -289,31 +327,29 @@ label {
     display: block;
 }
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="password"]:focus,
-input[type="number"]:focus,
-input[type="date"]:focus,
-input[type="file"]:focus,
-input[type="time"]:focus {
+input:focus{
     outline: 1px solid #7aaf48;
     border: 1px solid;
     border-color: #7aaf48;
     box-shadow: 0 0 5px rgba(122, 175, 72, 0.5);
+    outline-offset: 2px;
 }
-
 
 fieldset {
     border: 2px solid #7aaf48;
     border-radius: 10px;
     width: auto;
-    padding: 40px;
+    padding: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 30px;
     margin: 20px 0px;
     box-shadow: 10px 10px 8px rgba(0, 0, 0, 0.1);
+}
+
+fieldset.destructive {
+    border: 2px solid #6b1414;
 }
 
 legend {
@@ -379,6 +415,11 @@ input[type="radio"] {
     border-radius: 10px;
 }
 
+input[type="checkbox"].destructive,
+input[type="radio"].destructive {
+    accent-color: #6b1414;
+}
+
 .breadcrumb {
     display: flex;
     align-items: center;
@@ -436,6 +477,14 @@ img:hover {
     transition: 0.3s;
 }
 
+.info p,
+.error p,
+.success p,
+.warning p {
+   display: flex;
+   align-items: center;
+}
+
 .info:hover,
 .error:hover,
 .success:hover,
@@ -443,6 +492,15 @@ img:hover {
     transform: scale(1.01);
     outline-offset: 2px;
 }
+.info p::before,
+.error p::before,
+.success p::before,
+.warning p::before{
+    display: block;
+    margin-right: 20px;
+
+}
+
 .info {
     border: 1px solid rgb(var(--info-color));
     color: rgb(var(--info-color));
@@ -453,7 +511,7 @@ img:hover {
     outline: 2px solid rgb(var(--info-color));
 }
 
-.info p:before {
+.info p::before {
     padding-left: 20px;
     content: "Info: ";
     font-weight: bold;
@@ -469,7 +527,7 @@ img:hover {
     outline: 2px solid rgb(var(--error-color));
 }
 
-.error p:before {
+.error p::before {
     padding-left: 20px;
     content: "Error: ";
     font-weight: bold;
@@ -486,7 +544,7 @@ img:hover {
     outline: 2px solid rgb(var(--success-color));
 }
 
-.success p:before {
+.success p::before {
     padding-left: 20px;
     content: "Success: ";
     font-weight: bold;
@@ -503,7 +561,7 @@ img:hover {
     outline: 2px solid rgb(var(--warning-color));
 }
 
-.warning p:before {
+.warning p::before {
     padding-left: 20px;
     content: "Warning: ";
     font-weight: bold;
@@ -517,13 +575,28 @@ img:hover {
     justify-content: center;
     gap: 40px;
     margin: 20px 0px;
+    width: 100%;
 
 }
 
-.flex-row div {
+
+.flex-column {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 200px;
+    gap: 40px;
+    margin: 20px 0px;
+}
+
+section#messages {
+    background-color: #e2e2e2a8;
+    border-radius: 10px;
+}
+
+fieldset .info, 
+fieldset .error,
+fieldset .success,
+fieldset .warning {
+    margin-top: 0px;
 }
