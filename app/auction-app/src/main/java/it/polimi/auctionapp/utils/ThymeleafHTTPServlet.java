@@ -1,8 +1,6 @@
 package it.polimi.auctionapp.utils;
 
-import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,7 +14,8 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
 import java.io.Serial;
-import java.sql.Connection;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 
 public class ThymeleafHTTPServlet extends HttpServlet {
@@ -40,10 +39,9 @@ public class ThymeleafHTTPServlet extends HttpServlet {
         SQLConnectionHandler.getConnection();
 
 
-
     }
 
-    public void processTemplate(String path, HttpServletRequest request, HttpServletResponse response) {
+    public void processTemplate(HttpServletRequest request, HttpServletResponse response, String path) {
         try {
             final JakartaServletWebApplication jakartaServletWebApplication = JakartaServletWebApplication.buildApplication(getServletContext());
 
@@ -52,11 +50,39 @@ public class ThymeleafHTTPServlet extends HttpServlet {
 
             WebContext context = new WebContext(webExchange);
 
-            templateEngine.process(path, context, response.getWriter());
             response.setContentType("text/html");
+            request.getSession().setAttribute("breadcrumb", breadCrumb(request.getServletPath()));
+            templateEngine.process(path, context, response.getWriter());
+
+            request.getSession().setAttribute("message", null);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        }
-
     }
+
+    public void sendRedirect(HttpServletRequest request, HttpServletResponse response, String path) {
+        try{
+            response.sendRedirect(getServletContext().getContextPath()  + path);
+            //request.getSession().setAttribute("message", null);
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    //TODO: add get parameters handling 
+    public String breadCrumb(String servletPath) {
+        String[] splitPath = (getServletContext().getContextPath() + "/" + servletPath).split("/");
+
+        return Arrays.stream(splitPath).filter(
+                s -> !s.isEmpty()
+        ).flatMap(
+                s -> Arrays.stream(s.split("="))
+        ).map(
+                s -> "<a>"
+
+                        + s + "</a>"
+        ).collect(Collectors.joining(">"));
+    }
+
+
+}
