@@ -72,7 +72,7 @@ h1:hover .gradient {
     font-family: 'Nexa', sans-serif;
     font-weight: bold;
     color: white;
-    box-shadow: 10 10 100px rgba(0, 0, 0, 0.2);
+    box-shadow: 10px 10px 100px rgba(0, 0, 0, 0.2);
     transition: 0.3s;
     position: relative;
 }
@@ -590,7 +590,7 @@ img:hover {
 }
 
 section#messages {
-    background-color: #e2e2e2a8;
+    background-color: rgba(226, 226, 226, 0.89);
     border-radius: 10px;
 }
 
