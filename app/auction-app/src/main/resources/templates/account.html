@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>page template</title>
+    <title>Account</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{styles/style.css}">
     <link rel="stylesheet"  th:href="@{styles/main.css}">
@@ -43,7 +43,7 @@
                     <h1>Sign up</h1>
                     <p>New here?</p>    
                     <fieldset>
-                        <legend>Account Information</legend>
+                        <legend>Account credentials</legend>
 
                         <label for="username">Username:</label>
                         <input type="text" id="username" name="username" required>
@@ -61,17 +61,17 @@
                         <br>
                     </fieldset>
                     <fieldset style="display: block">
-                        <legend>Address Information</legend>
+                        <legend>Address details</legend>
                         <label for="country">Country:</label>
                         <input type="text" id="country" name="country" required>
                         <label for="zip_code">Zip Code:</label>
-                        <input type="number" id="zip_code" name="zip_code" required>
+                        <input type="number" id="zip_code" name="zip_code" required min="10000" max="99999">
                         <label for="city">City:</label>
                         <input type="text" id="city" name="city" required>
                         <label for="street">Street:</label>
                         <input type="text" id="street" name="street" required>
                         <label for="street_number">Number:</label>
-                        <input type="number" id="street_number" name="street_number" required>
+                        <input type="number" id="street_number" name="street_number" required min="1">
                         <br>
                     </fieldset>
                     <button style="float: right" type="submit">Sign Up</button>
@@ -88,9 +88,10 @@
                         <label for="login-password">Password:</label>
                         <input type="password" id="login-password" name="password" required>
                         <br>
-                        <button type="reset">Reset</button>
-                        <button type="submit">Login</button>
                     </fieldset>
+                        <button style="float:right" type="submit">Login</button>
+                        <button style="float:right" type="reset">Reset</button>
+                </form>
             </div>
         </section>
 
