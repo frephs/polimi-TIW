@@ -11,10 +11,10 @@
     --box-shadow: 10px 10px 8px rgba(0, 0, 0, 0.1);
     --transition-duration: 0.3s;
     --border-radius: 10px;
-    
+
     --error-color: 175, 73, 72;
     --success-color: 72, 122, 175;
-    --info-color: 72, 175, 175;  
+    --info-color: 72, 175, 175;
     --warning-color: 175, 175, 72;
 }
 
@@ -31,11 +31,9 @@ body {
     text-align: left;
 }
 
-
 h1 {
     font-size: 3em;
     margin-bottom: 0.2em;
-
 }
 
 h2 {
@@ -43,7 +41,6 @@ h2 {
     color: #2b2b2b;
     margin: 0;
 }
-
 
 .gradient {
     background: linear-gradient(72deg, #006816 6.74%, #37b107 82.36%);
@@ -77,7 +74,6 @@ h1:hover .gradient {
     position: relative;
 }
 
-
 .go-button:hover {
     filter: drop-shadow(0px 0px 10px #146b27) hue-rotate(-5deg) brightness(0.9);
     transform: scale(1.05);
@@ -102,13 +98,15 @@ h1:hover .gradient {
     filter: brightness(1.2);
 }
 
-
 .arrow-button-description {
     opacity: 0;
     transform: scale(0.01);
     position: absolute;
     color: transparent;
-    transition: opacity 0.3s ease, visibility 0.3s ease, scale 0.3s ease;
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease,
+        scale 0.3s ease;
 }
 
 .go-button:hover .arrow-button-description {
@@ -122,10 +120,10 @@ h1:hover .gradient {
 
 a {
     text-decoration: none;
-    color: black
+    color: black;
 }
 
-main{
+main {
     display: block;
 }
 
@@ -167,7 +165,6 @@ nav li a {
 nav li a:hover {
     color: rgb(245, 245, 245);
     border-bottom: solid 3px rgb(245, 245, 245);
-
 }
 
 header {
@@ -184,19 +181,18 @@ table {
     border-radius: 10px 10px 0px 0px;
 }
 
-table:hover {
+table:hover:not(fieldset table:hover) {
     transform: scale(1.01);
     transition: 0.3s;
     outline: 2px solid #45a049;
     outline-offset: 2px;
-
 }
 
 table td {
     border: 1px solid #c0c0c0;
     padding: 8px;
     transition: 0.3s;
-
+    text-align: center;
 }
 
 table tr th:first-child {
@@ -222,7 +218,6 @@ table thead tr {
     border-top-left-radius: 10px;
 }
 
-
 table tr:nth-child(even) {
     background-color: #dddddd;
 }
@@ -231,8 +226,8 @@ table tr:hover {
     background-color: #37b10723;
 }
 
-
-button {
+button,
+input[type='file']::file-selector-button {
     padding: 20px 40px;
     border: none;
     border-radius: 10px;
@@ -249,7 +244,16 @@ button {
     border: 1px solid #146b27;
 }
 
-button:hover {
+input[type='file']::file-selector-button.change {
+    content: 'Change image';
+}
+
+input[type='file']::file-selector-button {
+    padding: 10px 20px;
+}
+
+button:hover,
+input[type='file']::file-selector-button:hover {
     background: linear-gradient(45deg, #146b27cc 6.74%, #80c73dbb 82.36%);
     color: white;
     transform: scale(1.05);
@@ -257,13 +261,19 @@ button:hover {
     outline-offset: 2px;
 }
 
-button.destructive, button[type="reset"] {
+button.destructive,
+button[type='reset'] {
     border: 1px solid #6b1414;
     color: #6b1414;
 }
 
-button.destructive:hover, button[type="reset"]:hover{
-    background: linear-gradient(45deg, rgba(107, 20, 20, 0.8) 6.74%, rgba(199, 61, 61, 0.73) 82.36%);
+button.destructive:hover,
+button[type='reset']:hover {
+    background: linear-gradient(
+        45deg,
+        rgba(107, 20, 20, 0.8) 6.74%,
+        rgba(199, 61, 61, 0.73) 82.36%
+    );
     color: white;
     transform: scale(1.05);
     outline: solid 2px #a04545;
@@ -274,8 +284,8 @@ input {
     transition: 0.3s;
 }
 
-
-input{
+input,
+textarea {
     width: 100%;
     padding: 17px;
     border: 1px solid rgba(122, 175, 72, 0.5);
@@ -285,29 +295,33 @@ input{
     background-color: #e2e2e2;
     transition: 0.3s;
     box-shadow: 10px 10px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Nexa', sans-serif;
 }
 
-input:hover {
+input:hover,
+textarea:hover {
     outline-offset: 2px;
     outline: 1px solid #7aaf48;
     box-shadow: 0 0 5px rgba(122, 175, 72, 0.5);
 }
 
-input:user-invalid {
+input:user-invalid,
+textarea:user-invalid {
     outline: 1px solid #af4848;
     border-color: #af4848;
     box-shadow: 0 0 5px rgba(175, 72, 72, 0.5);
 }
 
-input:user-valid {
+input:user-valid,
+text-area:user-valid {
     outline: 1px solid #4894af;
     border-color: #4888af;
     box-shadow: 0 0 5px rgba(72, 151, 175, 0.5);
 }
 
-input:disabled{
+input:disabled {
     outline: #5e5e5e;
-    background-color : rgba(138, 138, 138, 0.23);
+    background-color: rgba(138, 138, 138, 0.23);
     border: 1px solid gray;
 }
 
@@ -316,10 +330,10 @@ input.destructive {
     color: #6b1414;
 }
 
-input.destructive:hover, input.destructive:focus{
+input.destructive:hover,
+input.destructive:focus {
     outline: solid 2px #a04545;
 }
-
 
 label {
     font-size: 1.2em;
@@ -327,7 +341,7 @@ label {
     display: block;
 }
 
-input:focus{
+input:focus {
     outline: 1px solid #7aaf48;
     border: 1px solid;
     border-color: #7aaf48;
@@ -356,9 +370,9 @@ legend {
     font-size: 1.4em;
 }
 
-input[type="tel"],
-input[type="url"],
-input[type="search"],
+input[type='tel'],
+input[type='url'],
+input[type='search'],
 select,
 textarea {
     width: 100%;
@@ -376,25 +390,24 @@ textarea {
     resize: vertical;
 }
 
-input[type="tel"]:focus,
-input[type="url"]:focus,
-input[type="search"]:focus,
+input[type='tel']:focus,
+input[type='url']:focus,
+input[type='search']:focus,
 select:focus,
 textarea:focus {
     border-color: #7aaf48;
     box-shadow: 0 0 5px rgba(122, 175, 72, 0.5);
 }
 
-input[type="range"] {
+input[type='range'] {
     width: 100%;
     margin-bottom: 10px;
     accent-color: #7aaf48;
     border-radius: 10px;
     margin-bottom: 10px;
-
 }
 
-input[type="color"] {
+input[type='color'] {
     width: 60px;
     height: 40px;
     border: 1px solid rgba(122, 175, 72, 0.5);
@@ -403,8 +416,8 @@ input[type="color"] {
     cursor: pointer;
 }
 
-input[type="checkbox"],
-input[type="radio"] {
+input[type='checkbox'],
+input[type='radio'] {
     margin-right: 10px;
     width: 25px;
     height: 25px;
@@ -415,8 +428,8 @@ input[type="radio"] {
     border-radius: 10px;
 }
 
-input[type="checkbox"].destructive,
-input[type="radio"].destructive {
+input[type='checkbox'].destructive,
+input[type='radio'].destructive {
     accent-color: #6b1414;
 }
 
@@ -430,7 +443,7 @@ input[type="radio"].destructive {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     gap: 10px;
     transition: 0.3s;
-    color: #45a049
+    color: #45a049;
 }
 
 .breadcrumb:hover {
@@ -447,7 +460,6 @@ input[type="radio"].destructive {
     padding: 10px;
     border-radius: 10px;
     transition: 0.3s;
-
 }
 
 img {
@@ -481,8 +493,8 @@ img:hover {
 .error p,
 .success p,
 .warning p {
-   display: flex;
-   align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .info:hover,
@@ -492,13 +504,13 @@ img:hover {
     transform: scale(1.01);
     outline-offset: 2px;
 }
+
 .info p::before,
 .error p::before,
 .success p::before,
-.warning p::before{
+.warning p::before {
     display: block;
     margin-right: 20px;
-
 }
 
 .info {
@@ -513,7 +525,7 @@ img:hover {
 
 .info p::before {
     padding-left: 20px;
-    content: "Info: ";
+    content: 'Info: ';
     font-weight: bold;
 }
 
@@ -529,7 +541,7 @@ img:hover {
 
 .error p::before {
     padding-left: 20px;
-    content: "Error: ";
+    content: 'Error: ';
     font-weight: bold;
     color: rgb(var(--error-color));
 }
@@ -546,7 +558,7 @@ img:hover {
 
 .success p::before {
     padding-left: 20px;
-    content: "Success: ";
+    content: 'Success: ';
     font-weight: bold;
     color: rgb(var(--success-color));
 }
@@ -563,7 +575,7 @@ img:hover {
 
 .warning p::before {
     padding-left: 20px;
-    content: "Warning: ";
+    content: 'Warning: ';
     font-weight: bold;
     color: rgb(var(--warning-color));
 }
@@ -576,9 +588,11 @@ img:hover {
     gap: 40px;
     margin: 20px 0px;
     width: 100%;
-
 }
 
+.wrap {
+    flex-wrap: wrap;
+}
 
 .flex-column {
     display: flex;
@@ -594,7 +608,7 @@ section#messages {
     border-radius: 10px;
 }
 
-fieldset .info, 
+fieldset .info,
 fieldset .error,
 fieldset .success,
 fieldset .warning {
