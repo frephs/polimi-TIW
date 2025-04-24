@@ -19,7 +19,7 @@ CREATE TABLE `auctions` (
     `auction_id` INTEGER PRIMARY KEY AUTO_INCREMENT,
     `seller_username` VARCHAR(20) NOT NULL,
     `start_time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    `final_bid_submission` DATETIME NOT NULL,
+    `final_bid_submission_time` DATETIME NOT NULL,
     `min_bid_increment` INTEGER NOT NULL DEFAULT 1,
     `closed` BOOLEAN NOT NULL DEFAULT 0,
     FOREIGN KEY (`seller_username`) REFERENCES `users` (`username`) ON UPDATE CASCADE ON DELETE CASCADE
@@ -30,7 +30,7 @@ CREATE TABLE `products` (
     `seller_username` VARCHAR(20) NOT NULL,
     `name` TEXT NOT NULL,
     `description` TEXT,
-    `image_url` TEXT NOT NULL,
+    `image_filename` TEXT NOT NULL,
     `price` DECIMAL(10, 2) NOT NULL,
     `auction_id` INTEGER DEFAULT NULL,
     FOREIGN KEY (`auction_id`) REFERENCES `auctions` (`auction_id`) ON UPDATE CASCADE ON DELETE
