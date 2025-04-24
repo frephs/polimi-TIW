@@ -31,7 +31,7 @@ public class Address {
         return street;
     }
 
-    public Integer getStreet_number() {
+    public Integer getStreetNumber() {
         return street_number;
     }
 }
