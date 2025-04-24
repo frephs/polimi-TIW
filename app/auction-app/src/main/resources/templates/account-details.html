@@ -93,11 +93,9 @@
 
                         <label for="name">Name:</label>
                         <input id="name" type="text" name="name" th:value="${session.user.getName()}" required>
-
-
                         <label for="surname">Surname:</label>
                         <input id="surname" type="text" name="surname" th:value="${session.user.getSurname()}" required>
-                        <button style="float:right;" type="submit">Update
+                        <button style="float:right;" type="submit">Update</button>
                     </fieldset>
                     </fieldset>
                     <fieldset style="display: block;">
@@ -116,7 +114,7 @@
                         <label for="street">Street:</label>
                         <input id="street" name="street" type="text" th:value="${session.user.getAddress().getStreet()}" required>
                         <label for="street-number">Street Number:</label>
-                        <input id="street-number" name="street-number" type="number" th:value="${session.user.getAddress().getStreet_number()}" required>
+                        <input id="street-number" name="street-number" type="number" th:value="${session.user.getAddress().getStreetNumber()}" required>
 
                         <button type="submit" style="float:right">Update</button>
 
