@@ -89,7 +89,7 @@ public class AuctionController {
                             )
                         );
                 }
-                processTemplate(request, response, "/sell");
+                processTemplate(request, response, "/sell/index");
             }
         }
     }
@@ -124,6 +124,12 @@ public class AuctionController {
                 List<Integer> selectedProductIds = Arrays.stream(productIds)
                     .map(Integer::parseInt)
                     .toList();
+
+                if (selectedProductIds.size() <= 1) {
+                    throw new SQLWarning(
+                        "You cannot create an auction with less than two products"
+                    );
+                }
 
                 List<Product> selected_products = products
                     .stream()
@@ -204,6 +210,40 @@ public class AuctionController {
                     .setAttribute("message", MessageType.ERROR.wrap("Invalid auction ID."));
             } finally {
                 sendRedirect(request, response, "/sell");
+            }
+        }
+    }
+
+    @WebServlet("/sell/auction/*")
+    public static class AuctionDetailServlet extends ThymeleafHTTPServlet {
+
+        @Override
+        protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+            String auctionIdParam = request.getPathInfo().substring(1); // Extract auction ID from URL
+            int auctionId = Integer.parseInt(auctionIdParam);
+            try {
+                auctionDataAccessObject.checkAuctionExists(auctionId);
+                auctionDataAccessObject.checkAuctionIsOwnedBy(
+                    ((User) request.getSession().getAttribute("user")).getUsername(),
+                    auctionId
+                );
+                request
+                    .getSession()
+                    .setAttribute("auction", auctionDataAccessObject.getAuctionById(auctionId));
+                request
+                    .getSession()
+                    .setAttribute("bids", auctionDataAccessObject.getBidsByAuction(auctionId));
+            } catch (SQLWarning e) {
+                request
+                    .getSession()
+                    .setAttribute("message", MessageType.WARNING.wrap(e.getMessage()));
+            } catch (SQLException e) {
+                request
+                    .getSession()
+                    .setAttribute("message", MessageType.ERROR.wrap(e.getMessage()));
+            } finally {
+                processTemplate(request, response, "/sell/auction-detail");
             }
         }
     }

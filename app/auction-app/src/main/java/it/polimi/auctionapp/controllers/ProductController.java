@@ -112,6 +112,7 @@ public class ProductController {
 
                 Integer currentAuctionId = productDataAccessObject.getProductAuctionId(productId);
                 if (
+                    request.getParameter("product-auction-id") != null &&
                     !currentAuctionId.equals(
                         Integer.parseInt(
                             !Objects.equals(request.getParameter("product-auction-id"), "")
