@@ -1,6 +1,8 @@
 package it.polimi.auctionapp.beans;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Auction {
 
@@ -10,7 +12,8 @@ public class Auction {
     private Timestamp end_time;
     private Integer minimum_bid_increment;
     private Boolean is_closed;
-    private Integer item_count;
+    private Bid currentHighestBid;
+    private List<Product> products;
 
     public Auction(
         Integer id,
@@ -18,16 +21,18 @@ public class Auction {
         Timestamp start_time,
         Timestamp end_time,
         Integer minimum_bid_increment,
-        Integer item_count,
-        Boolean is_closed
+        Boolean is_closed,
+        Bid currentHighestBid,
+        List<Product> products
     ) {
         this.id = id;
         this.seller_username = seller_username;
         this.start_time = start_time;
         this.end_time = end_time;
         this.minimum_bid_increment = minimum_bid_increment;
-        this.item_count = item_count;
         this.is_closed = is_closed;
+        this.currentHighestBid = currentHighestBid;
+        this.products = new ArrayList<>(products);
     }
 
     public Integer getId() {
@@ -55,12 +60,12 @@ public class Auction {
         return !is_closed;
     }
 
-    public String getRemainingTime() {
+    public String getRemainingTimeString() {
         long currentTime = System.currentTimeMillis();
         long remainingMillis = end_time.getTime() - currentTime;
 
         if (remainingMillis <= 0) {
-            return "00:00";
+            return "0d 0h";
         }
 
         long days = remainingMillis / (24 * 60 * 60 * 1000);
@@ -69,7 +74,28 @@ public class Auction {
         return String.format("%02d" + "d " + "%02d" + "h", days, hours);
     }
 
-    public Integer getItemCount() {
-        return item_count;
+    public Bid getCurrentHighestBid() {
+        return currentHighestBid;
+    }
+
+    public List<Product> getProducts() {
+        return new ArrayList<>(products);
+    }
+
+    public boolean canBeDeleted() {
+        return currentHighestBid == null;
+    }
+
+    public boolean canBeClosed() {
+        return (
+            isOpen() &&
+            currentHighestBid != null &&
+            currentHighestBid.getBidAmount() != 0 &&
+            end_time.getTime() - System.currentTimeMillis() < 0
+        );
+    }
+
+    public Float getStartingPrice() {
+        return (float) products.stream().mapToDouble(Product::getPrice).sum();
     }
 }

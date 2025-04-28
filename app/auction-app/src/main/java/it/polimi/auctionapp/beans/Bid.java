@@ -1,33 +1,39 @@
 package it.polimi.auctionapp.beans;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class Bid {
-    private Integer auction_id;
-    private Integer bidder_username;
-    private Integer bid_amount;
-    private LocalDateTime bid_timestamp;
 
-    public Bid(Integer auction_id, Integer bidder_username, Integer bid_amount, LocalDateTime bid_timestamp) {
+    private Integer auction_id;
+    private String bidder_username;
+    private Float bid_amount;
+    private Timestamp bid_timestamp;
+
+    public Bid(
+        Integer auction_id,
+        String bidder_username,
+        Float bid_amount,
+        Timestamp bid_timestamp
+    ) {
         this.auction_id = auction_id;
         this.bidder_username = bidder_username;
         this.bid_amount = bid_amount;
         this.bid_timestamp = bid_timestamp;
     }
 
-    public Integer getAuction_id() {
+    public Integer getAuctionId() {
         return auction_id;
     }
 
-    public Integer getBidder_username() {
+    public String getBidderUsername() {
         return bidder_username;
     }
 
-    public Integer getBid_amount() {
+    public Float getBidAmount() {
         return bid_amount;
     }
 
-    public LocalDateTime getBid_timestamp() {
+    public Timestamp getBidTimestamp() {
         return bid_timestamp;
     }
 }

@@ -1,5 +1,8 @@
 package it.polimi.auctionapp.beans;
 
+import java.util.List;
+import java.util.Objects;
+
 public class Product {
 
     private Integer id;
@@ -51,5 +54,32 @@ public class Product {
 
     public boolean isAuctioned() {
         return auction_id != 0;
+    }
+
+    public boolean canChangeAuction(List<Auction> auctions) {
+        for (Auction auction : auctions) {
+            if (
+                auction
+                    .getProducts()
+                    .stream()
+                    .anyMatch(product -> Objects.equals(product.getId(), this.id))
+            ) {
+                return auction.getProducts().size() > 2;
+            }
+        }
+        return false;
+    }
+
+    public boolean canChangePrice(List<Auction> auctions) {
+        if (!this.isAuctioned()) return true;
+        for (Auction auction : auctions) {
+            if (auction.getProducts().contains(this)) {
+                if (auction.getCurrentHighestBid() != null) return true;
+                else {
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 }
