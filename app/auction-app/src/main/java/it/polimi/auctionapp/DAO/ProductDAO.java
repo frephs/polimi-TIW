@@ -84,12 +84,12 @@ public class ProductDAO {
         return products;
     }
 
-    public List<Product> getProductsByAuction(String auction_id) throws SQLException {
+    public List<Product> getProductsByAuction(Integer auction_id) throws SQLException {
         String query =
             "SELECT product_id, name, description, price, image_filename, auction_id FROM products WHERE auction_id = ?";
         PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
             .prepareStatement(query);
-        preparedStatement.setString(1, auction_id);
+        preparedStatement.setInt(1, auction_id);
         ResultSet result = preparedStatement.executeQuery();
         List<Product> products = new ArrayList<>();
         while (result.next()) {

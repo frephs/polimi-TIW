@@ -1,6 +1,7 @@
 package it.polimi.auctionapp.DAO;
 
 import it.polimi.auctionapp.beans.Auction;
+import it.polimi.auctionapp.beans.Bid;
 import it.polimi.auctionapp.utils.SQLConnectionHandler;
 
 import java.sql.*;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AuctionDAO {
+
+    static final ProductDAO productDataAccessObject = new ProductDAO();
 
     public void checkAuctionExists(Integer auction_id) throws SQLException {
         String query = "SELECT * FROM auctions WHERE auction_id = ?";
@@ -67,7 +70,10 @@ public class AuctionDAO {
     }
 
     public void closeAuction(Integer auction_id) throws SQLException {
-        String query = "UPDATE auctions SET closed = ? WHERE auction_id = ?";
+        String query =
+            "UPDATE auctions SET closed = ?, " +
+            "final_bid_submission_time = CURRENT_TIMESTAMP " +
+            "WHERE auction_id = ?";
         PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
             .prepareStatement(query);
         preparedStatement.setBoolean(1, true);
@@ -79,7 +85,8 @@ public class AuctionDAO {
         List<Auction> auctions = new ArrayList<>();
         String query =
             "SELECT auction_id,seller_username,start_time,start_time," +
-            "final_bid_submission_time,min_bid_increment, closed FROM auctions WHERE seller_username=?";
+            "final_bid_submission_time,min_bid_increment, closed FROM auctions WHERE seller_username=? " +
+            "ORDER BY final_bid_submission_time ASC";
         PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
             .prepareStatement(query);
         preparedStatement.setString(1, seller_username);
@@ -93,23 +100,82 @@ public class AuctionDAO {
                     result.getTimestamp("start_time"),
                     result.getTimestamp("final_bid_submission_time"),
                     result.getInt("min_bid_increment"),
-                    getAuctionItemsCount(result.getInt("auction_id")),
-                    result.getBoolean("closed")
+                    result.getBoolean("closed"),
+                    getCurrentHighestBid(result.getInt("auction_id")),
+                    productDataAccessObject.getProductsByAuction(result.getInt("auction_id"))
                 )
             );
         }
         return auctions;
     }
 
-    public Integer getAuctionItemsCount(Integer auction_id) throws SQLException {
-        String query = "SELECT COUNT(*) FROM products WHERE auction_id=?";
+    public Auction getAuctionById(Integer auction_id) throws SQLException {
+        Auction auction = null;
+        String query =
+            "SELECT auction_id,seller_username,start_time,start_time," +
+            "final_bid_submission_time,min_bid_increment, closed FROM auctions WHERE auction_id=? ";
+        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
+            .prepareStatement(query);
+        preparedStatement.setInt(1, auction_id);
+
+        ResultSet result = preparedStatement.executeQuery();
+        if (result.next()) {
+            auction = new Auction(
+                auction_id,
+                result.getString("seller_username"),
+                result.getTimestamp("start_time"),
+                result.getTimestamp("final_bid_submission_time"),
+                result.getInt("min_bid_increment"),
+                result.getBoolean("closed"),
+                getCurrentHighestBid(result.getInt("auction_id")),
+                productDataAccessObject.getProductsByAuction(result.getInt("auction_id"))
+            );
+        } else {
+            throw new SQLException("There is no auction with id " + auction_id);
+        }
+        return auction;
+    }
+
+    public Bid getCurrentHighestBid(Integer auction_id) throws SQLException {
+        String query =
+            "SELECT auction_id, bidder_username, bid_amount, bid_timestamp FROM bids " +
+            " WHERE auction_id = ? AND bid_amount =" +
+            " (SELECT MAX(bid_amount) FROM bids b2 WHERE b2.auction_id=?)" +
+            "ORDER BY bid_timestamp DESC";
+        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
+            .prepareStatement(query);
+        preparedStatement.setInt(1, auction_id);
+        preparedStatement.setInt(2, auction_id);
+        ResultSet result = preparedStatement.executeQuery();
+        if (result.next()) {
+            return new Bid(
+                auction_id,
+                result.getString("bidder_username"),
+                result.getFloat("bid_amount"),
+                result.getTimestamp("bid_timestamp")
+            );
+        }
+        return null;
+    }
+
+    public List<Bid> getBidsByAuction(Integer auction_id) throws SQLException {
+        List<Bid> bids = new ArrayList<>();
+        String query =
+            "SELECT bidder_username, bid_amount, bid_timestamp FROM bids WHERE auction_id=?";
         PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
             .prepareStatement(query);
         preparedStatement.setInt(1, auction_id);
         ResultSet result = preparedStatement.executeQuery();
-        if (result.next()) {
-            return result.getInt(1);
+        while (result.next()) {
+            bids.add(
+                new Bid(
+                    auction_id,
+                    result.getString("bidder_username"),
+                    result.getFloat("bid_amount"),
+                    result.getTimestamp("bid_timestamp")
+                )
+            );
         }
-        return 0;
+        return bids;
     }
 }
