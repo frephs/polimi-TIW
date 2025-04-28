@@ -41,14 +41,14 @@ CREATE TABLE `products` (
 CREATE TABLE `bids` (
     `auction_id` INTEGER NOT NULL,
     `bidder_username` VARCHAR(20),
-    `bid_price` DECIMAL(10, 2) NOT NULL,
+    `bid_amount` DECIMAL(10, 2) NOT NULL,
     `bid_timestamp` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     INDEX (`auction_id` ASC, `bid_timestamp` DESC),
     FOREIGN KEY (`auction_id`) REFERENCES `auctions` (`auction_id`) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (`bidder_username`) REFERENCES `users` (`username`) ON UPDATE CASCADE ON DELETE
     SET
         NULL,
-        CONSTRAINT `unique_bid_price` UNIQUE (`auction_id`, `bid_price`),
+        CONSTRAINT `unique_bid_amount` UNIQUE (`auction_id`, `bid_amount`),
         CONSTRAINT `unique_bid_timestamp` UNIQUE (`auction_id`, `bidder_username`, `bid_timestamp`)
 );
 
