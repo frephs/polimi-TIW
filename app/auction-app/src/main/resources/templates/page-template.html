@@ -1,55 +1,64 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>page template</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" th:href="@{/styles/style.css}" />
+        <link rel="stylesheet" th:href="@{/styles/main.css}" />
+        <link rel="icon" th:href="@{icon.png}" />
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <title>page template</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{styles/style.css}">
-    <link rel="stylesheet"  th:href="@{styles/main.css}">
-    <link rel="icon" th:href="@{icon.png}">
-</head>
-
-<body>
-    <header>
-    </header>
-    <nav>
-        <div
-            style="position: absolute; top: 15px; left: 60px; color:#2b2b2b; background-color: #e2e2e2; padding: 5px 10px; border-radius: 10px;">
-            <a th:href="@{/}">Your<span class="gradient">Auction</span></a>
-        </div>
-        <ul>
+    <body>
+        <header></header>
+        <nav>
+            <div
+                style="
+                    position: absolute;
+                    top: 15px;
+                    left: 60px;
+                    color: #2b2b2b;
+                    background-color: #e2e2e2;
+                    padding: 5px 10px;
+                    border-radius: 10px;
+                "
+            >
+                <a th:href="@{/}">
+                    Your
+                    <span class="gradient">Auction</span>
+                </a>
+            </div>
             <ul>
-                <li>
-                    <a th:href="@{/}">Home</a>
-                </li>
-                <li>
-                    <a th:href="@{/sell}">Sell</a>
-                </li>
-                <li>
-                    <a th:href="@{/buy}">Buy</a>
-                </li>
-                <li>
-                    <a th:href="@{/account}">YourAccount</a>
-                </li>
+                <ul>
+                    <li>
+                        <a th:href="@{/}">Home</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/sell}">Sell</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/buy}">Buy</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/account}">YourAccount</a>
+                    </li>
+                </ul>
             </ul>
-        </ul>
-    </nav>
-    <main>
-        <section id="messages">
-            <div class="message" th:if="${session.message}" th:utext="${session.message}">
-                
-            </div>
-        </section>
-        <section id="breadcrumb">
-            <div class="breadcrumb"  th:if="${session.breadcrumb}" th:utext="${session.breadcrumb}">
-
-            </div>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2025 YourAuction. All rights reserved.</p>
-    </footer>
-</body>
-
+        </nav>
+        <main>
+            <section id="messages">
+                <div class="message" th:if="${session.message}" th:utext="${session.message}"></div>
+            </section>
+            <section id="breadcrumb">
+                <div
+                    class="breadcrumb"
+                    th:if="${session.breadcrumb}"
+                    th:utext="${session.breadcrumb}"
+                ></div>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2025 YourAuction. All rights reserved.</p>
+        </footer>
+    </body>
 </html>

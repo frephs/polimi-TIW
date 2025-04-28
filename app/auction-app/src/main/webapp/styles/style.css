@@ -208,9 +208,9 @@ table thead {
 }
 
 table th {
-    text-align: left;
     padding: 7px 10px;
     color: #e2e1e1;
+    text-align: center;
 }
 
 table thead tr {
@@ -242,6 +242,11 @@ input[type='file']::file-selector-button {
     background: #e2e2e2;
     color: #146b27;
     border: 1px solid #146b27;
+    white-space: nowrap;
+}
+
+td button {
+    padding: 12px 40px;
 }
 
 input[type='file']::file-selector-button.change {
@@ -261,13 +266,38 @@ input[type='file']::file-selector-button:hover {
     outline-offset: 2px;
 }
 
-button.destructive,
+button.destructive:not(:disabled),
 button[type='reset'] {
-    border: 1px solid #6b1414;
+    border: 1px solid #6b1414; 
     color: #6b1414;
 }
 
-button.destructive:hover,
+:disabled {
+    cursor: not-allowed;
+}
+
+button:disabled, input[type='file']:disabled::file-selector-button {
+    border: 1px solid #555555;
+    color: #555555;
+    background: rgba(102, 102, 102, 0.23);
+    cursor: not-allowed;
+}
+
+button:disabled:hover {
+    outline: solid 1px #9e9e9e;
+    outline-offset: 0px;
+}
+
+button:disabled:hover, input[type='file']:disabled::file-selector-button:hover {
+    background: rgba(109, 109, 109, 0.23) !important;
+    color: #555555 !important;
+    box-shadow: none !important;
+    transform: scale(1) !important;
+    outline: solid 1px #9e9e9e !important;
+    outline-offset: 0px !important;
+}
+
+button.destructive:hover:not(:disabled),
 button[type='reset']:hover {
     background: linear-gradient(
         45deg,
@@ -319,7 +349,9 @@ text-area:user-valid {
     box-shadow: 0 0 5px rgba(72, 151, 175, 0.5);
 }
 
-input:disabled {
+input:disabled,
+select:disabled,
+textarea:disabled {
     outline: #5e5e5e;
     background-color: rgba(138, 138, 138, 0.23);
     border: 1px solid gray;
@@ -360,6 +392,10 @@ fieldset {
     gap: 30px;
     margin: 20px 0px;
     box-shadow: 10px 10px 8px rgba(0, 0, 0, 0.1);
+}
+
+fieldset p {
+    text-align: justify;
 }
 
 fieldset.destructive {
@@ -444,6 +480,7 @@ input[type='radio'].destructive {
     gap: 10px;
     transition: 0.3s;
     color: #45a049;
+    cursor: pointer;
 }
 
 .breadcrumb:hover {
@@ -613,4 +650,41 @@ fieldset .error,
 fieldset .success,
 fieldset .warning {
     margin-top: 0px;
+}
+
+.auction-link {
+    text-decoration: none;
+    color: #146b27;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: 0.3s;
+    border: 1px solid #146b27;
+    display: inline-block;
+    margin: 5px;
+}
+
+.auction-link:hover {
+    transform: scale(1.05);
+    outline: solid 2px #45a049;
+    outline-offset: 2px;
+    box-shadow: 10px 10px 8px rgba(0, 0, 0, 0.1);
+}
+
+.auction-link::after {
+    content: '→';
+    margin-left: 10px;
+    font-size: 0.8em;
+    transition: 0.3s;
+}
+
+.auction-link:hover::after {
+    transform: translateX(25px);
+    margin-left: 20px;
+}
+
+.winner {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    min-height: 100px;
 }
