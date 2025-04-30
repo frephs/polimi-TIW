@@ -178,4 +178,100 @@ public class AuctionDAO {
         }
         return bids;
     }
+
+    public List<Auction> getAuctionsByKeyword(List<String> keywords) throws SQLException {
+        List<Auction> auctions = new ArrayList<>();
+        String query =
+            "SELECT DISTINCT a.auction_id, a.seller_username, a.start_time, a.final_bid_submission_time, " +
+            "a.min_bid_increment, a.closed " +
+            "FROM auctions a " +
+            "JOIN products p ON a.auction_id = p.auction_id " +
+            "WHERE a.closed = 0 AND " +
+            "(" +
+            String.join(
+                " OR ",
+                keywords
+                    .stream()
+                    .map(keyword -> "(p.name LIKE ? OR p.description LIKE ?)")
+                    .toArray(String[]::new)
+            ) +
+            ") ORDER BY a.final_bid_submission_time ASC";
+        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
+            .prepareStatement(query);
+
+        int index = 1;
+        for (String keyword : keywords) {
+            preparedStatement.setString(index++, "%" + keyword + "%");
+            preparedStatement.setString(index++, "%" + keyword + "%");
+        }
+
+        ResultSet result = preparedStatement.executeQuery();
+        while (result.next()) {
+            auctions.add(
+                new Auction(
+                    result.getInt("auction_id"),
+                    result.getString("seller_username"),
+                    result.getTimestamp("start_time"),
+                    result.getTimestamp("final_bid_submission_time"),
+                    result.getInt("min_bid_increment"),
+                    result.getBoolean("closed"),
+                    getCurrentHighestBid(result.getInt("auction_id")),
+                    productDataAccessObject.getProductsByAuction(result.getInt("auction_id"))
+                )
+            );
+        }
+
+        if (auctions.isEmpty()) {
+            throw new SQLException("There are no auctions matching the provided keywords");
+        }
+
+        return auctions;
+    }
+
+    public void placeBid(Integer auction_id, String bidder_username, Float bid_amount)
+        throws SQLException {
+        String query =
+            "INSERT INTO bids(auction_id, bidder_username, bid_amount, bid_timestamp) " +
+            "VALUES(?, ?, ?, CURRENT_TIMESTAMP)";
+        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
+            .prepareStatement(query);
+        preparedStatement.setInt(1, auction_id);
+        preparedStatement.setString(2, bidder_username);
+        preparedStatement.setFloat(3, bid_amount);
+        preparedStatement.executeUpdate();
+    }
+
+    public List<Auction> getAuctionsWonBy(String username) throws SQLException {
+        List<Auction> auctions = new ArrayList<>();
+        String query =
+            "SELECT b.auction_id, seller_username, start_time, final_bid_submission_time, " +
+            "min_bid_increment, closed, bid_amount " +
+            "FROM auctions a " +
+            "JOIN bids b ON a.auction_id = b.auction_id " +
+            "WHERE b.bidder_username = ? AND a.closed = 1 AND b.bid_amount = " +
+            "(SELECT MAX(b2.bid_amount) " +
+            "FROM bids b2 " +
+            "WHERE b2.auction_id = b.auction_id)";
+
+        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
+            .prepareStatement(query);
+        preparedStatement.setString(1, username);
+
+        ResultSet result = preparedStatement.executeQuery();
+        while (result.next()) {
+            auctions.add(
+                new Auction(
+                    result.getInt("auction_id"),
+                    result.getString("seller_username"),
+                    result.getTimestamp("start_time"),
+                    result.getTimestamp("final_bid_submission_time"),
+                    result.getInt("min_bid_increment"),
+                    result.getBoolean("closed"),
+                    getCurrentHighestBid(result.getInt("auction_id")),
+                    productDataAccessObject.getProductsByAuction(result.getInt("auction_id"))
+                )
+            );
+        }
+        return auctions;
+    }
 }
