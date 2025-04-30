@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>page template</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" th:href="@{/styles/style.css}" />
+        <link rel="stylesheet" th:href="@{/styles/main.css}" />
+        <link rel="icon" th:href="@{icon.png}" />
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+            rel="stylesheet"
+        />
+    </head>
+
+    <body>
+        <header></header>
+        <nav>
+            <div
+                style="
+                    position: absolute;
+                    top: 15px;
+                    left: 60px;
+                    color: #2b2b2b;
+                    background-color: #e2e2e2;
+                    padding: 5px 10px;
+                    border-radius: 10px;
+                "
+            >
+                <a th:href="@{/}">
+                    Your
+                    <span class="gradient">Auction</span>
+                </a>
+            </div>
+            <ul>
+                <ul>
+                    <li>
+                        <a th:href="@{/}">Home</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/sell}">Sell</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/buy}">Buy</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/account}">YourAccount</a>
+                    </li>
+                </ul>
+            </ul>
+        </nav>
+        <main>
+            <section id="messages">
+                <div class="message" th:if="${session.message}" th:utext="${session.message}"></div>
+            </section>
+            <section id="breadcrumb">
+                <div
+                    class="breadcrumb"
+                    th:if="${session.breadcrumb}"
+                    th:utext="${session.breadcrumb}"
+                ></div>
+            </section>
+
+            <section id="welcome" style="width: 100%">
+                <h1>
+                    Hello
+                    <i><span th:text="${session.user.getName}"></span></i>
+                </h1>
+                <p>
+                    Welcome to yourAuction platform. Search for products, bid on items, and find
+                    great deals!
+                </p>
+                <form
+                    style="display: flex; align-items: center; align-content: center"
+                    th:action="@{/buy/search}"
+                    method="get"
+                >
+                    <div
+                        style="
+                            margin: 50px 200px;
+                            display: flex;
+                            align-items: center;
+                            align-content: center;
+                            flex-direction: row;
+                        "
+                    >
+                        <input
+                            type="text"
+                            style="margin-top: 10px"
+                            name="q"
+                            id="buy-search-button"
+                            placeholder="Search for auctions and items..."
+                        />
+                        <button type="submit">Search</button>
+                    </div>
+                </form>
+            </section>
+
+            <section
+                id="auctions"
+                th:if="${session.auctions!= null and session.auctions.size() > 0}"
+            >
+                <h2>Search Results</h2>
+                <div
+                    id="auction-list"
+                    style="
+                        display: grid;
+                        width: 100%;
+                        grid-template-columns: 1fr 1fr 1fr;
+                        gap: 20px;
+                        align-content: center;
+                        align-items: start;
+                    "
+                >
+                    <div class="auction-card" th:each="auction : ${session.auctions}">
+                        <div class="auction-card-author">
+                            Auction by
+                            <span th:text="${ '@' + auction.getSellerUsername()}"></span>
+                        </div>
+                        <div class="auction-card-detail">
+                            <table style="margin-top: 10px">
+                                <thead>
+                                    <tr>
+                                        <th>Starting at:</th>
+                                        <th>Bid increase:</th>
+                                        <th>Time left:</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span
+                                                th:text="${'€' + (auction.getCurrentHighestBid() !=null ? auction.getCurrentHighestBid().getBidAmount() : auction.getStartingPrice())}"
+                                            ></span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                th:text="${'€' + auction.getMinimumBidIncrement()}"
+                                            ></span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                th:text="${auction.getRemainingTimeString()}"
+                                            ></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <span style="margin-top: 10px"><b>Gallery</b></span>
+
+                        <div class="photo-stack">
+                            <img
+                                th:each="product : ${auction.getProducts()}"
+                                th:src="@{'/image/'+${product.getImageFilename()}}"
+                                alt="Product Image"
+                            />
+                        </div>
+                        <div>
+                            <div class="auction-card-tags">
+                                <div th:each="product : ${auction.getProducts()}">
+                                    <form
+                                        th:action="@{/buy/search}"
+                                        method="get"
+                                        style="display: inline"
+                                    >
+                                        <button type="submit" class="no-style-button">
+                                            <div
+                                                class="auction-card-tag"
+                                                th:text="${product.name}"
+                                            ></div>
+                                            <input
+                                                type="hidden"
+                                                name="q"
+                                                th:value="${product.name}"
+                                            />
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            style="
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                align-content: center;
+                                margin-top: 20px;
+                            "
+                        >
+                            <form
+                                th:action="@{/buy/auction}"
+                                method="get"
+                                style="width: calc(100%)"
+                            >
+                                <button style="width: calc(100% - 25px)" type="submit">Bid</button>
+                                <input type="hidden" name="id" th:value="${auction.getId()}" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section
+                id="won-auctions"
+                th:if="${session.wonAuctions != null and session.wonAuctions.size() > 0}"
+            >
+                <h2>Won Auctions</h2>
+                <div
+                    id="won-auction-list"
+                    style="
+                        display: grid;
+                        width: 100%;
+                        grid-template-columns: 1fr 1fr 1fr;
+                        gap: 20px;
+                        align-content: center;
+                        align-items: start;
+                    "
+                >
+                    <div class="auction-card" th:each="auction : ${session.wonAuctions}">
+                        <div class="auction-card-author">
+                            Auction by
+                            <span th:text="${ '@' + auction.getSellerUsername()}"></span>
+                        </div>
+                        <div class="auction-card-detail">
+                            <table style="margin-top: 10px">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="product : ${auction.getProducts()}">
+                                        <td th:text="${product.name}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <b>Final price:</b>
+                                            <span
+                                                th:text="${' € '+ auction.getCurrentHighestBid().getBidAmount()}"
+                                            ></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="photo-stack">
+                            <img
+                                th:each="product : ${auction.getProducts()}"
+                                th:src="@{'/image/'+${product.getImageFilename()}}"
+                                alt="Product Image"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2025 YourAuction. All rights reserved.</p>
+        </footer>
+    </body>
+</html>

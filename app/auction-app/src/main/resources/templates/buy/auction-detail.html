@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Auction details</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" th:href="@{/styles/style.css}" />
+        <link rel="stylesheet" th:href="@{/styles/main.css}" />
+        <link rel="icon" th:href="@{icon.png}" />
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+            rel="stylesheet"
+        />
+    </head>
+
+    <body>
+        <header></header>
+        <nav>
+            <div
+                style="
+                    position: absolute;
+                    top: 15px;
+                    left: 60px;
+                    color: #2b2b2b;
+                    background-color: #e2e2e2;
+                    padding: 5px 10px;
+                    border-radius: 10px;
+                "
+            >
+                <a th:href="@{/}">
+                    Your
+                    <span class="gradient">Auction</span>
+                </a>
+            </div>
+            <ul>
+                <ul>
+                    <li>
+                        <a th:href="@{/}">Home</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/sell}">Sell</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/buy}">Buy</a>
+                    </li>
+                    <li>
+                        <a th:href="@{/account}">YourAccount</a>
+                    </li>
+                </ul>
+            </ul>
+        </nav>
+        <main>
+            <section id="messages">
+                <div class="message" th:if="${session.message}" th:utext="${session.message}"></div>
+            </section>
+            <section id="breadcrumb">
+                <div
+                    class="breadcrumb"
+                    th:if="${session.breadcrumb}"
+                    th:utext="${session.breadcrumb}"
+                ></div>
+            </section>
+
+            <section>
+                <h1>
+                    Auction
+                    <span th:text="${session.auction.getId()}"></span>
+                </h1>
+            </section>
+            <section id="Products" th:if="${session.auction}">
+                <h2>Products</h2>
+                <div class="flex-row">
+                    <fieldset
+                        style="
+                            max-height: 630px;
+                            padding-top: 20px;
+                            padding-bottom: 20px;
+                            min-width: 60%;
+                        "
+                    >
+                        <legend>Product details</legend>
+                        <div style="overflow-y: scroll; max-height: 610px; max-width: 99%">
+                            <table style="max-width: calc(100% - 20px); margin-right: 20px">
+                                <thead>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Description</th>
+                                    <th>Image</th>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="product: ${session.auction.getProducts}">
+                                        <td th:text="${product.getName()}"></td>
+                                        <td th:text="${'€' + product.getPrice()}"></td>
+                                        <td th:text="${product.getDescription()}"></td>
+                                        <td>
+                                            <img
+                                                th:src="@{'/image/' + ${product.getImageFilename()}}"
+                                                alt="Product Image"
+                                                style="max-width: 100px; max-height: 100px"
+                                            />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+                </div>
+            </section>
+
+            <section id="bids" th:if="${session.auction}">
+                <h2>Info</h2>
+                <ul>
+                    <li>
+                        <b>Items:</b>
+                        <span th:text="${session.auction.products.size()}"></span>
+                    </li>
+                    <li>
+                        <b>Starting price:</b>
+                        €
+                        <span th:text="${session.auction.getStartingPrice()}"></span>
+                    </li>
+                    <li>
+                        <b>Minimum bid increase:</b>
+                        €
+                        <span th:text="${session.auction.getMinimumBidIncrement()}"></span>
+                    </li>
+                    <li>
+                        <b>Deadline</b>
+                        <span th:text="${session.auction.getFormattedEndTime()}"></span>
+                    </li>
+                </ul>
+                <div th:if="${session.auction.isOpen()}">
+                    <h3>Remaining time</h3>
+                    <div class="info">
+                        <p th:if="${session.auction.getRemainingTimeString()!='0d 0h'}">
+                            There is still
+                            <span
+                                th:text="${' ' +
+                             session.auction.getRemainingTimeString() + ' '}"
+                            ></span>
+                            until the auction ends.
+                        </p>
+                        <p th:if="${session.auction.getRemainingTimeString()=='0d 0h'}">
+                            The auction deadline has passed, but it is not closed yet. Bid just in
+                            time!
+                        </p>
+                    </div>
+                </div>
+                <div class="info" th:if="${!session.auction.isOpen()}">
+                    <p>The auction has been closed.</p>
+                </div>
+                <div th:if="${!session.auction.isOpen()}">
+                    <h2>Winner</h2>
+                    <div
+                        class="winner"
+                        th:style="'background:url(' + @{/images/confetti.gif} + ');'"
+                    >
+                        <p>
+                            The winner of the auction is
+                            <b>@</b>
+                            <span
+                                style="font-weight: bold"
+                                th:text="${session.auction.getCurrentHighestBid().getBidderUsername()}"
+                            ></span>
+                            with a bid of
+                            <b>€</b>
+                            <span
+                                style="font-weight: bold"
+                                th:text="${session.auction.getCurrentHighestBid().getBidAmount()}"
+                            ></span>
+                            sent at
+                            <span
+                                style="font-weight: bold"
+                                th:text="${session.auction.getCurrentHighestBid().getFormattedBidTimestamp()}"
+                            ></span>
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <section id="bids">
+                <h2>Bids</h2>
+                <h3 th:if="${session.bids.size() > 0}">Current Bids</h3>
+                <table th:if="${!session.bids.isEmpty()}">
+                    <thead>
+                        <tr>
+                            <th>Bidder</th>
+                            <th>Bid Amount (€)</th>
+                            <th>Bid Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="bid : ${session.bids}">
+                            <td th:text="${bid.getBidderUsername()}"></td>
+                            <td th:text="${'€' + bid.getBidAmount()}"></td>
+                            <td
+                                th:text="${#dates.format(bid.getBidTimestamp(), 'dd/MM/yyyy HH:mm:ss')}"
+                            ></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div th:if="${session.bids.isEmpty()}" class="info">
+                    <p>No bids available for this auction.</p>
+                </div>
+            </section>
+            <section id="place-bid" th:if="${session.auction.isOpen()}">
+                <h3>Place a Bid</h3>
+                <form th:action="@{/buy/auction/bid/}" method="post">
+                    <label for="bid-amount">Your Bid (€):</label>
+                    <input
+                        type="hidden"
+                        name="auction-id"
+                        id="auction_id"
+                        th:value="${session.auction.getId()}"
+                    />
+                    <input
+                        type="number"
+                        id="bid-amount"
+                        name="bid-amount"
+                        required
+                        th:min="${(session.auction.getCurrentHighestBid()== null or session.auction.getCurrentHighestBid().getBidAmount() == 0  ) ? session.auction.getStartingPrice() : (session.auction.getCurrentHighestBid().getBidAmount() + session.auction.getMinimumBidIncrement())}"
+                        th:step="${session.auction.getMinimumBidIncrement()}"
+                        th:value="${(session.auction.getCurrentHighestBid()== null or session.auction.getCurrentHighestBid().getBidAmount() == 0)  ? session.auction.getStartingPrice() : (session.auction.getCurrentHighestBid().getBidAmount() + session.auction.getMinimumBidIncrement())}"
+                    />
+                    <button type="submit">Submit Bid</button>
+                </form>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2025 YourAuction. All rights reserved.</p>
+        </footer>
+    </body>
+</html>
