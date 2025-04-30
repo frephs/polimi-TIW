@@ -1,6 +1,7 @@
 package it.polimi.auctionapp.beans;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class Bid {
 
@@ -30,10 +31,14 @@ public class Bid {
     }
 
     public Float getBidAmount() {
-        return bid_amount;
+        return Math.round(bid_amount * 100) / 100.0f;
     }
 
     public Timestamp getBidTimestamp() {
         return bid_timestamp;
+    }
+
+    public String getFormattedBidTimestamp() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(bid_timestamp);
     }
 }

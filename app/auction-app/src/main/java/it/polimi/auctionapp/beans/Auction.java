@@ -1,6 +1,7 @@
 package it.polimi.auctionapp.beans;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,8 +53,12 @@ public class Auction {
         return end_time;
     }
 
-    public Integer getMinimumBidIncrement() {
-        return minimum_bid_increment;
+    public String getFormattedEndTime() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(getEndTime());
+    }
+
+    public Float getMinimumBidIncrement() {
+        return (float) minimum_bid_increment;
     }
 
     public Boolean isOpen() {
@@ -96,6 +101,8 @@ public class Auction {
     }
 
     public Float getStartingPrice() {
-        return (float) products.stream().mapToDouble(Product::getPrice).sum();
+        return (
+            (float) Math.round(products.stream().mapToDouble(Product::getPrice).sum() * 100) / 100
+        );
     }
 }
