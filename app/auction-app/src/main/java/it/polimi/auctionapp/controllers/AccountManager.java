@@ -57,7 +57,6 @@ public class AccountManager {
                     .getSession()
                     .setAttribute("message", MessageType.ERROR.wrap(e.getMessage()));
             } finally {
-                //FIXME: This hides error warnings
                 if (request.getSession().getAttribute("from") != null) {
                     sendRedirect(
                         request,
