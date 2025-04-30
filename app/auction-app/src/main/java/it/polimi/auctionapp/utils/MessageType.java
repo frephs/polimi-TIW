@@ -11,8 +11,12 @@ public enum MessageType {
     }
 
     public final String wrap(String message) {
-        return "<div class=\"" + this.getCSSClassName() + "\"> <p>" + message + "</p> </div>";
+        return (
+            "<div class=\"" +
+            this.getCSSClassName() +
+            "\"> <span class='icon'> </span> <p>" +
+            message +
+            "</p> </div>"
+        );
     }
-
-
 }
