@@ -1,5 +1,9 @@
 package it.polimi.auctionapp.beans;
 
+import it.polimi.auctionapp.utils.SQLConnectionHandler;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -73,13 +77,17 @@ public class Product {
     public boolean canChangePrice(List<Auction> auctions) {
         if (!this.isAuctioned()) return true;
         for (Auction auction : auctions) {
-            if (auction.getProducts().contains(this)) {
-                if (auction.getCurrentHighestBid() != null) return true;
-                else {
-                    return false;
-                }
+            if (
+                auction
+                    .getProducts()
+                    .stream()
+                    .anyMatch(product -> Objects.equals(product.getId(), this.id))
+            ) {
+                return auction.getCurrentHighestBid() == null;
             }
         }
         return false;
     }
+
+    
 }
