@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 
-public class AuctionController {
+public class SellingController {
 
     static ProductDAO productDataAccessObject = new ProductDAO();
     static AuctionDAO auctionDataAccessObject = new AuctionDAO();
@@ -30,67 +30,54 @@ public class AuctionController {
         @Override
         public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-            if (request.getSession().getAttribute("user") == null) {
+            try {
+                List<Product> unsold_products = productDataAccessObject.getUnsoldProductBySeller(
+                    ((User) request.getSession().getAttribute("user")).getUsername()
+                );
+
+                request.getSession().setAttribute("products", unsold_products);
+
+                request
+                    .getSession()
+                    .setAttribute(
+                        "unauctioned_products",
+                        unsold_products
+                            .stream()
+                            .filter(
+                                product ->
+                                    product.getAuctionId() == null || product.getAuctionId() == 0
+                            )
+                            .toList()
+                    );
+
+                List<Auction> auctions = auctionDataAccessObject.getAuctionsBySeller(
+                    ((User) request.getSession().getAttribute("user")).getUsername()
+                );
+
+                request
+                    .getSession()
+                    .setAttribute(
+                        "open_auctions",
+                        auctions.stream().filter(Auction::isOpen).toList()
+                    );
+
+                request
+                    .getSession()
+                    .setAttribute(
+                        "closed_auctions",
+                        auctions.stream().filter(auction -> !auction.isOpen()).toList()
+                    );
+            } catch (SQLException e) {
                 request
                     .getSession()
                     .setAttribute(
                         "message",
-                        MessageType.INFO.wrap("To sell items, log in or sign up first.")
+                        MessageType.ERROR.wrap(
+                            "There was a problem retrieving your products: " + e.getMessage()
+                        )
                     );
-                request.getSession().setAttribute("from", "sell");
-                sendRedirect(request, response, "/account");
-            } else {
-                try {
-                    List<Product> unsold_products =
-                        productDataAccessObject.getUnsoldProductBySeller(
-                            ((User) request.getSession().getAttribute("user")).getUsername()
-                        );
-
-                    request.getSession().setAttribute("products", unsold_products);
-
-                    request
-                        .getSession()
-                        .setAttribute(
-                            "unauctioned_products",
-                            unsold_products
-                                .stream()
-                                .filter(
-                                    product ->
-                                        product.getAuctionId() == null ||
-                                        product.getAuctionId() == 0
-                                )
-                                .toList()
-                        );
-
-                    List<Auction> auctions = auctionDataAccessObject.getAuctionsBySeller(
-                        ((User) request.getSession().getAttribute("user")).getUsername()
-                    );
-
-                    request
-                        .getSession()
-                        .setAttribute(
-                            "open_auctions",
-                            auctions.stream().filter(Auction::isOpen).toList()
-                        );
-
-                    request
-                        .getSession()
-                        .setAttribute(
-                            "closed_auctions",
-                            auctions.stream().filter(auction -> !auction.isOpen()).toList()
-                        );
-                } catch (SQLException e) {
-                    request
-                        .getSession()
-                        .setAttribute(
-                            "message",
-                            MessageType.ERROR.wrap(
-                                "There was a problem retrieving your products: " + e.getMessage()
-                            )
-                        );
-                }
-                processTemplate(request, response, "/sell/index");
             }
+            processTemplate(request, response, "/sell/index");
         }
     }
 
@@ -214,14 +201,23 @@ public class AuctionController {
         }
     }
 
-    @WebServlet("/sell/auction/*")
-    public static class AuctionDetailServlet extends ThymeleafHTTPServlet {
+    @WebServlet("/sell/auction")
+    public static class SellerAuctionDetailServlet extends ThymeleafHTTPServlet {
 
         @Override
         protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            String auctionIdParam = request.getPathInfo().substring(1); // Extract auction ID from URL
+            String auctionIdParam = request.getParameter("id");
+            System.out.println("auctionIdParam: " + auctionIdParam);
+            if (auctionIdParam == null) {
+                request
+                    .getSession()
+                    .setAttribute("message", MessageType.ERROR.wrap("Auction ID is required."));
+                sendRedirect(request, response, "/sell");
+                return;
+            }
             int auctionId = Integer.parseInt(auctionIdParam);
+
             try {
                 auctionDataAccessObject.checkAuctionExists(auctionId);
                 auctionDataAccessObject.checkAuctionIsOwnedBy(
@@ -234,16 +230,17 @@ public class AuctionController {
                 request
                     .getSession()
                     .setAttribute("bids", auctionDataAccessObject.getBidsByAuction(auctionId));
+                processTemplate(request, response, "/sell/auction-detail");
             } catch (SQLWarning e) {
                 request
                     .getSession()
                     .setAttribute("message", MessageType.WARNING.wrap(e.getMessage()));
+                sendRedirect(request, response, "/sell");
             } catch (SQLException e) {
                 request
                     .getSession()
                     .setAttribute("message", MessageType.ERROR.wrap(e.getMessage()));
-            } finally {
-                processTemplate(request, response, "/sell/auction-detail");
+                sendRedirect(request, response, "/sell");
             }
         }
     }
