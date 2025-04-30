@@ -1,6 +1,5 @@
 package it.polimi.auctionapp.controllers;
 
-import it.polimi.auctionapp.DAO.AuctionDAO;
 import it.polimi.auctionapp.DAO.ProductDAO;
 import it.polimi.auctionapp.beans.User;
 import it.polimi.auctionapp.utils.ImageServlet;
@@ -20,7 +19,6 @@ import java.util.Objects;
 public class ProductController {
 
     static ProductDAO productDataAccessObject = new ProductDAO();
-    static AuctionDAO auctionDataAccessObject = new AuctionDAO();
 
     @WebServlet("/product/new")
     @MultipartConfig(
