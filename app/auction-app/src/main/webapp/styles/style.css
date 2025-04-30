@@ -18,6 +18,27 @@
     --warning-color: 175, 175, 72;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
+:target {
+    animation: highlight-fade 2s ease-in-out;
+}
+
+@keyframes highlight-fade {
+    0% {
+        background-color: transparent;
+    }
+    50% {
+        background-color: rgba(31, 101, 5, 0.64);
+        border: solid 1px #146b27cc;
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
 body {
     font-family: 'Nexa', sans-serif;
     background-color: #e2e1e1;
@@ -40,6 +61,10 @@ h2 {
     font-size: 2em;
     color: #2b2b2b;
     margin: 0;
+}
+
+h3 {
+    margin-top:2em;
 }
 
 .gradient {
@@ -181,7 +206,11 @@ table {
     border-radius: 10px 10px 0px 0px;
 }
 
-table:hover:not(fieldset table:hover) {
+.auction-card table {
+    width: 100%;;
+}
+
+table:hover:not(fieldset table:hover, .auction-card table:hover) {
     transform: scale(1.01);
     transition: 0.3s;
     outline: 2px solid #45a049;
@@ -268,7 +297,7 @@ input[type='file']::file-selector-button:hover {
 
 button.destructive:not(:disabled),
 button[type='reset'] {
-    border: 1px solid #6b1414; 
+    border: 1px solid #6b1414;
     color: #6b1414;
 }
 
@@ -276,7 +305,8 @@ button[type='reset'] {
     cursor: not-allowed;
 }
 
-button:disabled, input[type='file']:disabled::file-selector-button {
+button:disabled,
+input[type='file']:disabled::file-selector-button {
     border: 1px solid #555555;
     color: #555555;
     background: rgba(102, 102, 102, 0.23);
@@ -288,7 +318,8 @@ button:disabled:hover {
     outline-offset: 0px;
 }
 
-button:disabled:hover, input[type='file']:disabled::file-selector-button:hover {
+button:disabled:hover,
+input[type='file']:disabled::file-selector-button:hover {
     background: rgba(109, 109, 109, 0.23) !important;
     color: #555555 !important;
     box-shadow: none !important;
@@ -524,6 +555,33 @@ img:hover {
     box-shadow: 10px 10px 8px rgba(0, 0, 0, 0.1);
     font-size: 1.1em;
     transition: 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.info .icon::before {
+    font-family: 'Font Awesome 6 Free', serif;
+    content: '\f05a';
+    font-weight: 600;
+}
+
+.error .icon::before {
+    font-family: 'Font Awesome 6 Free', serif;
+    content: '\f06a';
+    font-weight: 600;
+}
+
+.success .icon::before {
+    font-family: 'Font Awesome 6 Free', serif;
+    content: '\f058';
+    font-weight: 600;
+}
+
+.warning .icon::before {
+    font-family: 'Font Awesome 6 Free', serif;
+    content: '\f071';
+
+    font-weight: 600;
 }
 
 .info p,
@@ -548,6 +606,7 @@ img:hover {
 .warning p::before {
     display: block;
     margin-right: 20px;
+    margin-left: 10px;
 }
 
 .info {
@@ -561,8 +620,7 @@ img:hover {
 }
 
 .info p::before {
-    padding-left: 20px;
-    content: 'Info: ';
+    content: 'Info ';
     font-weight: bold;
 }
 
@@ -577,8 +635,7 @@ img:hover {
 }
 
 .error p::before {
-    padding-left: 20px;
-    content: 'Error: ';
+    content: 'Error ';
     font-weight: bold;
     color: rgb(var(--error-color));
 }
@@ -594,8 +651,7 @@ img:hover {
 }
 
 .success p::before {
-    padding-left: 20px;
-    content: 'Success: ';
+    content: 'Success ';
     font-weight: bold;
     color: rgb(var(--success-color));
 }
@@ -611,8 +667,7 @@ img:hover {
 }
 
 .warning p::before {
-    padding-left: 20px;
-    content: 'Warning: ';
+    content: 'Warning ';
     font-weight: bold;
     color: rgb(var(--warning-color));
 }
@@ -661,6 +716,13 @@ fieldset .warning {
     border: 1px solid #146b27;
     display: inline-block;
     margin: 5px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.auction-link.destructive {
+    border: 1px solid #6b1414;
+    color: #6b1414;
 }
 
 .auction-link:hover {
@@ -670,11 +732,17 @@ fieldset .warning {
     box-shadow: 10px 10px 8px rgba(0, 0, 0, 0.1);
 }
 
+.auction-link.destructive:hover {
+    outline: solid 2px #a04545;
+}
+
 .auction-link::after {
-    content: '→';
+    content: '\f08e';
     margin-left: 10px;
     font-size: 0.8em;
     transition: 0.3s;
+    font-family: 'Font Awesome 6 Free', serif;
+    font-weight: 600;
 }
 
 .auction-link:hover::after {
@@ -687,4 +755,220 @@ fieldset .warning {
     align-content: center;
     align-items: center;
     min-height: 100px;
+}
+
+.photo-stack {
+    position: relative;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-left: 80px;
+    transition:
+        transform 0.5s ease,
+        gap 0.5s ease;
+}
+
+.photo-stack:hover {
+    transform: scale(1.02);
+    gap: 30px;
+}
+
+.photo-stack img {
+    max-width: 200px;
+    border-radius: 15px;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
+    transition:
+        transform 0.5s ease,
+        box-shadow 0.5s ease,
+        filter 0.5s ease;
+    margin: 20px 10px;
+    margin-left: -100px;
+    z-index: 0;
+    filter: brightness(0.95);
+    flex-wrap: nowrap;
+    width: 150px;
+    height: 100px;
+    object-fit: cover;
+    object-position: center;
+}
+
+.photo-stack img:hover {
+    transform: scale(1.05);
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.5);
+    filter: brightness(1.1);
+    z-index: 1;
+}
+
+.photo-stack img:not(:hover) {
+    transform: translateX(-20px);
+    filter: brightness(0.8);
+    transition:
+        transform 0.5s ease,
+        filter 0.5s ease;
+}
+
+.auction-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 20px 0px;
+    padding: 20px;
+    background-color: #e2e2e2;
+    border-radius: 10px;
+    box-shadow: 10px 10px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #7aaf48;
+    transition: 0.3s;
+    max-width: 400px;
+}
+
+.auction-card .photo-stack {
+    margin-left: 140px;
+}
+
+.auction-card-author {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.auction-card:hover {
+    transform: scale(1.01);
+    outline: 2px solid #45a049;
+    outline-offset: 2px;
+}
+
+.auction-card-detail p {
+    text-align: left;
+    margin-bottom: 0;
+}
+
+.auction-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex-direction: row;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.auction-card-tags:before {
+    content: 'Products: ';
+    display: block;
+    align-items: center;
+    align-content: center;
+    font-weight: bold;
+    margin-right: 10px;
+    color: #353535;
+}
+
+.auction-card-tag {
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: #c3c3c3;
+    color: #2b2b2b;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.auction-card-tag:hover {
+    background: linear-gradient(72deg, #146b27c2 6.74%, #80c73dbb 82.36%);
+    color: #e2e2e2;
+}
+
+.auction-card-tag:before {
+    font-family: 'Font Awesome 6 Free', serif;
+    content: '\f002';
+    margin-right: 5px;
+    font-weight: 600;
+}
+
+.no-style-button {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+    min-width: 0;
+    min-height: 0;
+    box-shadow: none;
+    font-size: 0.8em;
+}
+
+.no-style-button:hover {
+    text-decoration: none;
+    transform: scale(1.05);
+    outline: none;
+    border: none;
+    padding: 0;
+    background: none;
+}
+
+button[type='submit']:not(.no-style-button)::after {
+    font-family: 'Font Awesome 6 Free', serif;
+    content: '\f044';
+    display: inline-block;
+    margin-left: 5px;
+    font-weight: 600;
+}
+
+button[type='submit'].details-button::after {
+    font-family: 'Font Awesome 6 Free', serif;
+    content: '\f054';
+    display: inline-block;
+    margin-left: 5px;
+    font-weight: 600;
+}
+
+button[type='reset']::after {
+    font-family: 'Font Awesome 6 Free', serif;
+    content: '\f00d';
+    display: inline-block;
+    margin-left: 5px;
+    font-weight: 600;
+}
+
+button[type='submit'].destructive::after,
+button.destructive::after {
+    font-family: 'Font Awesome 6 Free', serif;
+    content: '\e0b7';
+    display: inline-block;
+    margin-left: 5px;
+    font-weight: 600;
+}
+
+button[type='submit']:disabled::after,
+button:disabled::after {
+    font-family: 'Font Awesome 6 Free', serif;
+    content: '\21';
+    display: inline-block;
+    margin-left: 5px;
+    font-weight: 600;
+}
+
+input[type='file']::file-selector-button::before {
+    font-family: 'Font Awesome 6 Free', serif;
+    content: '\f07c';
+    display: inline-block;
+    margin-left: 5px;
+    font-weight: 600;
+}
+
+input[type='number']::after {
+    font-family: 'Font Awesome 6 Free', serif;
+    content: '\f0e0';
+    display: inline-block;
+    margin-left: 5px;
+    font-weight: 600;
+}
+
+input#buy-search-button::after {
+    font-family: 'Font Awesome 6 Free', serif;
+    content: '\f002';
+    display: inline-block;
+    margin-left: 5px;
+    font-weight: 600;
 }
