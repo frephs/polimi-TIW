@@ -7,6 +7,10 @@
         <link rel="stylesheet" href="../../webapp/styles/style.css" th:href="@{styles/style.css}" />
         <link rel="stylesheet" href="../../webapp/styles/main.css" th:href="@{styles/main.css}" />
         <link rel="icon" th:href="@{icon.png}" />
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+            rel="stylesheet"
+        />
     </head>
 
     <body>
@@ -56,6 +60,11 @@
                 <p>
                     This is a sample paragraph demonstrating the typography of the page. You can use
                     this section to test different font styles and sizes.
+                </p>
+                <p>
+                    The font used is
+                    <strong>Nexa</strong>
+                    .
                 </p>
             </section>
 
@@ -197,15 +206,22 @@
             <section>
                 <h1>Messages</h1>
                 <div class="success">
+                    <div class="icon"></div>
                     <p>Success messages can be shown here.</p>
                 </div>
                 <div class="error">
+                    <div class="icon"></div>
+
                     <p>Error messages can be displayed here.</p>
                 </div>
                 <div class="warning">
+                    <div class="icon"></div>
+
                     <p>Warning messages can be shown here.</p>
                 </div>
                 <div class="info">
+                    <div class="icon"></div>
+
                     <p>
                         Additional information can be displayed here. Lorem ipsum dolor sit amet,
                         consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
@@ -218,12 +234,37 @@
 
             <section>
                 <h1 style="margin-bottom: 20px">In page links</h1>
-                <a href="/yourauction/welcome" th:href="/" class="auction-link">Welcome</a>
-                <a href="/yourauction/buy" th:href="/" class="auction-link destructive">
-                    Close auction
-                </a>
-                <a href="/yourauction/sell" th:href="/" class="auction-link">Details</a>
+                <a href="/yourauction/welcome" th:href="@{/}" class="auction-link">Welcome</a>
+                <a href="/yourauction/buy" th:href="@{/}" class="auction-link destructive">buy</a>
+                <a href="/yourauction/sell" th:href="@{/}" class="auction-link">Details</a>
             </section>
+
+            <section>
+                <h1>Photo Stack</h1>
+                <div class="photo-stack" style="display: flex; align-items: baseline; align-content: flex-start;width: 400px;">
+                    <img
+                        src="https://picsum.photos/1200/900?grayscale&blur=2"
+                        alt="Sample Image 3"
+                        width="300"
+                    />
+                    <img
+                        src="https://picsum.photos/1200/900?grayscale&blur=2"
+                        alt="Sample Image 3"
+                        width="300"
+                    />
+                    <img
+                        src="https://picsum.photos/1200/900?grayscale&blur=2"
+                        alt="Sample Image 3"
+                        width="300"
+                    />
+                    <img
+                        src="https://picsum.photos/1200/900?grayscale&blur=2"
+                        alt="Sample Image 3"
+                        width="300"
+                    />
+                </div>
+            </section>
+
         </main>
         <footer>
             <p>&copy; 2025 YourAuction. All rights reserved.</p>

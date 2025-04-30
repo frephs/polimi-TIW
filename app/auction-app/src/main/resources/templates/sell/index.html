@@ -7,6 +7,10 @@
         <link rel="stylesheet" th:href="@{/styles/style.css}" />
         <link rel="stylesheet" th:href="@{/styles/main.css}" />
         <link rel="icon" th:href="@{icon.png}" />
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+            rel="stylesheet"
+        />
     </head>
 
     <body>
@@ -58,8 +62,8 @@
             </section>
             <section>
                 <h1>
-                    Welcome,
-                    <span style="font-style: italic" th:text="${session.user.getUsername()}"></span>
+                    Hello
+                    <span style="font-style: italic" th:text="${session.user.getName()}"></span>
                 </h1>
                 <p>In this page you can manage your products and auctions.</p>
             </section>
@@ -108,6 +112,7 @@
                         </fieldset>
                     </form>
                     <fieldset
+                        th:if="${session.products.size() > 0}"
                         style="
                             max-height: 630px;
                             padding-top: 20px;
@@ -127,7 +132,10 @@
                                     <th>Submit edit</th>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="product: ${session.products}">
+                                    <tr
+                                        th:each="product: ${session.products}"
+                                        th:id="${'product-'+ product.getId()}"
+                                    >
                                         <form
                                             th:action="@{/product/edit/{id}(id=${product.getId()})}"
                                             enctype="multipart/form-data"
@@ -160,6 +168,7 @@
                                                         min="0.01"
                                                         step="0.01"
                                                         th:disabled="${!product.canChangePrice(session.open_auctions)}"
+                                                        th:title="${product.canChangePrice(session.open_auctions) ? 'Change price' : 'Price cannot be changed because the product is auctioned and there is already a bid on it'}"
                                                     />
                                                 </div>
                                             </td>
@@ -175,6 +184,7 @@
                                                 <select
                                                     name="product-auction-id"
                                                     th:disabled="${product.isAuctioned() && !product.canChangeAuction(session.open_auctions)}"
+                                                    th:title="${product.isAuctioned() && !product.canChangeAuction(session.open_auctions) ? 'Product auction cannot be changed unless there are no bids placed and there are at least two other products' : ''}"
                                                 >
                                                     <option value="0">No auction</option>
                                                     <option
@@ -228,7 +238,7 @@
             <section id="Auctions">
                 <h2>Auctions</h2>
                 <div class="flex-row wrap" style="align-items: start">
-                    <div>
+                    <div style="width: 100%">
                         <h3>Create a new auction</h3>
                         <form action="auction/new" method="post">
                             <div class="flex-row">
@@ -345,7 +355,7 @@
                     <table th:if="${session.open_auctions.size() > 0}">
                         <thead>
                             <tr>
-                                <th>Auction number</th>
+                                <th>Auction id</th>
                                 <th>Current highest bid</th>
                                 <th>Minimum bid increment</th>
                                 <th>Products</th>
@@ -377,7 +387,7 @@
                                     <div th:each="product: ${auction.getProducts()}">
                                         <a
                                             class="auction-link"
-                                            th:href="@{'/product/' + ${product.getId()}}"
+                                            th:href="${'#product-'+ product.getId()}"
                                             th:text="${product.getName()}"
                                         ></a>
                                     </div>
@@ -412,11 +422,15 @@
                                             Delete Auction
                                         </button>
                                     </form>
-                                    <form
-                                        th:action="@{'/sell/auction/' + ${auction.getId()}}"
-                                        method="get"
-                                    >
-                                        <button type="submit">Auction details</button>
+                                    <form th:action="@{/sell/auction}" method="get">
+                                        <input
+                                            type="hidden"
+                                            name="id"
+                                            th:value="${auction.getId()}"
+                                        />
+                                        <button type="submit" class="details-button">
+                                            Auction details
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -443,15 +457,15 @@
                             <tr th:each="auction: ${session.closed_auctions}">
                                 <td>
                                     <span
-                                        th:text="${auction.getCurrentHighestBid().getBidAmount()}"
+                                        th:text="${'€ ' + auction.getCurrentHighestBid().getBidAmount()}"
                                     ></span>
                                     @
                                     <span
-                                        th:text="${auction.getCurrentHighestBid().getBidTimestamp()}"
+                                        th:text="${auction.getCurrentHighestBid().getFormattedBidTimestamp()}"
                                     ></span>
                                 </td>
                                 <td>
-                                    <span th:text="${auction.getEndTime()}"></span>
+                                    <span th:text="${auction.getFormattedEndTime()}"></span>
                                 </td>
                                 <td>
                                     <span
@@ -459,11 +473,15 @@
                                     ></span>
                                 </td>
                                 <td>
-                                    <form
-                                        th:action="@{'/sell/auction/' + ${auction.getId()}}"
-                                        method="get"
-                                    >
-                                        <button type="submit">Auction details</button>
+                                    <form th:action="@{/sell/auction}" method="get">
+                                        <input
+                                            type="hidden"
+                                            name="id"
+                                            th:value="${auction.getId()}"
+                                        />
+                                        <button type="submit" class="details-button">
+                                            Auction details
+                                        </button>
                                     </form>
                                 </td>
                             </tr>

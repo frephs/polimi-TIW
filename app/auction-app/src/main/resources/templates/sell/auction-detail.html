@@ -7,6 +7,10 @@
         <link rel="stylesheet" th:href="@{/styles/style.css}" />
         <link rel="stylesheet" th:href="@{/styles/main.css}" />
         <link rel="icon" th:href="@{icon.png}" />
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+            rel="stylesheet"
+        />
     </head>
 
     <body>
@@ -121,7 +125,8 @@
                                                         required
                                                         min="0.01"
                                                         step="0.01"
-                                                        th:disabled="${!product.canChangePrice(session.open_auctions) or !session.auction.isOpen}"
+                                                        th:disabled="${!product.canChangePrice(session.open_auctions) or !session.auction.isOpen()}"
+                                                        th:title="${product.canChangePrice(session.open_auctions) ? 'Change price' : 'Price cannot be changed because the product is auctioned and there is already a bid on it or the auction is closed'}"
                                                     />
                                                 </div>
                                             </td>
@@ -189,15 +194,17 @@
                     </li>
                     <li>
                         <b>Starting price:</b>
+                        €
                         <span th:text="${session.auction.getStartingPrice()}"></span>
                     </li>
                     <li>
                         <b>Minimum bid increase:</b>
+                        €
                         <span th:text="${session.auction.getMinimumBidIncrement()}"></span>
                     </li>
                     <li>
                         <b>Deadline</b>
-                        <span th:text="${session.auction.getEndTime()}"></span>
+                        <span th:text="${session.auction.getFormattedEndTime()}"></span>
                     </li>
                 </ul>
                 <div th:if="${session.auction.isOpen() and !session.auction.canBeClosed()}">
@@ -211,7 +218,10 @@
                         </p>
                         <p th:if="${session.auction.getRemainingTimeString()!='0d 0h'}">
                             There is still
-                            <span th:text="${session.auction.getRemainingTimeString()}"></span>
+                            <span
+                                th:text="${' ' +
+                             session.auction.getRemainingTimeString() + ' '}"
+                            ></span>
                             until the auction ends.
                         </p>
                     </div>
@@ -245,7 +255,7 @@
                             sent at
                             <span
                                 style="font-weight: bold"
-                                th:text="${session.auction.getCurrentHighestBid().getBidTimestamp()}"
+                                th:text="${session.auction.getCurrentHighestBid().getFormattedBidTimestamp()}"
                             ></span>
                         </p>
                     </div>
