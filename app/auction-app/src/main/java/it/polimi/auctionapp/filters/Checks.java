@@ -31,7 +31,7 @@ public class Checks {
                             " items, log in or sign up first."
                         )
                     );
-
+                //FIXME
                 req.getSession().setAttribute("from", req.getRequestURI().split("/")[2]);
                 res.sendRedirect(req.getServletContext().getContextPath() + "/account");
                 return;

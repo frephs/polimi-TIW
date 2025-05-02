@@ -96,10 +96,7 @@
                 </form>
             </section>
 
-            <section
-                id="auctions"
-                th:if="${session.auctions!= null and session.auctions.size() > 0}"
-            >
+            <section id="auctions" th:if="${auctions!= null and auctions.size() > 0}">
                 <h2>Search Results</h2>
                 <div
                     id="auction-list"
@@ -112,7 +109,7 @@
                         align-items: start;
                     "
                 >
-                    <div class="auction-card" th:each="auction : ${session.auctions}">
+                    <div class="auction-card" th:each="auction : ${auctions}">
                         <div class="auction-card-author">
                             Auction by
                             <span th:text="${ '@' + auction.getSellerUsername()}"></span>
@@ -202,10 +199,7 @@
                     </div>
                 </div>
             </section>
-            <section
-                id="won-auctions"
-                th:if="${session.wonAuctions != null and session.wonAuctions.size() > 0}"
-            >
+            <section id="won-auctions" th:if="${wonAuctions != null and wonAuctions.size() > 0}">
                 <h2>Won Auctions</h2>
                 <div
                     id="won-auction-list"
@@ -218,7 +212,7 @@
                         align-items: start;
                     "
                 >
-                    <div class="auction-card" th:each="auction : ${session.wonAuctions}">
+                    <div class="auction-card" th:each="auction : ${wonAuctions}">
                         <div class="auction-card-author">
                             Auction by
                             <span th:text="${ '@' + auction.getSellerUsername()}"></span>

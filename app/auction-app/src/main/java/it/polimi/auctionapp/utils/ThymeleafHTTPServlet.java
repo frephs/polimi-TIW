@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class ThymeleafHTTPServlet extends HttpServlet {
 
     private TemplateEngine templateEngine = new TemplateEngine();
-    public final ContextAttributes contextAttributes = new ContextAttributes();
+    protected final ContextAttributes contextAttributes = new ContextAttributes();
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -34,7 +34,6 @@ public class ThymeleafHTTPServlet extends HttpServlet {
         templateResolver.setPrefix("templates/");
         templateResolver.setSuffix(".html");
         templateResolver.setCharacterEncoding("UTF-8");
-
         templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
 

@@ -14,8 +14,6 @@ public class Landing {
 
         public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-            response.setContentType("text/html");
-            response.setCharacterEncoding("UTF-8");
             response.sendRedirect("welcome");
         }
     }
@@ -25,8 +23,6 @@ public class Landing {
 
         public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-            response.setContentType("text/html");
-            response.setCharacterEncoding("UTF-8");
             processTemplate(request, response, "index");
         }
     }
@@ -36,8 +32,6 @@ public class Landing {
 
         public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-            response.setContentType("text/html");
-            response.setCharacterEncoding("UTF-8");
             processTemplate(request, response, "design");
         }
     }
@@ -47,8 +41,6 @@ public class Landing {
 
         public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-            response.setContentType("text/html");
-            response.setCharacterEncoding("UTF-8");
             processTemplate(request, response, "page-template");
         }
     }

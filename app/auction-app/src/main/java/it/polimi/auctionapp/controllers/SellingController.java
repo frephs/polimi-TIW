@@ -35,38 +35,31 @@ public class SellingController {
                     ((User) request.getSession().getAttribute("user")).getUsername()
                 );
 
-                request.getSession().setAttribute("products", unsold_products);
+                contextAttributes.set("products", unsold_products);
 
-                request
-                    .getSession()
-                    .setAttribute(
-                        "unauctioned_products",
-                        unsold_products
-                            .stream()
-                            .filter(
-                                product ->
-                                    product.getAuctionId() == null || product.getAuctionId() == 0
-                            )
-                            .toList()
-                    );
+                contextAttributes.set(
+                    "unauctioned_products",
+                    unsold_products
+                        .stream()
+                        .filter(
+                            product -> product.getAuctionId() == null || product.getAuctionId() == 0
+                        )
+                        .toList()
+                );
 
                 List<Auction> auctions = auctionDataAccessObject.getAuctionsBySeller(
                     ((User) request.getSession().getAttribute("user")).getUsername()
                 );
 
-                request
-                    .getSession()
-                    .setAttribute(
-                        "open_auctions",
-                        auctions.stream().filter(Auction::isOpen).toList()
-                    );
+                contextAttributes.set(
+                    "open_auctions",
+                    auctions.stream().filter(Auction::isOpen).toList()
+                );
 
-                request
-                    .getSession()
-                    .setAttribute(
-                        "closed_auctions",
-                        auctions.stream().filter(auction -> !auction.isOpen()).toList()
-                    );
+                contextAttributes.set(
+                    "closed_auctions",
+                    auctions.stream().filter(auction -> !auction.isOpen()).toList()
+                );
             } catch (SQLException e) {
                 contextAttributes.setFlash(
                     "message",
@@ -188,6 +181,42 @@ public class SellingController {
         }
     }
 
+    @WebServlet("/auction/delete/*")
+    public static class AuctionDeleteServlet extends ThymeleafHTTPServlet {
+
+        @Override
+        protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+            try {
+                String auctionIdParam = request.getPathInfo().substring(1); // Extract auction ID from URL
+                int auctionId = Integer.parseInt(auctionIdParam);
+
+                auctionDataAccessObject.checkAuctionExists(auctionId);
+                auctionDataAccessObject.checkAuctionIsOwnedBy(
+                    ((User) request.getSession().getAttribute("user")).getUsername(),
+                    auctionId
+                );
+                auctionDataAccessObject.deleteAuction(auctionId);
+
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.SUCCESS.wrap("Auction deleted successfully.")
+                );
+            } catch (SQLWarning e) {
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
+            } catch (SQLException e) {
+                contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
+            } catch (NumberFormatException e) {
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.ERROR.wrap("Invalid auction ID.")
+                );
+            } finally {
+                sendRedirect(request, response, "/sell");
+            }
+        }
+    }
+
     @WebServlet("/sell/auction")
     public static class SellerAuctionDetailServlet extends ThymeleafHTTPServlet {
 
@@ -212,12 +241,8 @@ public class SellingController {
                     ((User) request.getSession().getAttribute("user")).getUsername(),
                     auctionId
                 );
-                request
-                    .getSession()
-                    .setAttribute("auction", auctionDataAccessObject.getAuctionById(auctionId));
-                request
-                    .getSession()
-                    .setAttribute("bids", auctionDataAccessObject.getBidsByAuction(auctionId));
+                contextAttributes.set("auction", auctionDataAccessObject.getAuctionById(auctionId));
+                contextAttributes.set("bids", auctionDataAccessObject.getBidsByAuction(auctionId));
                 processTemplate(request, response, "/sell/auction-detail");
             } catch (SQLWarning e) {
                 contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));

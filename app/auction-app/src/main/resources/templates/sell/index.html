@@ -112,7 +112,7 @@
                         </fieldset>
                     </form>
                     <fieldset
-                        th:if="${session.products.size() > 0}"
+                        th:if="${products.size() > 0}"
                         style="
                             max-height: 630px;
                             padding-top: 20px;
@@ -133,7 +133,7 @@
                                 </thead>
                                 <tbody>
                                     <tr
-                                        th:each="product: ${session.products}"
+                                        th:each="product: ${products}"
                                         th:id="${'product-'+ product.getId()}"
                                     >
                                         <form
@@ -167,8 +167,8 @@
                                                         required
                                                         min="0.01"
                                                         step="0.01"
-                                                        th:disabled="${!product.canChangePrice(session.open_auctions)}"
-                                                        th:title="${product.canChangePrice(session.open_auctions) ? 'Change price' : 'Price cannot be changed because the product is auctioned and there is already a bid on it'}"
+                                                        th:disabled="${!product.canChangePrice(open_auctions)}"
+                                                        th:title="${product.canChangePrice(open_auctions) ? 'Change price' : 'Price cannot be changed because the product is auctioned and there is already a bid on it'}"
                                                     />
                                                 </div>
                                             </td>
@@ -180,15 +180,15 @@
                                                 ></textarea>
                                             </td>
                                             <td>
-                                                <!--TODO session.auctions.get(session.auctions.indexOf(product.getAuctionId())).getItemCount() < 1}-->
+                                                <!--TODO auctions.get(auctions.indexOf(product.getAuctionId())).getItemCount() < 1}-->
                                                 <select
                                                     name="product-auction-id"
-                                                    th:disabled="${product.isAuctioned() && !product.canChangeAuction(session.open_auctions)}"
-                                                    th:title="${product.isAuctioned() && !product.canChangeAuction(session.open_auctions) ? 'Product auction cannot be changed unless there are no bids placed and there are at least two other products' : ''}"
+                                                    th:disabled="${product.isAuctioned() && !product.canChangeAuction(open_auctions)}"
+                                                    th:title="${product.isAuctioned() && !product.canChangeAuction(open_auctions) ? 'Product auction cannot be changed unless there are no bids placed and there are at least two other products' : ''}"
                                                 >
                                                     <option value="0">No auction</option>
                                                     <option
-                                                        th:each="auction, iStat: ${session.open_auctions}"
+                                                        th:each="auction, iStat: ${open_auctions}"
                                                         th:value="${auction.getId()}"
                                                         th:text="'Auct.' + ${iStat.index + 1}"
                                                         th:selected="${product.getAuctionId() != null and product.getAuctionId() == auction.getId()}"
@@ -281,7 +281,7 @@
                                 <div>
                                     <fieldset>
                                         <legend>Product selection</legend>
-                                        <table th:if="${session.unauctioned_products.size() > 0}">
+                                        <table th:if="${unauctioned_products.size() > 0}">
                                             <thead>
                                                 <tr>
                                                     <th>Select product</th>
@@ -292,9 +292,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr
-                                                    th:each="product: ${session.unauctioned_products}"
-                                                >
+                                                <tr th:each="product: ${unauctioned_products}">
                                                     <td>
                                                         <input
                                                             type="checkbox"
@@ -337,7 +335,7 @@
                                         </table>
                                         <div
                                             class="info"
-                                            th:if="${session.unauctioned_products.size() == 0}"
+                                            th:if="${unauctioned_products.size() == 0}"
                                         >
                                             <p>No products available for auction</p>
                                         </div>
@@ -352,7 +350,7 @@
                 </div>
                 <div>
                     <h3>Open auctions</h3>
-                    <table th:if="${session.open_auctions.size() > 0}">
+                    <table th:if="${open_auctions.size() > 0}">
                         <thead>
                             <tr>
                                 <th>Auction id</th>
@@ -364,7 +362,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="auction, iStat: ${session.open_auctions}">
+                            <tr th:each="auction, iStat: ${open_auctions}">
                                 <td th:text="${iStat.index + 1}"></td>
                                 <td>
                                     <span
@@ -410,7 +408,7 @@
                                         </button>
                                     </form>
                                     <form
-                                        th:action="@{/auction/delete/${auction.getId()}}"
+                                        th:action="@{'/auction/delete/' + ${auction.getId()}}"
                                         method="post"
                                     >
                                         <button
@@ -436,15 +434,13 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="info" th:if="${session.open_auctions.size() == 0}">
+                    <div class="info" th:if="${open_auctions.size() == 0}">
                         <p>No open auctions</p>
                     </div>
                 </div>
                 <div>
                     <h3>Closed auctions</h3>
-                    <table
-                        th:if="${session.closed_auctions != null and session.closed_auctions.size() > 0}"
-                    >
+                    <table th:if="${closed_auctions != null and closed_auctions.size() > 0}">
                         <thead>
                             <tr>
                                 <th>Final bid</th>
@@ -454,7 +450,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="auction: ${session.closed_auctions}">
+                            <tr th:each="auction: ${closed_auctions}">
                                 <td>
                                     <span
                                         th:text="${'€ ' + auction.getCurrentHighestBid().getBidAmount()}"
@@ -489,7 +485,7 @@
                     </table>
                     <div
                         class="info"
-                        th:if="${session.closed_auctions == null or session.closed_auctions.size() == 0}"
+                        th:if="${closed_auctions == null or closed_auctions.size() == 0}"
                     >
                         <p>No closed auctions</p>
                     </div>

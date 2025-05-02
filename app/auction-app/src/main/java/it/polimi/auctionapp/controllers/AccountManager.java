@@ -71,9 +71,10 @@ public class AccountManager {
         public void doPost(HttpServletRequest request, HttpServletResponse response) {
             request.getSession().invalidate();
             request.getSession().setAttribute("user", null);
-            request
-                .getSession()
-                .setAttribute("message", MessageType.SUCCESS.wrap("User logged out successfully."));
+            contextAttributes.setFlash(
+                "message",
+                MessageType.SUCCESS.wrap("User logged out successfully.")
+            );
             sendRedirect(request, response, "/");
         }
     }
@@ -100,16 +101,16 @@ public class AccountManager {
                     ),
                     request.getParameter("password")
                 );
-                session.setAttribute(
+                contextAttributes.setFlash(
                     "message",
                     MessageType.SUCCESS.wrap(
                         "User registered successfully. Now log in with your credentials"
                     )
                 );
             } catch (SQLWarning e) {
-                session.setAttribute("message", MessageType.WARNING.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
             } catch (SQLException e) {
-                session.setAttribute("message", MessageType.ERROR.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
             } finally {
                 sendRedirect(request, response, "/account");
             }
@@ -174,21 +175,17 @@ public class AccountManager {
                         request.getParameter("new-username"),
                         request.getParameter("password")
                     );
-                    request
-                        .getSession()
-                        .setAttribute(
-                            "user",
-                            userDataAccessObject.getUser(
-                                request.getParameter("new-username"),
-                                request.getParameter("password")
-                            )
-                        );
-                    request
-                        .getSession()
-                        .setAttribute(
-                            "message",
-                            MessageType.SUCCESS.wrap("Username updated successfully")
-                        );
+                    contextAttributes.set(
+                        "user",
+                        userDataAccessObject.getUser(
+                            request.getParameter("new-username"),
+                            request.getParameter("password")
+                        )
+                    );
+                    contextAttributes.setFlash(
+                        "message",
+                        MessageType.SUCCESS.wrap("Username updated successfully")
+                    );
                 } catch (SQLWarning e) {
                     contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
                 } catch (SQLException e) {
@@ -229,12 +226,10 @@ public class AccountManager {
                         request.getParameter("password"),
                         request.getParameter("new-password")
                     );
-                    request
-                        .getSession()
-                        .setAttribute(
-                            "message",
-                            MessageType.SUCCESS.wrap("Password updated successfully")
-                        );
+                    contextAttributes.setFlash(
+                        "message",
+                        MessageType.SUCCESS.wrap("Password updated successfully")
+                    );
                 } catch (SQLWarning e) {
                     contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
                 } catch (SQLException e) {
@@ -266,24 +261,18 @@ public class AccountManager {
             } else {
                 try {
                     if (Integer.parseInt(request.getParameter("street-number")) < 1) {
-                        request
-                            .getSession()
-                            .setAttribute(
-                                "message",
-                                MessageType.WARNING.wrap("Street number must be a positive number")
-                            );
+                        contextAttributes.setFlash(
+                            "message",
+                            MessageType.WARNING.wrap("Street number must be a positive number")
+                        );
                     } else if (
                         Integer.parseInt(request.getParameter("zip-code")) < 10000 ||
                         Integer.parseInt(request.getParameter("zip-code")) > 99999
                     ) {
-                        request
-                            .getSession()
-                            .setAttribute(
-                                "message",
-                                MessageType.WARNING.wrap(
-                                    "Zip code must be a positive 5 digit number "
-                                )
-                            );
+                        contextAttributes.setFlash(
+                            "message",
+                            MessageType.WARNING.wrap("Zip code must be a positive 5 digit number ")
+                        );
                     } else {
                         User new_user = new User(
                             ((User) request.getSession().getAttribute("user")).getUsername(),
@@ -298,29 +287,23 @@ public class AccountManager {
                             )
                         );
                         userDataAccessObject.updateAccountDetails(new_user);
-                        request
-                            .getSession()
-                            .setAttribute(
-                                "message",
-                                MessageType.SUCCESS.wrap("Account details updated successfully")
-                            );
+                        contextAttributes.setFlash(
+                            "message",
+                            MessageType.SUCCESS.wrap("Account details updated successfully")
+                        );
                         request.getSession().setAttribute("user", new_user);
                     }
                 } catch (SQLException e) {
-                    request
-                        .getSession()
-                        .setAttribute(
-                            "message",
-                            "Something went wrong while updating your details. " +
-                            MessageType.ERROR.wrap(e.getMessage())
-                        );
+                    contextAttributes.setFlash(
+                        "message",
+                        "Something went wrong while updating your details. " +
+                        MessageType.ERROR.wrap(e.getMessage())
+                    );
                 } catch (NumberFormatException e) {
-                    request
-                        .getSession()
-                        .setAttribute(
-                            "message",
-                            MessageType.WARNING.wrap("Street number and zip code must be numbers")
-                        );
+                    contextAttributes.setFlash(
+                        "message",
+                        MessageType.WARNING.wrap("Street number and zip code must be numbers")
+                    );
                 }
             }
             sendRedirect(request, response, "/account");

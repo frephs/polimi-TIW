@@ -64,10 +64,10 @@
             <section>
                 <h1>
                     Auction
-                    <span th:text="${session.auction.getId()}"></span>
+                    <span th:text="${auction.getId()}"></span>
                 </h1>
             </section>
-            <section id="Products" th:if="${session.auction}">
+            <section id="Products" th:if="${auction}">
                 <h2>Products</h2>
                 <div class="flex-row">
                     <fieldset
@@ -79,8 +79,8 @@
                         "
                     >
                         <legend>
-                            <span th:if="${session.auction.isOpen()}">Edit product details</span>
-                            <span th:if="${!session.auction.isOpen()}">Product details</span>
+                            <span th:if="${auction.isOpen()}">Edit product details</span>
+                            <span th:if="${!auction.isOpen()}">Product details</span>
                         </legend>
                         <div style="overflow-y: scroll; max-height: 610px; max-width: 99%">
                             <table style="max-width: calc(100% - 20px); margin-right: 20px">
@@ -92,7 +92,7 @@
                                     <th>Submit edit</th>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="product: ${session.auction.getProducts}">
+                                    <tr th:each="product: ${auction.getProducts()}">
                                         <form
                                             th:action="@{/product/edit/{id}(id=${product.getId()})}"
                                             enctype="multipart/form-data"
@@ -104,7 +104,7 @@
                                                     name="product-name"
                                                     th:value="${product.getName()}"
                                                     required
-                                                    th:disabled="${!session.auction.isOpen()}"
+                                                    th:disabled="${!auction.isOpen()}"
                                                 />
                                             </td>
                                             <td>
@@ -125,8 +125,8 @@
                                                         required
                                                         min="0.01"
                                                         step="0.01"
-                                                        th:disabled="${!product.canChangePrice(session.open_auctions) or !session.auction.isOpen()}"
-                                                        th:title="${product.canChangePrice(session.open_auctions) ? 'Change price' : 'Price cannot be changed because the product is auctioned and there is already a bid on it or the auction is closed'}"
+                                                        th:disabled="${(auction.getCurrentHighestBid() != null) or !auction.isOpen()}"
+                                                        th:title="${(auction.getCurrentHighestBid() == null) and auction.isOpen() ? 'Change price' : 'Price cannot be changed because the product is auctioned and there is already a bid on it or the auction is closed'}"
                                                     />
                                                 </div>
                                             </td>
@@ -135,7 +135,7 @@
                                                     name="product-description"
                                                     required
                                                     th:text="${product.getDescription()}"
-                                                    th:disabled="${!session.auction.isOpen()}"
+                                                    th:disabled="${!auction.isOpen()}"
                                                 ></textarea>
                                             </td>
 
@@ -164,14 +164,14 @@
                                                         name="product-image"
                                                         accept="image/png, image/jpeg"
                                                         class="change"
-                                                        th:disabled="${!session.auction.isOpen()}"
+                                                        th:disabled="${!auction.isOpen()}"
                                                     />
                                                 </div>
                                             </td>
                                             <td>
                                                 <button
                                                     type="submit"
-                                                    th:disabled="${!session.auction.isOpen()}"
+                                                    th:disabled="${!auction.isOpen()}"
                                                 >
                                                     Update
                                                 </button>
@@ -185,55 +185,53 @@
                 </div>
             </section>
 
-            <section id="bids" th:if="${session.auction}">
+            <section id="bids" th:if="${auction}">
                 <h2>Info</h2>
                 <ul>
                     <li>
                         <b>Items:</b>
-                        <span th:text="${session.auction.products.size()}"></span>
+                        <span th:text="${auction.products.size()}"></span>
                     </li>
                     <li>
                         <b>Starting price:</b>
                         €
-                        <span th:text="${session.auction.getStartingPrice()}"></span>
+                        <span th:text="${auction.getStartingPrice()}"></span>
                     </li>
                     <li>
                         <b>Minimum bid increase:</b>
                         €
-                        <span th:text="${session.auction.getMinimumBidIncrement()}"></span>
+                        <span th:text="${auction.getMinimumBidIncrement()}"></span>
                     </li>
                     <li>
                         <b>Deadline</b>
-                        <span th:text="${session.auction.getFormattedEndTime()}"></span>
+                        <span th:text="${auction.getFormattedEndTime()}"></span>
                     </li>
                 </ul>
-                <div th:if="${session.auction.isOpen() and !session.auction.canBeClosed()}">
+                <div th:if="${auction.isOpen() and !auction.canBeClosed()}">
                     <h3>Remaining time</h3>
                     <div class="info">
-                        <p
-                            th:if="${session.auction.getRemainingTimeString()=='0d 0h' and session.bids.isEmpty()}"
-                        >
+                        <p th:if="${auction.getRemainingTimeString()=='0d 0h' and bids.isEmpty()}">
                             Although the deadline has passed, the auction will only be closable once
                             the first bid is placed.
                         </p>
-                        <p th:if="${session.auction.getRemainingTimeString()!='0d 0h'}">
+                        <p th:if="${auction.getRemainingTimeString()!='0d 0h'}">
                             There is still
                             <span
                                 th:text="${' ' +
-                             session.auction.getRemainingTimeString() + ' '}"
+                             auction.getRemainingTimeString() + ' '}"
                             ></span>
                             until the auction ends.
                         </p>
                     </div>
                 </div>
-                <div class="info" th:if="${session.auction.canBeClosed()}">
+                <div class="info" th:if="${auction.canBeClosed()}">
                     <p>The auction has ended and can be closed.</p>
                 </div>
 
-                <div class="info" th:if="${!session.auction.isOpen()}">
+                <div class="info" th:if="${!auction.isOpen()}">
                     <p>The auction has been closed.</p>
                 </div>
-                <div th:if="${!session.auction.isOpen()}">
+                <div th:if="${!auction.isOpen()}">
                     <h2>Winner</h2>
                     <div
                         class="winner"
@@ -244,25 +242,25 @@
                             <b>@</b>
                             <span
                                 style="font-weight: bold"
-                                th:text="${session.auction.getCurrentHighestBid().getBidderUsername()}"
+                                th:text="${auction.getCurrentHighestBid().getBidderUsername()}"
                             ></span>
                             with a bid of
                             <b>€</b>
                             <span
                                 style="font-weight: bold"
-                                th:text="${session.auction.getCurrentHighestBid().getBidAmount()}"
+                                th:text="${auction.getCurrentHighestBid().getBidAmount()}"
                             ></span>
                             sent at
                             <span
                                 style="font-weight: bold"
-                                th:text="${session.auction.getCurrentHighestBid().getFormattedBidTimestamp()}"
+                                th:text="${auction.getCurrentHighestBid().getFormattedBidTimestamp()}"
                             ></span>
                         </p>
                     </div>
                 </div>
 
                 <h2>Bids</h2>
-                <table th:if="${!session.bids.isEmpty()}">
+                <table th:if="${!bids.isEmpty()}">
                     <thead>
                         <tr>
                             <th>Bidder</th>
@@ -271,7 +269,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="bid : ${session.bids}">
+                        <tr th:each="bid : ${bids}">
                             <td th:text="${bid.getBidderUsername()}"></td>
                             <td th:text="${'€' + bid.getBidAmount()}"></td>
                             <td
@@ -280,11 +278,11 @@
                         </tr>
                     </tbody>
                 </table>
-                <div th:if="${session.bids.isEmpty()}" class="info">
+                <div th:if="${bids.isEmpty()}" class="info">
                     <p>No bids available for this auction.</p>
                 </div>
             </section>
-            <section id="auction-actions" th:if="${session.auction.isOpen()}">
+            <section id="auction-actions" th:if="${auction.isOpen()}">
                 <h2>Actions</h2>
                 <div class="flex-row">
                     <fieldset style="max-width: 50%">
@@ -295,14 +293,14 @@
                         </p>
                         <p>Once the auction is closed, it cannot be reopened.</p>
                         <form
-                            th:action="@{'/auction/close/' + ${session.auction.getId()}}"
+                            th:action="@{'/auction/close/' + ${auction.getId()}}"
                             method="post"
                         >
                             <button
                                 name="auction-close-id"
-                                th:disabled="${!session.auction.canBeClosed()}"
+                                th:disabled="${!auction.canBeClosed()}"
                                 type="submit"
-                                th:title="${session.auction.canBeClosed() ? 'Close this auction' : 'The auction has no bids or deadline has not expired yet'}"
+                                th:title="${auction.canBeClosed() ? 'Close this auction' : 'The auction has no bids or deadline has not expired yet'}"
                             >
                                 Close Auction
                             </button>
@@ -313,14 +311,14 @@
                         <p>An auction can be deleted up until there are no bids placed.</p>
                         <p>Once an auction is deleted, it cannot be recovered.</p>
                         <form
-                            th:action="@{/auction/delete/${session.auction.getId()}}"
+                            th:action="@{'/auction/delete/' + ${auction.getId()}}"
                             method="post"
                         >
                             <button
                                 type="submit"
                                 class="destructive"
-                                th:disabled="${!session.auction.canBeDeleted()}"
-                                th:title="${session.auction.canBeDeleted() ? 'Delete this auction' : 'The auction has some bids already'}"
+                                th:disabled="${!auction.canBeDeleted()}"
+                                th:title="${auction.canBeDeleted() ? 'Delete this auction' : 'The auction has some bids already'}"
                             >
                                 Delete Auction
                             </button>

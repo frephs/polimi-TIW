@@ -25,35 +25,24 @@ public class BuyingController {
         @Override
         public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-            if (request.getSession().getAttribute("user") == null) {
-                request
-                    .getSession()
-                    .setAttribute(
-                        "message",
-                        MessageType.INFO.wrap("To buy items, log in or sign up first.")
+            String searchQuery = request.getParameter("q");
+            try {
+                if (searchQuery != null) {
+                    List<Auction> auctions = auctionDataAccessObject.getAuctionsByKeyword(
+                        Arrays.stream(searchQuery.split("\\+")).toList()
                     );
-                request.getSession().setAttribute("from", "buy");
-
-                sendRedirect(request, response, "/account");
-            } else {
-                String searchQuery = request.getParameter("q");
-                try {
-                    if (searchQuery != null) {
-                        List<Auction> auctions = auctionDataAccessObject.getAuctionsByKeyword(
-                            Arrays.stream(searchQuery.split("\\+")).toList()
-                        );
-                        request.getSession().setAttribute("auctions", auctions);
-                    }
-                    List<Auction> wonAuctions = auctionDataAccessObject.getAuctionsWonBy(
-                        ((User) request.getSession().getAttribute("user")).getUsername()
-                    );
-
-                    request.getSession().setAttribute("wonAuctions", wonAuctions);
-                } catch (SQLException e) {
-                    contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
+                    contextAttributes.set("auctions", auctions);
                 }
-                processTemplate(request, response, "/buy/index");
+
+                List<Auction> wonAuctions = auctionDataAccessObject.getAuctionsWonBy(
+                    ((User) request.getSession().getAttribute("user")).getUsername()
+                );
+
+                contextAttributes.set("wonAuctions", wonAuctions);
+            } catch (SQLException e) {
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
             }
+            processTemplate(request, response, "/buy/index");
         }
     }
 
@@ -81,8 +70,8 @@ public class BuyingController {
                 Auction auction = auctionDataAccessObject.getAuctionById(auctionId);
                 List<Bid> bids = auctionDataAccessObject.getBidsByAuction(auctionId);
 
-                request.getSession().setAttribute("bids", bids);
-                request.getSession().setAttribute("auction", auction);
+                contextAttributes.set("bids", bids);
+                contextAttributes.set("auction", auction);
 
                 processTemplate(request, response, "/buy/auction-detail");
             } catch (NumberFormatException e) {
@@ -103,56 +92,37 @@ public class BuyingController {
         @Override
         public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-            if (request.getSession().getAttribute("user") == null) {
-                request
-                    .getSession()
-                    .setAttribute(
-                        "message",
-                        MessageType.INFO.wrap("To buy items, log in or sign up first.")
-                    );
-                request.getSession().setAttribute("from", "sell");
-                sendRedirect(request, response, "/account");
-            } else {
-                int auctionId;
-                String auctionIdParam = request.getParameter("auction-id");
-                String bidAmountParam = request.getParameter("bid-amount");
+            int auctionId;
+            String auctionIdParam = request.getParameter("auction-id");
+            String bidAmountParam = request.getParameter("bid-amount");
 
-                if (auctionIdParam == null || bidAmountParam == null) {
-                    request
-                        .getSession()
-                        .setAttribute(
-                            "message",
-                            MessageType.ERROR.wrap("Auction ID and bid amount are required.")
-                        );
-                    sendRedirect(request, response, "/buy");
-                    return;
-                }
+            if (auctionIdParam == null || bidAmountParam == null) {
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.ERROR.wrap("Auction ID and bid amount are required.")
+                );
+                sendRedirect(request, response, "/buy");
+                return;
+            }
 
-                try {
-                    auctionId = Integer.parseInt(auctionIdParam);
-                    float bidAmount = Float.parseFloat(bidAmountParam);
-                    String username =
-                        ((User) request.getSession().getAttribute("user")).getUsername();
+            try {
+                auctionId = Integer.parseInt(auctionIdParam);
+                float bidAmount = Float.parseFloat(bidAmountParam);
+                String username = ((User) request.getSession().getAttribute("user")).getUsername();
 
-                    auctionDataAccessObject.placeBid(auctionId, username, bidAmount);
+                auctionDataAccessObject.placeBid(auctionId, username, bidAmount);
 
-                    request
-                        .getSession()
-                        .setAttribute(
-                            "message",
-                            MessageType.SUCCESS.wrap("Bid placed successfully.")
-                        );
-                    sendRedirect(request, response, "/buy/auction?id=" + auctionId);
-                } catch (NumberFormatException e) {
-                    contextAttributes.setFlash(
-                        "message",
-                        MessageType.WARNING.wrap("Invalid input.")
-                    );
-                    sendRedirect(request, response, "/buy");
-                } catch (SQLException e) {
-                    contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
-                    sendRedirect(request, response, "/buy");
-                }
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.SUCCESS.wrap("Bid placed successfully.")
+                );
+                sendRedirect(request, response, "/buy/auction?id=" + auctionId);
+            } catch (NumberFormatException e) {
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap("Invalid input."));
+                sendRedirect(request, response, "/buy");
+            } catch (SQLException e) {
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
+                sendRedirect(request, response, "/buy");
             }
         }
     }

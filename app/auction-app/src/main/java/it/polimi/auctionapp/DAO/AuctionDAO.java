@@ -81,6 +81,15 @@ public class AuctionDAO {
         preparedStatement.executeUpdate();
     }
 
+    public void deleteAuction(Integer auction_id) throws SQLException {
+        String query = "DELETE FROM auctions WHERE auction_id = ?";
+        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
+            .prepareStatement(query);
+        preparedStatement.setInt(1, auction_id);
+        preparedStatement.executeUpdate();
+        preparedStatement.close(); // Ensure the statement is closed
+    }
+
     public List<Auction> getAuctionsBySeller(String seller_username) throws SQLException {
         List<Auction> auctions = new ArrayList<>();
         String query =

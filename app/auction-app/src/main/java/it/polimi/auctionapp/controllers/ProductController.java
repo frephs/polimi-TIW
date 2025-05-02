@@ -41,24 +41,20 @@ public class ProductController {
                     filename
                 );
 
-                request
-                    .getSession()
-                    .setAttribute(
-                        "message",
-                        MessageType.SUCCESS.wrap("Successfully added new product.")
-                    );
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.SUCCESS.wrap("Successfully added new product.")
+                );
             } catch (SQLWarning e) {
                 contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
             } catch (SQLException e) {
                 contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
             } catch (ServletException e) {
-                request
-                    .getSession()
-                    .setAttribute(
-                        "message",
-                        "Something went wrong with uploading your image " +
-                        MessageType.ERROR.wrap(e.getMessage())
-                    );
+                contextAttributes.setFlash(
+                    "message",
+                    "Something went wrong with uploading your image " +
+                    MessageType.ERROR.wrap(e.getMessage())
+                );
             } finally {
                 sendRedirect(request, response, "/sell");
             }
@@ -121,12 +117,10 @@ public class ProductController {
                     );
                 }
 
-                request
-                    .getSession()
-                    .setAttribute(
-                        "message",
-                        MessageType.SUCCESS.wrap("Successfully updated the product.")
-                    );
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.SUCCESS.wrap("Successfully updated the product.")
+                );
                 sendRedirect(request, response, "/sell");
             } catch (SQLWarning e) {
                 contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
