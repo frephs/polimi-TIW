@@ -58,11 +58,7 @@
                 ></div>
             </section>
             <section id="breadcrumb">
-                <div
-                    class="breadcrumb"
-                    th:if="${session.breadcrumb}"
-                    th:utext="${session.breadcrumb}"
-                ></div>
+                <div class="breadcrumb" th:if="${breadcrumb}" th:utext="${breadcrumb}"></div>
             </section>
 
             <section>

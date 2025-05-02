@@ -122,9 +122,13 @@ public class ThymeleafHTTPServlet extends HttpServlet {
         }
 
         public void updateContext(HttpServletRequest request) {
-            setFlash("breadcrumb", breadCrumb(request));
+            set("breadcrumb", breadCrumb(request));
             for (Map.Entry<String, Object> entry : attributesMap.entrySet()) {
-                request.getSession().setAttribute(entry.getKey(), entry.getValue());
+                if (entry.getKey().startsWith("FLASH_")) {
+                    request.getSession().setAttribute(entry.getKey(), entry.getValue());
+                } else {
+                    request.setAttribute(entry.getKey(), entry.getValue());
+                }
             }
         }
 
