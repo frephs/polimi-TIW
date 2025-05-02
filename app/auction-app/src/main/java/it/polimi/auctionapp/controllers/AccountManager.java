@@ -42,20 +42,14 @@ public class AccountManager {
             try {
                 User user = userDataAccessObject.getUser(username, password);
                 request.getSession().setAttribute("user", user);
-                request
-                    .getSession()
-                    .setAttribute(
-                        "message",
-                        MessageType.SUCCESS.wrap("User logged in successfully.")
-                    );
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.SUCCESS.wrap("User logged in successfully.")
+                );
             } catch (SQLWarning e) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.WARNING.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
             } catch (SQLException e) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.ERROR.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
             } finally {
                 if (request.getSession().getAttribute("from") != null) {
                     sendRedirect(
@@ -134,22 +128,16 @@ public class AccountManager {
                 );
                 request.getSession().setAttribute("user", null);
                 request.getSession().invalidate();
-                request
-                    .getSession()
-                    .setAttribute(
-                        "message",
-                        MessageType.SUCCESS.wrap("Account deleted successfully")
-                    );
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.SUCCESS.wrap("Account deleted successfully")
+                );
                 sendRedirect(request, response, "/");
             } catch (SQLWarning e) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.WARNING.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
                 sendRedirect(request, response, "/account");
             } catch (SQLException e) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.ERROR.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
                 sendRedirect(request, response, "/account");
             }
         }
@@ -165,23 +153,20 @@ public class AccountManager {
                     .getParameter("new-username")
                     .equals(((User) request.getSession().getAttribute("user")).getUsername())
             ) {
-                request
-                    .getSession()
-                    .setAttribute(
-                        "message",
-                        MessageType.WARNING.wrap("New username must be different from the old one")
-                    );
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.WARNING.wrap("New username must be different from the old one")
+                );
             } else if (request.getParameter("new-username").isEmpty()) {
-                request
-                    .getSession()
-                    .setAttribute(
-                        "message",
-                        MessageType.WARNING.wrap("New username cannot be empty")
-                    );
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.WARNING.wrap("New username cannot be empty")
+                );
             } else if (request.getParameter("password").isEmpty()) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.WARNING.wrap("Password cannot be empty"));
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.WARNING.wrap("Password cannot be empty")
+                );
             } else {
                 try {
                     userDataAccessObject.updateUsername(
@@ -205,13 +190,9 @@ public class AccountManager {
                             MessageType.SUCCESS.wrap("Username updated successfully")
                         );
                 } catch (SQLWarning e) {
-                    request
-                        .getSession()
-                        .setAttribute("message", MessageType.WARNING.wrap(e.getMessage()));
+                    contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
                 } catch (SQLException e) {
-                    request
-                        .getSession()
-                        .setAttribute("message", MessageType.ERROR.wrap(e.getMessage()));
+                    contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
                 }
             }
             sendRedirect(request, response, "/account");
@@ -228,20 +209,19 @@ public class AccountManager {
                     .getParameter("new-password")
                     .equals(request.getParameter("confirm-new-password"))
             ) {
-                request
-                    .getSession()
-                    .setAttribute(
-                        "message",
-                        MessageType.WARNING.wrap("New password and confirmation do not match")
-                    );
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.WARNING.wrap("New password and confirmation do not match")
+                );
             } else if (
                 request.getParameter("new-password").isEmpty() ||
                 request.getParameter("confirm-new-password").isEmpty() ||
                 request.getParameter("password").isEmpty()
             ) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.WARNING.wrap("Password cannot be empty"));
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.WARNING.wrap("Password cannot be empty")
+                );
             } else {
                 try {
                     userDataAccessObject.updatePassword(
@@ -256,13 +236,9 @@ public class AccountManager {
                             MessageType.SUCCESS.wrap("Password updated successfully")
                         );
                 } catch (SQLWarning e) {
-                    request
-                        .getSession()
-                        .setAttribute("message", MessageType.WARNING.wrap(e.getMessage()));
+                    contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
                 } catch (SQLException e) {
-                    request
-                        .getSession()
-                        .setAttribute("message", MessageType.ERROR.wrap(e.getMessage()));
+                    contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
                 }
             }
             sendRedirect(request, response, "/account");
@@ -283,9 +259,10 @@ public class AccountManager {
                 request.getParameter("street").isEmpty() ||
                 request.getParameter("street-number").isEmpty()
             ) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.WARNING.wrap("All fields must be filled"));
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.WARNING.wrap("All fields must be filled")
+                );
             } else {
                 try {
                     if (Integer.parseInt(request.getParameter("street-number")) < 1) {

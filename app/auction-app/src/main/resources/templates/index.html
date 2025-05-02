@@ -66,7 +66,7 @@
                 </div>
             </a>
         </section>
-        <section id="messages" th:if="${session.message}" th:utext="${session.message}"></section>
+        <section id="messages" th:if="${session.FLASH_message}" th:utext="${session.FLASH_message}"></section>
 
         </section>
     </main>

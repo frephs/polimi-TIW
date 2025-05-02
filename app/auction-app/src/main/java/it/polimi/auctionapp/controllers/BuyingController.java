@@ -50,9 +50,7 @@ public class BuyingController {
 
                     request.getSession().setAttribute("wonAuctions", wonAuctions);
                 } catch (SQLException e) {
-                    request
-                        .getSession()
-                        .setAttribute("message", MessageType.WARNING.wrap(e.getMessage()));
+                    contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
                 }
                 processTemplate(request, response, "/buy/index");
             }
@@ -70,9 +68,10 @@ public class BuyingController {
             String auctionIdParam = request.getParameter("id");
 
             if (auctionIdParam == null) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.ERROR.wrap("Auction ID is required."));
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.ERROR.wrap("Auction ID is required.")
+                );
                 sendRedirect(request, response, "/sell");
                 return;
             }
@@ -87,14 +86,13 @@ public class BuyingController {
 
                 processTemplate(request, response, "/buy/auction-detail");
             } catch (NumberFormatException e) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.WARNING.wrap("Invalid auction ID."));
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.WARNING.wrap("Invalid auction ID.")
+                );
                 sendRedirect(request, response, "/buy");
             } catch (SQLException e) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.WARNING.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
             }
         }
     }
@@ -146,14 +144,13 @@ public class BuyingController {
                         );
                     sendRedirect(request, response, "/buy/auction?id=" + auctionId);
                 } catch (NumberFormatException e) {
-                    request
-                        .getSession()
-                        .setAttribute("message", MessageType.WARNING.wrap("Invalid input."));
+                    contextAttributes.setFlash(
+                        "message",
+                        MessageType.WARNING.wrap("Invalid input.")
+                    );
                     sendRedirect(request, response, "/buy");
                 } catch (SQLException e) {
-                    request
-                        .getSession()
-                        .setAttribute("message", MessageType.WARNING.wrap(e.getMessage()));
+                    contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
                     sendRedirect(request, response, "/buy");
                 }
             }

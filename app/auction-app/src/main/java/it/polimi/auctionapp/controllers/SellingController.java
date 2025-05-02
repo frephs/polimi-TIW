@@ -68,14 +68,12 @@ public class SellingController {
                         auctions.stream().filter(auction -> !auction.isOpen()).toList()
                     );
             } catch (SQLException e) {
-                request
-                    .getSession()
-                    .setAttribute(
-                        "message",
-                        MessageType.ERROR.wrap(
-                            "There was a problem retrieving your products: " + e.getMessage()
-                        )
-                    );
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.ERROR.wrap(
+                        "There was a problem retrieving your products: " + e.getMessage()
+                    )
+                );
             }
             processTemplate(request, response, "/sell/index");
         }
@@ -138,22 +136,16 @@ public class SellingController {
                     productDataAccessObject.updateProductAuction(product.getId(), auction_id);
                 }
 
-                request
-                    .getSession()
-                    .setAttribute(
-                        "message",
-                        MessageType.SUCCESS.wrap(
-                            "Successfully added new auction and updated the products details."
-                        )
-                    );
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.SUCCESS.wrap(
+                        "Successfully added new auction and updated the products details."
+                    )
+                );
             } catch (SQLWarning e) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.WARNING.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
             } catch (SQLException e) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.ERROR.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
             } finally {
                 sendRedirect(request, response, "/sell");
             }
@@ -177,24 +169,19 @@ public class SellingController {
                 );
                 auctionDataAccessObject.closeAuction(auctionId);
 
-                request
-                    .getSession()
-                    .setAttribute(
-                        "message",
-                        MessageType.SUCCESS.wrap("Auction closed successfully.")
-                    );
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.SUCCESS.wrap("Auction closed successfully.")
+                );
             } catch (SQLWarning e) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.WARNING.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
             } catch (SQLException e) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.ERROR.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
             } catch (NumberFormatException e) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.ERROR.wrap("Invalid auction ID."));
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.ERROR.wrap("Invalid auction ID.")
+                );
             } finally {
                 sendRedirect(request, response, "/sell");
             }
@@ -210,9 +197,10 @@ public class SellingController {
             String auctionIdParam = request.getParameter("id");
             System.out.println("auctionIdParam: " + auctionIdParam);
             if (auctionIdParam == null) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.ERROR.wrap("Auction ID is required."));
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.ERROR.wrap("Auction ID is required.")
+                );
                 sendRedirect(request, response, "/sell");
                 return;
             }
@@ -232,14 +220,10 @@ public class SellingController {
                     .setAttribute("bids", auctionDataAccessObject.getBidsByAuction(auctionId));
                 processTemplate(request, response, "/sell/auction-detail");
             } catch (SQLWarning e) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.WARNING.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
                 sendRedirect(request, response, "/sell");
             } catch (SQLException e) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.ERROR.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
                 sendRedirect(request, response, "/sell");
             }
         }

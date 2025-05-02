@@ -48,13 +48,9 @@ public class ProductController {
                         MessageType.SUCCESS.wrap("Successfully added new product.")
                     );
             } catch (SQLWarning e) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.WARNING.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
             } catch (SQLException e) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.ERROR.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
             } catch (ServletException e) {
                 request
                     .getSession()
@@ -133,9 +129,7 @@ public class ProductController {
                     );
                 sendRedirect(request, response, "/sell");
             } catch (SQLWarning e) {
-                request
-                    .getSession()
-                    .setAttribute("message", MessageType.WARNING.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

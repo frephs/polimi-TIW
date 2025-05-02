@@ -40,7 +40,7 @@
     </nav>
     <main>
         <section>
-            <section id="messages" th:if="${session.message}" th:utext="${session.message}"></section>
+            <section id="messages" th:if="${session.FLASH_message}" th:utext="${session.FLASH_message}"></section>
         </section>
             <div class="flex-row">
                 <form th:action="@{/signup}" method="POST">

@@ -15,11 +15,14 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 import java.io.IOException;
 import java.io.Serial;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ThymeleafHTTPServlet extends HttpServlet {
 
-    TemplateEngine templateEngine = new TemplateEngine();
+    private TemplateEngine templateEngine = new TemplateEngine();
+    public final ContextAttributes contextAttributes = new ContextAttributes();
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -58,10 +61,9 @@ public class ThymeleafHTTPServlet extends HttpServlet {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("text/html");
 
-            request.getSession().setAttribute("breadcrumb", breadCrumb(request));
+            contextAttributes.updateContext(request);
             templateEngine.process(path, context, response.getWriter());
-            //TODO: fix
-            request.getSession().setAttribute("message", null);
+            contextAttributes.clearContext(request);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -73,14 +75,14 @@ public class ThymeleafHTTPServlet extends HttpServlet {
         String path
     ) {
         try {
+            contextAttributes.updateContext(request);
             response.sendRedirect(getServletContext().getContextPath() + path);
-            //request.getSession().setAttribute("message", null);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public String breadCrumb(HttpServletRequest request) {
+    public static String breadCrumb(HttpServletRequest request) {
         String[] splitPath =
             (request.getContextPath() +
                 request.getServletPath() +
@@ -105,5 +107,40 @@ public class ThymeleafHTTPServlet extends HttpServlet {
                 );
             })
             .collect(Collectors.joining(" > "));
+    }
+
+    public static class ContextAttributes {
+
+        Map<String, Object> attributesMap = new HashMap<>();
+
+        public void set(String attribute, Object value) {
+            attributesMap.put(attribute, value);
+        }
+
+        public void setFlash(String attribute, Object value) {
+            attributesMap.put("FLASH_" + attribute, value);
+        }
+
+        public void updateContext(HttpServletRequest request) {
+            setFlash("breadcrumb", breadCrumb(request));
+            for (Map.Entry<String, Object> entry : attributesMap.entrySet()) {
+                request.getSession().setAttribute(entry.getKey(), entry.getValue());
+            }
+        }
+
+        public void clearContext(HttpServletRequest request) {
+            for (String key : attributesMap.keySet()) {
+                attributesMap.remove(key);
+            }
+            request
+                .getSession()
+                .getAttributeNames()
+                .asIterator()
+                .forEachRemaining(name -> {
+                    if (name.startsWith("FLASH_")) {
+                        request.getSession().removeAttribute(name);
+                    }
+                });
+        }
     }
 }

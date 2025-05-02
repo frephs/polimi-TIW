@@ -51,7 +51,11 @@
         </nav>
         <main>
             <section id="messages">
-                <div class="message" th:if="${session.message}" th:utext="${session.message}"></div>
+                <div
+                    class="message"
+                    th:if="${session.FLASH_message}"
+                    th:utext="${session.FLASH_message}"
+                ></div>
             </section>
             <section id="breadcrumb">
                 <div
