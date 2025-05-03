@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-public class Landing {
+public class LandingRouter {
 
     @WebServlet("/")
     public static class DefaultRedirectServlet extends ThymeleafHTTPServlet {

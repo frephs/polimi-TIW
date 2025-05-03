@@ -5,9 +5,11 @@ import it.polimi.auctionapp.DAO.ProductDAO;
 import it.polimi.auctionapp.beans.Auction;
 import it.polimi.auctionapp.beans.Product;
 import it.polimi.auctionapp.beans.User;
+import it.polimi.auctionapp.utils.ImageServlet;
 import it.polimi.auctionapp.utils.MessageType;
 import it.polimi.auctionapp.utils.ThymeleafHTTPServlet;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,6 +20,8 @@ import java.sql.SQLWarning;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class SellingController {
 
@@ -60,6 +64,24 @@ public class SellingController {
                     "closed_auctions",
                     auctions.stream().filter(auction -> !auction.isOpen()).toList()
                 );
+
+                contextAttributes.set(
+                    "closed_auction_shipping_addresses",
+                    auctions
+                        .stream()
+                        .filter(auction -> !auction.isOpen())
+                        .collect(
+                            Collectors.toMap(Auction::getId, auction -> {
+                                try {
+                                    return auctionDataAccessObject.getCurrentShippingAddressForAuction(
+                                        auction.getId()
+                                    );
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            })
+                        )
+                );
             } catch (SQLException e) {
                 contextAttributes.setFlash(
                     "message",
@@ -67,18 +89,26 @@ public class SellingController {
                         "There was a problem retrieving your products: " + e.getMessage()
                     )
                 );
+            } finally {
+                processTemplate(request, response, "/sell/index");
             }
-            processTemplate(request, response, "/sell/index");
         }
     }
 
-    @WebServlet("/auction/new")
+    @WebServlet("/sell/auction/new")
     public static class AuctionFactoryServlet extends ThymeleafHTTPServlet {
 
         @Override
         public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
             try {
+                checkAllRequiredParams(
+                    request,
+                    response,
+                    "final-bid-submission-date",
+                    "final-bid-submission-time"
+                );
+
                 List<Product> products = productDataAccessObject
                     .getUnsoldProductBySeller(
                         ((User) request.getSession().getAttribute("user")).getUsername()
@@ -90,13 +120,15 @@ public class SellingController {
                 String[] productIds = request.getParameterValues("product-ids");
 
                 if (products.isEmpty()) {
-                    throw new SQLWarning(
+                    throw new SQLException(
                         "You cannot create an auction while you have no available products"
                     );
                 }
 
                 if (productIds == null) {
-                    throw new SQLWarning("You cannot create an auction with no products");
+                    throw new SQLWarning(
+                        "You cannot create an auction without selecting any products"
+                    );
                 }
 
                 List<Integer> selectedProductIds = Arrays.stream(productIds)
@@ -145,15 +177,15 @@ public class SellingController {
         }
     }
 
-    @WebServlet("/auction/close/*")
+    @WebServlet("/sell/auction/close/")
     public static class AuctionDestroyerServlet extends ThymeleafHTTPServlet {
 
         @Override
         protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
             try {
-                String auctionIdParam = request.getPathInfo().substring(1); // Extract auction ID from URL
-                int auctionId = Integer.parseInt(auctionIdParam);
+                checkAllRequiredParams(request, response, "id");
+                int auctionId = Integer.parseInt(request.getParameter("id"));
 
                 auctionDataAccessObject.checkAuctionExists(auctionId);
                 auctionDataAccessObject.checkAuctionIsOwnedBy(
@@ -181,15 +213,15 @@ public class SellingController {
         }
     }
 
-    @WebServlet("/auction/delete/*")
+    @WebServlet("/sell/auction/delete/*")
     public static class AuctionDeleteServlet extends ThymeleafHTTPServlet {
 
         @Override
         protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
             try {
-                String auctionIdParam = request.getPathInfo().substring(1); // Extract auction ID from URL
-                int auctionId = Integer.parseInt(auctionIdParam);
+                checkAllRequiredParams(request, response, "id");
+                int auctionId = Integer.parseInt(request.getParameter("id"));
 
                 auctionDataAccessObject.checkAuctionExists(auctionId);
                 auctionDataAccessObject.checkAuctionIsOwnedBy(
@@ -223,19 +255,11 @@ public class SellingController {
         @Override
         protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            String auctionIdParam = request.getParameter("id");
-            System.out.println("auctionIdParam: " + auctionIdParam);
-            if (auctionIdParam == null) {
-                contextAttributes.setFlash(
-                    "message",
-                    MessageType.ERROR.wrap("Auction ID is required.")
-                );
-                sendRedirect(request, response, "/sell");
-                return;
-            }
-            int auctionId = Integer.parseInt(auctionIdParam);
-
             try {
+                checkAllRequiredParams(request, response, "id");
+                String auctionIdParam = request.getParameter("id");
+                System.out.println("auctionIdParam: " + auctionIdParam);
+                int auctionId = Integer.parseInt(auctionIdParam);
                 auctionDataAccessObject.checkAuctionExists(auctionId);
                 auctionDataAccessObject.checkAuctionIsOwnedBy(
                     ((User) request.getSession().getAttribute("user")).getUsername(),
@@ -243,12 +267,163 @@ public class SellingController {
                 );
                 contextAttributes.set("auction", auctionDataAccessObject.getAuctionById(auctionId));
                 contextAttributes.set("bids", auctionDataAccessObject.getBidsByAuction(auctionId));
+                contextAttributes.set(
+                    "closed_auction_shipping_address",
+                    auctionDataAccessObject.getCurrentShippingAddressForAuction(auctionId)
+                );
                 processTemplate(request, response, "/sell/auction-detail");
             } catch (SQLWarning e) {
                 contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
                 sendRedirect(request, response, "/sell");
             } catch (SQLException e) {
                 contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
+                sendRedirect(request, response, "/sell");
+            }
+        }
+    }
+
+    @WebServlet("/sell/product/new")
+    @MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+    )
+    public static class ProductFactoryServlet extends ThymeleafHTTPServlet {
+
+        public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+            try {
+                String filename = ImageServlet.saveImage(request, "product-image");
+
+                productDataAccessObject.addProduct(
+                    ((User) request.getSession().getAttribute("user")).getUsername(),
+                    request.getParameter("product-name"),
+                    request.getParameter("product-description"),
+                    Float.parseFloat(request.getParameter("product-price")),
+                    filename
+                );
+
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.SUCCESS.wrap("Successfully added new product.")
+                );
+            } catch (SQLWarning e) {
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
+            } catch (SQLException e) {
+                contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
+            } catch (ServletException e) {
+                contextAttributes.setFlash(
+                    "message",
+                    "Something went wrong with uploading your image " +
+                    MessageType.ERROR.wrap(e.getMessage())
+                );
+            } finally {
+                sendRedirect(request, response, "/sell");
+            }
+        }
+    }
+
+    @WebServlet("/sell/product/edit/")
+    @MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+    )
+    public static class ProductEditServlet extends ThymeleafHTTPServlet {
+
+        @Override
+        protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+            try {
+                checkAllRequiredParams(
+                    request,
+                    response,
+                    "product-name",
+                    "product-description",
+                    "product-id"
+                );
+                Integer productId = Integer.parseInt(request.getParameter("product-id"));
+                productDataAccessObject.checkProductExists(productId);
+                productDataAccessObject.checkProductIsOwnedBy(
+                    ((User) request.getSession().getAttribute("user")).getUsername(),
+                    productId
+                );
+
+                String price_string = request.getParameter("product-price");
+                productDataAccessObject.updateProductDetails(
+                    productId,
+                    request.getParameter("product-name"),
+                    request.getParameter("product-description"),
+                    price_string != null
+                        ? Float.parseFloat(price_string)
+                        : productDataAccessObject.getProductPrice(productId)
+                ); //TODO ADD CHECK POSITIVE CONSTRAINTS
+
+                if (
+                    !Objects.equals(request.getParameter("product-image"), "") &&
+                    request.getPart("product-image") != null &&
+                    request.getPart("product-image").getSize() > 0
+                ) {
+                    String newFilename = ImageServlet.saveImage(request, "product-image");
+                    productDataAccessObject.updateProductImage(productId, newFilename);
+                }
+
+                Integer currentAuctionId = productDataAccessObject.getProductAuctionId(productId);
+                if (
+                    request.getParameter("product-auction-id") != null &&
+                    !currentAuctionId.equals(
+                        Integer.parseInt(
+                            !Objects.equals(request.getParameter("product-auction-id"), "")
+                                ? request.getParameter("product-auction-id")
+                                : "0"
+                        )
+                    )
+                ) {
+                    productDataAccessObject.updateProductAuction(
+                        productId,
+                        Integer.parseInt(request.getParameter("product-auction-id"))
+                    );
+                }
+
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.SUCCESS.wrap("Successfully updated the product.")
+                );
+            } catch (SQLWarning e) {
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
+            } catch (SQLException e) {
+                contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
+            } finally {
+                sendRedirect(request, response, "/sell");
+            }
+        }
+    }
+
+    @WebServlet("/sell/product/delete/")
+    public static class ProductDeleteServlet extends ThymeleafHTTPServlet {
+
+        public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+            try {
+                checkAllRequiredParams(request, response, "id");
+                Integer productId = Integer.parseInt(request.getParameter("id"));
+                productDataAccessObject.checkProductExists(productId);
+                productDataAccessObject.checkProductIsOwnedBy(
+                    ((User) request.getSession().getAttribute("user")).getUsername(),
+                    productId
+                );
+
+                productDataAccessObject.deleteProduct(productId);
+
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.SUCCESS.wrap("Successfully deleted the product.")
+                );
+            } catch (SQLWarning e) {
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
+            } catch (SQLException e) {
+                contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
+            } finally {
                 sendRedirect(request, response, "/sell");
             }
         }

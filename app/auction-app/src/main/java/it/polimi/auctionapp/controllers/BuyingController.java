@@ -1,6 +1,7 @@
 package it.polimi.auctionapp.controllers;
 
 import it.polimi.auctionapp.DAO.AuctionDAO;
+import it.polimi.auctionapp.DAO.BidDao;
 import it.polimi.auctionapp.beans.Auction;
 import it.polimi.auctionapp.beans.Bid;
 import it.polimi.auctionapp.beans.User;
@@ -14,10 +15,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BuyingController {
 
     static AuctionDAO auctionDataAccessObject = new AuctionDAO();
+    static BidDao bidDataAccessObject = new BidDao();
 
     @WebServlet({ "/buy/search", "/buy" })
     public static class BuyingManagerServlet extends ThymeleafHTTPServlet {
@@ -28,10 +31,12 @@ public class BuyingController {
             String searchQuery = request.getParameter("q");
             try {
                 if (searchQuery != null) {
-                    List<Auction> auctions = auctionDataAccessObject.getAuctionsByKeyword(
-                        Arrays.stream(searchQuery.split("\\+")).toList()
+                    contextAttributes.set(
+                        "auctions",
+                        auctionDataAccessObject.getAuctionsByKeyword(
+                            Arrays.stream(searchQuery.split("\\+")).toList()
+                        )
                     );
-                    contextAttributes.set("auctions", auctions);
                 }
 
                 List<Auction> wonAuctions = auctionDataAccessObject.getAuctionsWonBy(
@@ -39,10 +44,27 @@ public class BuyingController {
                 );
 
                 contextAttributes.set("wonAuctions", wonAuctions);
+                contextAttributes.set(
+                    "closed_auction_shipping_addresses",
+                    wonAuctions
+                        .stream()
+                        .collect(
+                            Collectors.toMap(Auction::getId, auction -> {
+                                try {
+                                    return auctionDataAccessObject.getCurrentShippingAddressForAuction(
+                                        auction.getId()
+                                    );
+                                } catch (SQLException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            })
+                        )
+                );
             } catch (SQLException e) {
                 contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
+            } finally {
+                processTemplate(request, response, "/buy/index");
             }
-            processTemplate(request, response, "/buy/index");
         }
     }
 
@@ -52,20 +74,11 @@ public class BuyingController {
         @Override
         public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-            int auctionId;
-
-            String auctionIdParam = request.getParameter("id");
-
-            if (auctionIdParam == null) {
-                contextAttributes.setFlash(
-                    "message",
-                    MessageType.ERROR.wrap("Auction ID is required.")
-                );
-                sendRedirect(request, response, "/sell");
-                return;
-            }
-
             try {
+                int auctionId;
+                checkAllRequiredParams(request, response, "id");
+                String auctionIdParam = request.getParameter("id");
+
                 auctionId = Integer.parseInt(auctionIdParam);
                 Auction auction = auctionDataAccessObject.getAuctionById(auctionId);
                 List<Bid> bids = auctionDataAccessObject.getBidsByAuction(auctionId);
@@ -77,11 +90,12 @@ public class BuyingController {
             } catch (NumberFormatException e) {
                 contextAttributes.setFlash(
                     "message",
-                    MessageType.WARNING.wrap("Invalid auction ID.")
+                    MessageType.ERROR.wrap("Invalid auction ID.")
                 );
                 sendRedirect(request, response, "/buy");
             } catch (SQLException e) {
-                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
+                contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
+                sendRedirect(request, response, "/buy");
             }
         }
     }
@@ -110,7 +124,7 @@ public class BuyingController {
                 float bidAmount = Float.parseFloat(bidAmountParam);
                 String username = ((User) request.getSession().getAttribute("user")).getUsername();
 
-                auctionDataAccessObject.placeBid(auctionId, username, bidAmount);
+                bidDataAccessObject.placeBid(auctionId, username, bidAmount);
 
                 contextAttributes.setFlash(
                     "message",

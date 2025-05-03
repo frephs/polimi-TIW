@@ -8,7 +8,6 @@ import it.polimi.auctionapp.utils.ThymeleafHTTPServlet;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -37,9 +36,10 @@ public class AccountManager {
 
         @Override
         public void doPost(HttpServletRequest request, HttpServletResponse response) {
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
             try {
+                checkAllRequiredParams(request, response, "username", "password");
+                String username = request.getParameter("username");
+                String password = request.getParameter("password");
                 User user = userDataAccessObject.getUser(username, password);
                 request.getSession().setAttribute("user", user);
                 contextAttributes.setFlash(
@@ -57,6 +57,7 @@ public class AccountManager {
                         response,
                         "/" + request.getSession().getAttribute("from")
                     );
+                    request.getSession().removeAttribute("from");
                 } else {
                     sendRedirect(request, response, "/account");
                 }
@@ -84,8 +85,20 @@ public class AccountManager {
 
         @Override
         public void doPost(HttpServletRequest request, HttpServletResponse response) {
-            HttpSession session = request.getSession();
             try {
+                checkAllRequiredParams(
+                    request,
+                    response,
+                    "username",
+                    "password",
+                    "name",
+                    "surname",
+                    "country",
+                    "zip_code",
+                    "city",
+                    "street",
+                    "street_number"
+                );
                 userDataAccessObject.addUser(
                     new User(
                         request.getParameter("username"),
@@ -117,12 +130,13 @@ public class AccountManager {
         }
     }
 
-    @WebServlet("/account/delete")
+    @WebServlet("/account/update/delete")
     public static class DeleteAccountManagerServlet extends ThymeleafHTTPServlet {
 
         @Override
         public void doPost(HttpServletRequest request, HttpServletResponse response) {
             try {
+                checkAllRequiredParams(request, response, "password");
                 userDataAccessObject.deleteAccount(
                     ((User) request.getSession().getAttribute("user")).getUsername(),
                     request.getParameter("password")
@@ -144,169 +158,141 @@ public class AccountManager {
         }
     }
 
-    @WebServlet("/account/update-username")
+    @WebServlet("/account/update/username")
     public static class UpdateUsernameServlet extends ThymeleafHTTPServlet {
 
         @Override
         public void doPost(HttpServletRequest request, HttpServletResponse response) {
-            if (
+            try {
+                checkAllRequiredParams(request, response, "new-username", "password");
+                if (
+                    request
+                        .getParameter("new-username")
+                        .equals(((User) request.getSession().getAttribute("user")).getUsername())
+                ) {
+                    throw new SQLWarning("New username must be different from the old one");
+                }
+                userDataAccessObject.updateUsername(
+                    ((User) request.getSession().getAttribute("user")).getUsername(),
+                    request.getParameter("new-username"),
+                    request.getParameter("password")
+                );
                 request
-                    .getParameter("new-username")
-                    .equals(((User) request.getSession().getAttribute("user")).getUsername())
-            ) {
-                contextAttributes.setFlash(
-                    "message",
-                    MessageType.WARNING.wrap("New username must be different from the old one")
-                );
-            } else if (request.getParameter("new-username").isEmpty()) {
-                contextAttributes.setFlash(
-                    "message",
-                    MessageType.WARNING.wrap("New username cannot be empty")
-                );
-            } else if (request.getParameter("password").isEmpty()) {
-                contextAttributes.setFlash(
-                    "message",
-                    MessageType.WARNING.wrap("Password cannot be empty")
-                );
-            } else {
-                try {
-                    userDataAccessObject.updateUsername(
-                        ((User) request.getSession().getAttribute("user")).getUsername(),
-                        request.getParameter("new-username"),
-                        request.getParameter("password")
-                    );
-                    contextAttributes.set(
+                    .getSession()
+                    .setAttribute(
                         "user",
                         userDataAccessObject.getUser(
                             request.getParameter("new-username"),
                             request.getParameter("password")
                         )
                     );
-                    contextAttributes.setFlash(
-                        "message",
-                        MessageType.SUCCESS.wrap("Username updated successfully")
-                    );
-                } catch (SQLWarning e) {
-                    contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
-                } catch (SQLException e) {
-                    contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
-                }
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.SUCCESS.wrap("Username updated successfully")
+                );
+            } catch (SQLWarning e) {
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
+            } catch (SQLException e) {
+                contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
+            } finally {
+                sendRedirect(request, response, "/account");
             }
-            sendRedirect(request, response, "/account");
         }
     }
 
-    @WebServlet("/account/update-password")
+    @WebServlet("/account/update/password")
     public static class UpdatePasswordServlet extends ThymeleafHTTPServlet {
 
         @Override
         public void doPost(HttpServletRequest request, HttpServletResponse response) {
-            if (
-                !request
-                    .getParameter("new-password")
-                    .equals(request.getParameter("confirm-new-password"))
-            ) {
-                contextAttributes.setFlash(
-                    "message",
-                    MessageType.WARNING.wrap("New password and confirmation do not match")
-                );
-            } else if (
-                request.getParameter("new-password").isEmpty() ||
-                request.getParameter("confirm-new-password").isEmpty() ||
-                request.getParameter("password").isEmpty()
-            ) {
-                contextAttributes.setFlash(
-                    "message",
-                    MessageType.WARNING.wrap("Password cannot be empty")
-                );
-            } else {
-                try {
-                    userDataAccessObject.updatePassword(
-                        ((User) request.getSession().getAttribute("user")).getUsername(),
-                        request.getParameter("password"),
-                        request.getParameter("new-password")
-                    );
-                    contextAttributes.setFlash(
-                        "message",
-                        MessageType.SUCCESS.wrap("Password updated successfully")
-                    );
-                } catch (SQLWarning e) {
-                    contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
-                } catch (SQLException e) {
-                    contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
+            try {
+                checkAllRequiredParams(request, response, "new-password", "password");
+                if (
+                    !request
+                        .getParameter("new-password")
+                        .equals(request.getParameter("confirm-new-password"))
+                ) {
+                    throw new SQLWarning("The two provided passwords are not equal");
                 }
+                userDataAccessObject.updatePassword(
+                    ((User) request.getSession().getAttribute("user")).getUsername(),
+                    request.getParameter("password"),
+                    request.getParameter("new-password")
+                );
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.SUCCESS.wrap("Password updated successfully")
+                );
+            } catch (SQLWarning e) {
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
+            } catch (SQLException e) {
+                contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
+            } finally {
+                sendRedirect(request, response, "/account");
             }
-            sendRedirect(request, response, "/account");
         }
     }
 
-    @WebServlet("/account/update-details")
+    @WebServlet("/account/update/details")
     public static class UpdateManagerServlet extends ThymeleafHTTPServlet {
 
         @Override
         public void doPost(HttpServletRequest request, HttpServletResponse response) {
-            if (
-                request.getParameter("name").isEmpty() ||
-                request.getParameter("surname").isEmpty() ||
-                request.getParameter("country").isEmpty() ||
-                request.getParameter("zip-code").isEmpty() ||
-                request.getParameter("city").isEmpty() ||
-                request.getParameter("street").isEmpty() ||
-                request.getParameter("street-number").isEmpty()
-            ) {
+            try {
+                checkAllRequiredParams(
+                    request,
+                    response,
+                    "name",
+                    "surname",
+                    "country",
+                    "zip-code",
+                    "city",
+                    "street",
+                    "street-number"
+                );
+
+                if (Integer.parseInt(request.getParameter("street-number")) < 1) {
+                    throw new SQLWarning("Street number must be a positive number");
+                }
+
+                if (
+                    Integer.parseInt(request.getParameter("zip-code")) < 10000 ||
+                    Integer.parseInt(request.getParameter("zip-code")) > 99999
+                ) {
+                    throw new SQLWarning("Zip code must be a positive 5 digit number ");
+                }
+
+                User new_user = new User(
+                    ((User) request.getSession().getAttribute("user")).getUsername(),
+                    request.getParameter("name"),
+                    request.getParameter("surname"),
+                    new Address(
+                        request.getParameter("country"),
+                        Integer.parseInt(request.getParameter("zip-code")),
+                        request.getParameter("city"),
+                        request.getParameter("street"),
+                        Integer.parseInt(request.getParameter("street-number"))
+                    )
+                );
+
+                userDataAccessObject.updateAccountDetails(new_user);
+                request.getSession().setAttribute("user", new_user);
                 contextAttributes.setFlash(
                     "message",
-                    MessageType.WARNING.wrap("All fields must be filled")
+                    MessageType.SUCCESS.wrap("Account details updated successfully")
                 );
-            } else {
-                try {
-                    if (Integer.parseInt(request.getParameter("street-number")) < 1) {
-                        contextAttributes.setFlash(
-                            "message",
-                            MessageType.WARNING.wrap("Street number must be a positive number")
-                        );
-                    } else if (
-                        Integer.parseInt(request.getParameter("zip-code")) < 10000 ||
-                        Integer.parseInt(request.getParameter("zip-code")) > 99999
-                    ) {
-                        contextAttributes.setFlash(
-                            "message",
-                            MessageType.WARNING.wrap("Zip code must be a positive 5 digit number ")
-                        );
-                    } else {
-                        User new_user = new User(
-                            ((User) request.getSession().getAttribute("user")).getUsername(),
-                            request.getParameter("name"),
-                            request.getParameter("surname"),
-                            new Address(
-                                request.getParameter("country"),
-                                Integer.parseInt(request.getParameter("zip-code")),
-                                request.getParameter("city"),
-                                request.getParameter("street"),
-                                Integer.parseInt(request.getParameter("street-number"))
-                            )
-                        );
-                        userDataAccessObject.updateAccountDetails(new_user);
-                        contextAttributes.setFlash(
-                            "message",
-                            MessageType.SUCCESS.wrap("Account details updated successfully")
-                        );
-                        request.getSession().setAttribute("user", new_user);
-                    }
-                } catch (SQLException e) {
-                    contextAttributes.setFlash(
-                        "message",
-                        "Something went wrong while updating your details. " +
-                        MessageType.ERROR.wrap(e.getMessage())
-                    );
-                } catch (NumberFormatException e) {
-                    contextAttributes.setFlash(
-                        "message",
-                        MessageType.WARNING.wrap("Street number and zip code must be numbers")
-                    );
-                }
+            } catch (NumberFormatException e) {
+                contextAttributes.setFlash(
+                    "message",
+                    MessageType.WARNING.wrap("Street number and zip code must be numbers")
+                );
+            } catch (SQLWarning e) {
+                contextAttributes.setFlash("message", MessageType.WARNING.wrap(e.getMessage()));
+            } catch (SQLException e) {
+                contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
+            } finally {
+                sendRedirect(request, response, "/account");
             }
-            sendRedirect(request, response, "/account");
         }
     }
 }
