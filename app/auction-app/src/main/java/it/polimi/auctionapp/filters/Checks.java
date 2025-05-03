@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class Checks {
 
-    @WebFilter(urlPatterns = { "/buy/*", "/sell/*" })
+    @WebFilter(urlPatterns = { "/buy/*", "/sell/*", "/account/update/*" })
     public static class LoginFilter implements Filter {
 
         @Override
@@ -22,16 +22,16 @@ public class Checks {
             HttpSession session = req.getSession(false);
 
             if (session == null || session.isNew() || session.getAttribute("user") == null) {
-                ((HttpServletRequest) request).getSession()
+                req
+                    .getSession()
                     .setAttribute(
-                        "message",
+                        "FLASH_message",
                         MessageType.INFO.wrap(
-                            "To " +
-                            req.getRequestURI().split("/")[2] +
-                            " items, log in or sign up first."
+                            "You were redirected here from " +
+                            req.getRequestURI().substring(req.getContextPath().length()) +
+                            ". Please log in to continue."
                         )
                     );
-                //FIXME
                 req.getSession().setAttribute("from", req.getRequestURI().split("/")[2]);
                 res.sendRedirect(req.getServletContext().getContextPath() + "/account");
                 return;

@@ -11,7 +11,8 @@ import java.util.List;
 
 public class AuctionDAO {
 
-    static final ProductDAO productDataAccessObject = new ProductDAO();
+    static ProductDAO productDataAccessObject = new ProductDAO();
+    static BidDao bidDataAccessObject = new BidDao();
 
     public void checkAuctionExists(Integer auction_id) throws SQLException {
         String query = "SELECT * FROM auctions WHERE auction_id = ?";
@@ -20,7 +21,7 @@ public class AuctionDAO {
         preparedStatement.setInt(1, auction_id);
         ResultSet result = preparedStatement.executeQuery();
         if (!result.next()) {
-            throw new SQLWarning("Auction does not exist");
+            throw new SQLWarning("Auction does not exist. ");
         }
     }
 
@@ -32,7 +33,7 @@ public class AuctionDAO {
         preparedStatement.setString(2, username);
         ResultSet result = preparedStatement.executeQuery();
         if (!result.next()) {
-            throw new SQLWarning("Auction does not exist or is not owned by the user");
+            throw new SQLWarning("Auction does not exist or is not owned by the user. ");
         }
     }
 
@@ -64,7 +65,7 @@ public class AuctionDAO {
             }
             preparedStatement.close(); // FIXME close all prepared statements
         } catch (SQLException e) {
-            throw new SQLException(e);
+            throw new SQLException("There was a problem creating the auction: " + e.getMessage());
         }
         return null;
     }
@@ -78,7 +79,11 @@ public class AuctionDAO {
             .prepareStatement(query);
         preparedStatement.setBoolean(1, true);
         preparedStatement.setInt(2, auction_id);
-        preparedStatement.executeUpdate();
+        try {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException("There was a problem closing the auction: " + e.getMessage());
+        }
     }
 
     public void deleteAuction(Integer auction_id) throws SQLException {
@@ -87,7 +92,11 @@ public class AuctionDAO {
             .prepareStatement(query);
         preparedStatement.setInt(1, auction_id);
         preparedStatement.executeUpdate();
-        preparedStatement.close(); // Ensure the statement is closed
+        try {
+            preparedStatement.close(); // Ensure the statement is closed
+        } catch (SQLException e) {
+            throw new SQLException("There was a problem deleting the auction: " + e.getMessage());
+        }
     }
 
     public List<Auction> getAuctionsBySeller(String seller_username) throws SQLException {
@@ -110,7 +119,7 @@ public class AuctionDAO {
                     result.getTimestamp("final_bid_submission_time"),
                     result.getInt("min_bid_increment"),
                     result.getBoolean("closed"),
-                    getCurrentHighestBid(result.getInt("auction_id")),
+                    bidDataAccessObject.getCurrentHighestBid(result.getInt("auction_id")),
                     productDataAccessObject.getProductsByAuction(result.getInt("auction_id"))
                 )
             );
@@ -136,35 +145,13 @@ public class AuctionDAO {
                 result.getTimestamp("final_bid_submission_time"),
                 result.getInt("min_bid_increment"),
                 result.getBoolean("closed"),
-                getCurrentHighestBid(result.getInt("auction_id")),
+                bidDataAccessObject.getCurrentHighestBid(result.getInt("auction_id")),
                 productDataAccessObject.getProductsByAuction(result.getInt("auction_id"))
             );
         } else {
-            throw new SQLException("There is no auction with id " + auction_id);
+            throw new SQLException("There is no auction with id " + auction_id + ".");
         }
         return auction;
-    }
-
-    public Bid getCurrentHighestBid(Integer auction_id) throws SQLException {
-        String query =
-            "SELECT auction_id, bidder_username, bid_amount, bid_timestamp FROM bids " +
-            " WHERE auction_id = ? AND bid_amount =" +
-            " (SELECT MAX(bid_amount) FROM bids b2 WHERE b2.auction_id=?)" +
-            "ORDER BY bid_timestamp DESC";
-        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
-            .prepareStatement(query);
-        preparedStatement.setInt(1, auction_id);
-        preparedStatement.setInt(2, auction_id);
-        ResultSet result = preparedStatement.executeQuery();
-        if (result.next()) {
-            return new Bid(
-                auction_id,
-                result.getString("bidder_username"),
-                result.getFloat("bid_amount"),
-                result.getTimestamp("bid_timestamp")
-            );
-        }
-        return null;
     }
 
     public List<Bid> getBidsByAuction(Integer auction_id) throws SQLException {
@@ -201,7 +188,9 @@ public class AuctionDAO {
                 " OR ",
                 keywords
                     .stream()
-                    .map(keyword -> "(p.name LIKE ? OR p.description LIKE ?)")
+                    .map(keyword ->
+                        "(p.name LIKE ? OR p.description LIKE ? OR p.seller_username LIKE ?)"
+                    )
                     .toArray(String[]::new)
             ) +
             ") ORDER BY a.final_bid_submission_time ASC";
@@ -210,6 +199,7 @@ public class AuctionDAO {
 
         int index = 1;
         for (String keyword : keywords) {
+            preparedStatement.setString(index++, "%" + keyword + "%");
             preparedStatement.setString(index++, "%" + keyword + "%");
             preparedStatement.setString(index++, "%" + keyword + "%");
         }
@@ -224,30 +214,12 @@ public class AuctionDAO {
                     result.getTimestamp("final_bid_submission_time"),
                     result.getInt("min_bid_increment"),
                     result.getBoolean("closed"),
-                    getCurrentHighestBid(result.getInt("auction_id")),
+                    bidDataAccessObject.getCurrentHighestBid(result.getInt("auction_id")),
                     productDataAccessObject.getProductsByAuction(result.getInt("auction_id"))
                 )
             );
         }
-
-        if (auctions.isEmpty()) {
-            throw new SQLException("There are no auctions matching the provided keywords");
-        }
-
         return auctions;
-    }
-
-    public void placeBid(Integer auction_id, String bidder_username, Float bid_amount)
-        throws SQLException {
-        String query =
-            "INSERT INTO bids(auction_id, bidder_username, bid_amount, bid_timestamp) " +
-            "VALUES(?, ?, ?, CURRENT_TIMESTAMP)";
-        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
-            .prepareStatement(query);
-        preparedStatement.setInt(1, auction_id);
-        preparedStatement.setString(2, bidder_username);
-        preparedStatement.setFloat(3, bid_amount);
-        preparedStatement.executeUpdate();
     }
 
     public List<Auction> getAuctionsWonBy(String username) throws SQLException {
@@ -276,11 +248,25 @@ public class AuctionDAO {
                     result.getTimestamp("final_bid_submission_time"),
                     result.getInt("min_bid_increment"),
                     result.getBoolean("closed"),
-                    getCurrentHighestBid(result.getInt("auction_id")),
+                    bidDataAccessObject.getCurrentHighestBid(result.getInt("auction_id")),
                     productDataAccessObject.getProductsByAuction(result.getInt("auction_id"))
                 )
             );
         }
         return auctions;
+    }
+
+    public String getCurrentShippingAddressForAuction(Integer auction_id) throws SQLException {
+        String query =
+            "SELECT s.auction_id, s.address " +
+            "FROM shipping_addresses s " +
+            "WHERE s.auction_id = ?";
+        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
+            .prepareStatement(query);
+        preparedStatement.setInt(1, auction_id);
+        ResultSet result = preparedStatement.executeQuery();
+        if (result.next()) {
+            return result.getString(2);
+        } else return null;
     }
 }

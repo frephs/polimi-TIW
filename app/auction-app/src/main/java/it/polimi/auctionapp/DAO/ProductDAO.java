@@ -19,7 +19,7 @@ public class ProductDAO {
         preparedStatement.setInt(1, product_id);
         ResultSet result = preparedStatement.executeQuery();
         if (!result.next()) {
-            throw new SQLWarning("Product does not exist");
+            throw new SQLWarning("Product does not exist. ");
         }
     }
 
@@ -31,7 +31,7 @@ public class ProductDAO {
         preparedStatement.setString(2, username);
         ResultSet result = preparedStatement.executeQuery();
         if (!result.next()) {
-            throw new SQLWarning("Product does not exist or is not owned by the user");
+            throw new SQLWarning("Product does not exist or is not owned by the user. ");
         }
     }
 
@@ -54,7 +54,7 @@ public class ProductDAO {
         try {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("There was a problem adding the product" + e.getMessage());
+            throw new SQLException("There was a problem adding the product: " + e.getMessage());
         }
     }
 
@@ -124,7 +124,7 @@ public class ProductDAO {
         try {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("There was a problem updating the product", e.getMessage());
+            throw new SQLException("There was a problem updating the product: " + e.getMessage());
         }
     }
 
@@ -137,7 +137,7 @@ public class ProductDAO {
         try {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("There was a problem updating the product", e.getMessage());
+            throw new SQLException("There was a problem updating the product: " + e.getMessage());
         }
     }
 
@@ -149,7 +149,7 @@ public class ProductDAO {
         try {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("There was a problem deleting the product", e.getMessage());
+            throw new SQLException("There was a problem deleting the product: " + e.getMessage());
         }
     }
 
@@ -164,7 +164,9 @@ public class ProductDAO {
         try {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("There was a problem adding a product to your ", e);
+            throw new SQLException(
+                "There was a problem changing your product's auction: " + e.getMessage()
+            );
         }
     }
 
