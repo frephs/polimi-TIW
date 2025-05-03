@@ -16,17 +16,7 @@
     <body>
         <header></header>
         <nav>
-            <div
-                style="
-                    position: absolute;
-                    top: 15px;
-                    left: 60px;
-                    color: #2b2b2b;
-                    background-color: #e2e2e2;
-                    padding: 5px 10px;
-                    border-radius: 10px;
-                "
-            >
+            <div id="logo">
                 <a th:href="@{/}">
                     Your
                     <span class="gradient">Auction</span>
@@ -94,11 +84,16 @@
                                 <tbody>
                                     <tr th:each="product: ${auction.getProducts()}">
                                         <form
-                                            th:action="@{/product/edit/{id}(id=${product.getId()})}"
+                                            th:action="@{/sell/product/edit/}"
                                             enctype="multipart/form-data"
                                             method="post"
                                         >
                                             <td>
+                                                <input
+                                                    type="hidden"
+                                                    name="id"
+                                                    th:value="${product.getId()}"
+                                                />
                                                 <input
                                                     type="text"
                                                     name="product-name"
@@ -256,6 +251,10 @@
                                 th:text="${auction.getCurrentHighestBid().getFormattedBidTimestamp()}"
                             ></span>
                         </p>
+                        <p th:if="${closed_auction_shipping_address}">
+                            Items will be sent to
+                            <span th:text="${closed_auction_shipping_address}"></span>
+                        </p>
                     </div>
                 </div>
 
@@ -292,10 +291,8 @@
                             has been placed.
                         </p>
                         <p>Once the auction is closed, it cannot be reopened.</p>
-                        <form
-                            th:action="@{'/auction/close/' + ${auction.getId()}}"
-                            method="post"
-                        >
+                        <form th:action="@{/sell/auction/close/}" method="post">
+                            <input type="hidden" name="id" th:value="${auction.getId()}" />
                             <button
                                 name="auction-close-id"
                                 th:disabled="${!auction.canBeClosed()}"
@@ -310,10 +307,8 @@
                         <legend>Delete auction</legend>
                         <p>An auction can be deleted up until there are no bids placed.</p>
                         <p>Once an auction is deleted, it cannot be recovered.</p>
-                        <form
-                            th:action="@{'/auction/delete/' + ${auction.getId()}}"
-                            method="post"
-                        >
+                        <form th:action="@{/sell/auction/delete/}" method="post">
+                            <input type="hidden" name="id" th:value="${auction.getId()}" />
                             <button
                                 type="submit"
                                 class="destructive"

@@ -1,190 +1,310 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Account details</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" th:href="@{styles/style.css}" />
+        <link rel="stylesheet" th:href="@{styles/main.css}" />
+        <link rel="icon" th:href="@{icon.png}" />
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+            rel="stylesheet"
+        />
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Account details</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{styles/style.css}">
-    <link rel="stylesheet" th:href="@{styles/main.css}">
-    <link rel="icon" th:href="@{icon.png}">
-    <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-        rel="stylesheet"
-    />
-</head>
-
-<body>
-    <header>
-    </header>
-    <nav>
-        <div
-            style="position: absolute; top: 15px; left: 60px; color:#2b2b2b; background-color: #e2e2e2; padding: 5px 10px; border-radius: 10px;">
-            <a th:href="@{/}">Your<span class="gradient">Auction</span></a>
-        </div>
-        <ul>
-            <li>
-                <a th:href="@{/}">Home</a>
-            </li>
-            <li>
-                <a th:href="@{/sell}">Sell</a>
-            </li>
-            <li>
-                <a th:href="@{/buy}">Buy</a>
-            </li>
-            <li>
-                <a th:href="@{/account}">YourAccount</a>
-            </li>
-        </ul>
-    </nav>
-    <main>
-        <section id="messages">
-            <div class="message" th:if="${session.FLASH_message}" th:utext="${session.FLASH_message}">
-                
+    <body>
+        <header></header>
+        <nav>
+            <div id="logo">
+                <a th:href="@{/}">
+                    Your
+                    <span class="gradient">Auction</span>
+                </a>
             </div>
-        </section>
-        <section id="breadcrumb">
-            <div class="breadcrumb" th:if="${breadcrumb}" th:utext="${breadcrumb}">
+            <ul>
+                <li>
+                    <a th:href="@{/}">Home</a>
+                </li>
+                <li>
+                    <a th:href="@{/sell}">Sell</a>
+                </li>
+                <li>
+                    <a th:href="@{/buy}">Buy</a>
+                </li>
+                <li>
+                    <a th:href="@{/account}">YourAccount</a>
+                </li>
+            </ul>
+        </nav>
+        <main>
+            <section id="messages">
+                <div
+                    class="message"
+                    th:if="${session.FLASH_message}"
+                    th:utext="${session.FLASH_message}"
+                ></div>
+            </section>
 
-            </div>
-        </section>
-        <section id="logout">
-            <h1>Hello <span style="font-style: italic;" th:text="${session.user.getName()}"></span></h1>
-            <form action="account/logout" method="post">
-                <button style="float:right;" class="destructive" type="submit">Logout</button>
-            </form>
-            <p>Welcome to YourAuctions</p>
-            <p>If you want to change accounts or if this is not you, please log out.</p>
-        </section>
-        <section id="account-details">
-            <h2>Account details</h2>
-            <p>Dear, <span th:text="${session.user.getUsername()}"></span> in this section, you can viw update your account details.</p>
-            <div class="flex-row">
-                <form action="account/update-username" method="post">
-                    <fieldset style="display: block;">
-                        <legend>Update your username</legend>
-                        <label for="username">Username:</label>
-                        <input id="username" type="text" th:value="${session.user.getUsername()}" disabled>
-                        <label for="new-username">New username</label>
-                        <input id="new-username" type="text" placeholder="New username" name="new-username" required>
-                        <label for="update-user-name-password">Password</label>
-                        <input id="update-user-name-password" type="password" placeholder="Password" name="password" required>
-                        <button style="float: right;" type="submit">Update</button>
-                    </fieldset>
+            <section id="breadcrumb">
+                <div class="breadcrumb" th:if="${breadcrumb}" th:utext="${breadcrumb}"></div>
+            </section>
+
+            <section id="logout">
+                <h1>
+                    Hello
+                    <span style="font-style: italic" th:text="${session.user.getName()}"></span>
+                </h1>
+                <form th:action="@{account/logout}" method="post">
+                    <button style="float: right" class="destructive" type="submit">Logout</button>
                 </form>
-                <form action="account/update-password" method="post">
-                    <fieldset style="display: block;">
-                        <legend>
-                            Update your password
-                        </legend>
-                        <label for="password">Current password:</label>
-                        <input id="password" type="password" placeholder="Password" name="password" required>
-                        <label for="new-password">New password:</label>
-                        <input id="new-password" type="password" placeholder="New password" name="new-password" required>
-                        <label for="confirm-new-password">Confirm new password:</label>
-                        <input id="confirm-new-password" type="password" placeholder="Confirm new password" name="confirm-new-password" required>
+                <p>Welcome to YourAuctions</p>
+                <p>If you want to change accounts or if this is not you, please log out.</p>
+            </section>
 
-                        <button style="float: right;" type="submit">Update</button>
+            <section id="account-details">
+                <h2>Account details</h2>
+                <p>
+                    Dear,
+                    <span th:text="${session.user.getUsername()}"></span>
+                    in this section, you can viw update your account details.
+                </p>
+                <div class="flex-row">
+                    <form th:action="@{/account/update/username}" method="post">
+                        <fieldset style="display: block">
+                            <legend>Update your username</legend>
+                            <label for="username">Username:</label>
+                            <input
+                                id="username"
+                                type="text"
+                                th:value="${session.user.getUsername()}"
+                                disabled
+                            />
+                            <label for="new-username">New username</label>
+                            <input
+                                id="new-username"
+                                type="text"
+                                placeholder="New username"
+                                name="new-username"
+                                required
+                            />
+                            <label for="update-user-name-password">Password</label>
+                            <input
+                                id="update-user-name-password"
+                                type="password"
+                                placeholder="Password"
+                                name="password"
+                                required
+                            />
+                            <button style="float: right" type="submit">Update</button>
+                        </fieldset>
+                    </form>
 
-                    </fieldset>
-                </form>
-                <form action="account/update-details" method="post"
-                    style="display: flex; flex-direction: row; gap:40px">
-                    <fieldset style="display: block;">
-                        <legend>
-                            Update your details
-                        </legend>
+                    <form th:action="@{/account/update/password}" method="post">
+                        <fieldset style="display: block">
+                            <legend>Update your password</legend>
+                            <label for="password">Current password:</label>
+                            <input
+                                id="password"
+                                type="password"
+                                placeholder="Password"
+                                name="password"
+                                required
+                            />
+                            <label for="new-password">New password:</label>
+                            <input
+                                id="new-password"
+                                type="password"
+                                placeholder="New password"
+                                name="new-password"
+                                required
+                            />
+                            <label for="confirm-new-password">Confirm new password:</label>
+                            <input
+                                id="confirm-new-password"
+                                type="password"
+                                placeholder="Confirm new password"
+                                name="confirm-new-password"
+                                required
+                            />
 
-                        <label for="name">Name:</label>
-                        <input id="name" type="text" name="name" th:value="${session.user.getName()}" required>
-                        <label for="surname">Surname:</label>
-                        <input id="surname" type="text" name="surname" th:value="${session.user.getSurname()}" required>
-                        <button style="float:right;" type="submit">Update</button>
-                    </fieldset>
-                    </fieldset>
-                    <fieldset style="display: block;">
-                        <legend>
-                            Update your address
-                        </legend>
+                            <button style="float: right" type="submit">Update</button>
+                        </fieldset>
+                    </form>
 
-                        <label for="country">Country:</label>
-                        <input id="country" name="country" type="text" th:value="${session.user.getAddress().getCountry()}" required>
+                    <form
+                        th:action="@{/account/update/details}"
+                        method="post"
+                        style="display: flex; flex-direction: row; gap: 40px"
+                    >
+                        <fieldset style="display: block">
+                            <legend>Update your details</legend>
 
-                        <label for="zip-code">Zip Code:</label>
-                        <input id="zip-code" name="zip-code" type="number" th:value="${session.user.getAddress().getZipCode()}"
-                            required>
-                        <label for="city">City:</label>
-                        <input id="city" name="city" type="text" th:value="${session.user.getAddress().getCity()}" required>
-                        <label for="street">Street:</label>
-                        <input id="street" name="street" type="text" th:value="${session.user.getAddress().getStreet()}" required>
-                        <label for="street-number">Street Number:</label>
-                        <input id="street-number" name="street-number" type="number" th:value="${session.user.getAddress().getStreetNumber()}" required>
+                            <label for="name">Name:</label>
+                            <input
+                                id="name"
+                                type="text"
+                                name="name"
+                                th:value="${session.user.getName()}"
+                                required
+                            />
+                            <label for="surname">Surname:</label>
+                            <input
+                                id="surname"
+                                type="text"
+                                name="surname"
+                                th:value="${session.user.getSurname()}"
+                                required
+                            />
+                            <button style="float: right" type="submit">Update</button>
+                        </fieldset>
+                        <fieldset style="display: block">
+                            <legend>Update your address</legend>
 
-                        <button type="submit" style="float:right">Update</button>
+                            <label for="country">Country:</label>
+                            <input
+                                id="country"
+                                name="country"
+                                type="text"
+                                th:value="${session.user.getAddress().getCountry()}"
+                                required
+                            />
 
-                    </fieldset>
-                </form>
-            </div>
-        </section>
-        <section id="caution-zone">
-            <h2>Caution zone</h2>
-            <p>In this section you can delete all things related to your account. These actions are irreversible.</p>
-            <div class="flex-row">
-                <form action="account/delete" method="post">
-                    <fieldset class="destructive" style="display: block">
-                        <legend>
-                            Delete account
-                        </legend>
-                        <div class="warning" style="max-width: 500px">
-                            <p>Are you sure you want to delete your account? <br> This action is irreversible.</p>
-                        </div>
-                        <div class="flex-row" style="align-items: center;">
-                            <input id="delete-account-checkbox" type="checkbox" class="destructive" required>
-                            <label for="delete-account-checkbox">I understand that this action is irreversible</label>
-                        </div>
-                        <label for="delete-password">Password:</label>
-                        <input id="delete-password" type="password" placeholder="Password" required
-                            style="max-width: 400px" class="destructive" name="password">
-                        <button class="destructive" type="submit">Delete account</button>
-                    </fieldset>
-                </form>
-                <form action="auction/delete-all" method="post">
-                    <fieldset class="destructive" style="display: block">
-                        <legend>
-                            Delete all your auctions
-                        </legend>
-                        <div class="warning" style="max-width: 500px">
-                            <p>Are you sure you want to delete all your auctions? <br> This action is irreversible.</p>
-                        </div>
-                        <div class="flex-row" style="align-items: center;">
-                            <input id="delete-auctions-checkbox" type="checkbox" class="destructive" required>
-                            <label for="delete-auctions-checkbox">I understand that this action is irreversible</label>
-                        </div>
-                        <button class="destructive" type="submit">Delete all auctions</button>
-                    </fieldset>
-                </form>
-                <form action="product/delete-all" method="post">
-                    <fieldset class="destructive" style="display: block">
-                        <legend>
-                            Delete all your products
-                        </legend>
-                        <div class="warning" style="max-width: 500px">
-                            <p>Are you sure you want to delete all your products? <br> This action is irreversible.</p>
-                        </div>
-                        <div class="flex-row" style="align-items: center;">
-                            <input id="delete-products-checkbox" type="checkbox" class="destructive" required>
-                            <label for="delete-products-checkbox">I understand that this action is irreversible</label>
-                        </div>
-                        <button class="destructive" type="submit">Delete all products</button>
-                    </fieldset>
-                </form>
-            </div>
-        </section>
+                            <label for="zip-code">Zip Code:</label>
+                            <input
+                                id="zip-code"
+                                name="zip-code"
+                                type="number"
+                                th:value="${session.user.getAddress().getZipCode()}"
+                                required
+                            />
+                            <label for="city">City:</label>
+                            <input
+                                id="city"
+                                name="city"
+                                type="text"
+                                th:value="${session.user.getAddress().getCity()}"
+                                required
+                            />
+                            <label for="street">Street:</label>
+                            <input
+                                id="street"
+                                name="street"
+                                type="text"
+                                th:value="${session.user.getAddress().getStreet()}"
+                                required
+                            />
+                            <label for="street-number">Street Number:</label>
+                            <input
+                                id="street-number"
+                                name="street-number"
+                                type="number"
+                                th:value="${session.user.getAddress().getStreetNumber()}"
+                                required
+                            />
 
-    </main>
-    <footer>
-        <p>&copy; 2025 YourAuction. All rights reserved.</p>
-    </footer>
-</body>
+                            <button type="submit" style="float: right">Update</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </section>
+            <section id="caution-zone">
+                <h2>Caution zone</h2>
+                <p>
+                    In this section you can delete all things related to your account. These actions
+                    are irreversible.
+                </p>
+                <div class="flex-row">
+                    <form th:action="@{account/update/delete}" method="post">
+                        <fieldset class="destructive" style="display: block">
+                            <legend>Delete account</legend>
+                            <div class="warning" style="max-width: 500px">
+                                <p>
+                                    Are you sure you want to delete your account?
+                                    <br />
+                                    This action is irreversible.
+                                </p>
+                            </div>
+                            <div class="flex-row" style="align-items: center">
+                                <input
+                                    id="delete-account-checkbox"
+                                    type="checkbox"
+                                    class="destructive"
+                                    required
+                                />
+                                <label for="delete-account-checkbox">
+                                    I understand that this action is irreversible
+                                </label>
+                            </div>
+                            <label for="delete-password">Password:</label>
+                            <input
+                                id="delete-password"
+                                type="password"
+                                placeholder="Password"
+                                required
+                                style="max-width: 400px"
+                                class="destructive"
+                                name="password"
+                            />
+                            <button class="destructive" type="submit">Delete account</button>
+                        </fieldset>
+                    </form>
 
+                    <form action="/sell/auction/delete-all" method="post">
+                        <fieldset class="destructive" style="display: block">
+                            <legend>Delete all your auctions</legend>
+                            <div class="warning" style="max-width: 500px">
+                                <p>
+                                    Are you sure you want to delete all your auctions?
+                                    <br />
+                                    This action is irreversible.
+                                </p>
+                            </div>
+                            <div class="flex-row" style="align-items: center">
+                                <input
+                                    id="delete-auctions-checkbox"
+                                    type="checkbox"
+                                    class="destructive"
+                                    required
+                                />
+                                <label for="delete-auctions-checkbox">
+                                    I understand that this action is irreversible
+                                </label>
+                            </div>
+                            <button class="destructive" type="submit">Delete all auctions</button>
+                        </fieldset>
+                    </form>
+
+                    <form action="product/delete-all" method="post">
+                        <fieldset class="destructive" style="display: block">
+                            <legend>Delete all your products</legend>
+                            <div class="warning" style="max-width: 500px">
+                                <p>
+                                    Are you sure you want to delete all your products?
+                                    <br />
+                                    This action is irreversible.
+                                </p>
+                            </div>
+                            <div class="flex-row" style="align-items: center">
+                                <input
+                                    id="delete-products-checkbox"
+                                    type="checkbox"
+                                    class="destructive"
+                                    required
+                                />
+                                <label for="delete-products-checkbox">
+                                    I understand that this action is irreversible
+                                </label>
+                            </div>
+                            <button class="destructive" type="submit">Delete all products</button>
+                        </fieldset>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 YourAuction. All rights reserved.</p>
+        </footer>
+    </body>
 </html>

@@ -16,17 +16,7 @@
     <body>
         <header></header>
         <nav>
-            <div
-                style="
-                    position: absolute;
-                    top: 15px;
-                    left: 60px;
-                    color: #2b2b2b;
-                    background-color: #e2e2e2;
-                    padding: 5px 10px;
-                    border-radius: 10px;
-                "
-            >
+            <div id="logo">
                 <a th:href="@{/}">
                     Your
                     <span class="gradient">Auction</span>
@@ -57,6 +47,7 @@
                     th:utext="${session.FLASH_message}"
                 ></div>
             </section>
+
             <section id="breadcrumb">
                 <div class="breadcrumb" th:if="${breadcrumb}" th:utext="${breadcrumb}"></div>
             </section>
@@ -96,7 +87,7 @@
                 </form>
             </section>
 
-            <section id="auctions" th:if="${auctions!= null and auctions.size() > 0}">
+            <section id="auctions" th:if="${auctions!=null}">
                 <h2>Search Results</h2>
                 <div
                     id="auction-list"
@@ -108,11 +99,24 @@
                         align-content: center;
                         align-items: start;
                     "
+                    th:if="${auctions != null and auctions.size() > 0}"
                 >
                     <div class="auction-card" th:each="auction : ${auctions}">
-                        <div class="auction-card-author">
+                        <div class="auction-card-author" style="margin-left: 10px">
                             Auction by
-                            <span th:text="${ '@' + auction.getSellerUsername()}"></span>
+                            <form th:action="@{/buy/search}" method="get" style="display: inline">
+                                <button type="submit" class="no-style-button">
+                                    <div
+                                        class="auction-card-tag user"
+                                        th:text="${auction.getSellerUsername()}"
+                                    ></div>
+                                    <input
+                                        type="hidden"
+                                        name="q"
+                                        th:value="${auction.getSellerUsername()}"
+                                    />
+                                </button>
+                            </form>
                         </div>
                         <div class="auction-card-detail">
                             <table style="margin-top: 10px">
@@ -198,9 +202,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="warning" th:if="${auctions != null and auctions.size() == 0}">
+                    <p>No auctions found for your search query.</p>
+                </div>
             </section>
             <section id="won-auctions" th:if="${wonAuctions != null and wonAuctions.size() > 0}">
                 <h2>Won Auctions</h2>
+                <div class="winner">
+                    <p>
+                        All the items in this sections are yours! Await the shipment and enjoy your
+                        new products!
+                    </p>
+                </div>
                 <div
                     id="won-auction-list"
                     style="
@@ -227,6 +240,15 @@
                                 <tbody>
                                     <tr th:each="product : ${auction.getProducts()}">
                                         <td th:text="${product.name}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td
+                                            th:if="${closed_auction_shipping_addresses.get(auction.getId())!= null}"
+                                        >
+                                            <span
+                                                th:text="${closed_auction_shipping_addresses.get(auction.getId())}"
+                                            ></span>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>

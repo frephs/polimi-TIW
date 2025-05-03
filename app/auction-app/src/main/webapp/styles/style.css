@@ -26,6 +26,16 @@ html {
     animation: highlight-fade 2s ease-in-out;
 }
 
+#logo {
+    position: absolute;
+    top: 15px;
+    left: 60px;
+    color: #2b2b2b;
+    background-color: #e2e2e2;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+
 @keyframes highlight-fade {
     0% {
         background-color: transparent;
@@ -64,7 +74,7 @@ h2 {
 }
 
 h3 {
-    margin-top:2em;
+    margin-top: 2em;
 }
 
 .gradient {
@@ -207,7 +217,7 @@ table {
 }
 
 .auction-card table {
-    width: 100%;;
+    width: 100%;
 }
 
 table:hover:not(fieldset table:hover, .auction-card table:hover) {
@@ -755,6 +765,7 @@ fieldset .warning {
     align-content: center;
     align-items: center;
     min-height: 100px;
+    flex-direction: column;
 }
 
 .photo-stack {
@@ -879,6 +890,13 @@ fieldset .warning {
 .auction-card-tag:before {
     font-family: 'Font Awesome 6 Free', serif;
     content: '\f002';
+    margin-right: 5px;
+    font-weight: 600;
+}
+
+.auction-card-tag.user:before {
+    font-family: 'Font Awesome 6 Free', serif;
+    content: '\40';
     margin-right: 5px;
     font-weight: 600;
 }

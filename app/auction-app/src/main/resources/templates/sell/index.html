@@ -16,17 +16,7 @@
     <body>
         <header></header>
         <nav>
-            <div
-                style="
-                    position: absolute;
-                    top: 15px;
-                    left: 60px;
-                    color: #2b2b2b;
-                    background-color: #e2e2e2;
-                    padding: 5px 10px;
-                    border-radius: 10px;
-                "
-            >
+            <div id="logo">
                 <a th:href="@{/}">
                     Your
                     <span class="gradient">Auction</span>
@@ -71,7 +61,11 @@
             <section id="Products">
                 <h2>Products</h2>
                 <div class="flex-row">
-                    <form action="product/new" method="post" enctype="multipart/form-data">
+                    <form
+                        th:action="@{/sell/product/new}"
+                        method="post"
+                        enctype="multipart/form-data"
+                    >
                         <fieldset style="display: block">
                             <legend>Add a new product</legend>
                             <label for="name">Product Name:</label>
@@ -137,10 +131,15 @@
                                         th:id="${'product-'+ product.getId()}"
                                     >
                                         <form
-                                            th:action="@{/product/edit/{id}(id=${product.getId()})}"
+                                            th:action="@{/sell/product/edit/}"
                                             enctype="multipart/form-data"
                                             method="post"
                                         >
+                                            <input
+                                                type="hidden"
+                                                name="product-id"
+                                                th:value="${product.getId()}"
+                                            />
                                             <td>
                                                 <input
                                                     type="text"
@@ -240,7 +239,7 @@
                 <div class="flex-row wrap" style="align-items: start">
                     <div style="width: 100%">
                         <h3>Create a new auction</h3>
-                        <form action="auction/new" method="post">
+                        <form th:action="@{/sell/auction/new}" method="post">
                             <div class="flex-row">
                                 <div>
                                     <fieldset style="display: block">
@@ -394,10 +393,12 @@
                                     <span th:text=" ${auction.getRemainingTimeString()}"></span>
                                 </td>
                                 <td>
-                                    <form
-                                        th:action="@{'/auction/close/' + ${auction.getId()}}"
-                                        method="post"
-                                    >
+                                    <form th:action="@{/sell/auction/close/}" method="post">
+                                        <input
+                                            type="hidden"
+                                            name="id"
+                                            th:value="${auction.getId()}"
+                                        />
                                         <button
                                             name="auction-close-id"
                                             th:disabled="${!auction.canBeClosed()}"
@@ -407,10 +408,12 @@
                                             Close Auction
                                         </button>
                                     </form>
-                                    <form
-                                        th:action="@{'/auction/delete/' + ${auction.getId()}}"
-                                        method="post"
-                                    >
+                                    <form th:action="@{/sell/auction/delete/}" method="post">
+                                        <input
+                                            type="hidden"
+                                            name="id"
+                                            th:value="${auction.getId()}"
+                                        />
                                         <button
                                             type="submit"
                                             class="destructive"
@@ -446,7 +449,8 @@
                                 <th>Final bid</th>
                                 <th>End time</th>
                                 <th>Winner</th>
-                                <th>Details</th>
+                                <th>Shipping address</th>
+                                <th>Auction details</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -467,6 +471,21 @@
                                     <span
                                         th:text="${auction.getCurrentHighestBid().getBidderUsername()}"
                                     ></span>
+                                </td>
+
+                                <td
+                                    th:if="${closed_auction_shipping_addresses.get(auction.getId())!= null}"
+                                >
+                                    <span
+                                        th:text="${closed_auction_shipping_addresses.get(auction.getId())}"
+                                    ></span>
+                                </td>
+                                <td
+                                    th:if="${closed_auction_shipping_addresses.get(auction.getId())== null}"
+                                >
+                                    <div class="warning">
+                                        <p>No bids yet.</p>
+                                    </div>
                                 </td>
                                 <td>
                                     <form th:action="@{/sell/auction}" method="get">
