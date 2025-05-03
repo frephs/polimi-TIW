@@ -52,121 +52,72 @@ CREATE TABLE `bids` (
         CONSTRAINT `unique_bid_timestamp` UNIQUE (`auction_id`, `bidder_username`, `bid_timestamp`)
 );
 
-CREATE VIEW `active_auctions` AS
-SELECT
-    a.auction_id,
-    a.seller_username,
-    a.start_time,
-    a.final_bid_submission,
-    a.min_bid_increment,
-    a.closed,
-    p.product_id,
-    p.name,
-    p.description,
-    p.price,
-    p.image_url
-FROM
-    auctions a
-    LEFT JOIN products p ON a.auction_id = p.auction_id
-WHERE
-    a.closed = 0;
+CREATE TABLE shipping_addresses (
+    auction_id INTEGER NOT NULL,
+    address TEXT NOT NULL,
+    PRIMARY KEY (auction_id),
+    FOREIGN KEY (auction_id) REFERENCES auctions (auction_id) ON UPDATE CASCADE ON DELETE CASCADE
+);
 
-CREATE VIEW `active_bids` AS
-SELECT
-    b.auction_id,
-    b.bidder_username,
-    b.bid_price
-FROM
-    bids b
-    JOIN auctions a ON b.auction_id = a.auction_id
-    LEFT JOIN products p ON a.auction_id = p.auction_id
-WHERE
-    a.closed = 0
-    AND b.bid_price = (
-        SELECT
-            MAX(b2.bid_price)
-        FROM
-            bids b2
-        WHERE
-            b2.auction_id = b.auction_id
-    );
 
--- todo: check this trigger
-DELIMITER `~;`;
+DELIMITER `~;`
 
-CREATE TRIGGER prevent_insert_lower_bids BEFORE
-INSERT
-    ON bids FOR EACH ROW BEGIN IF EXISTS (
-        SELECT
-            1
-        FROM
-            bids b
-        WHERE
-            b.auction_id = NEW.auction_id
-            AND b.bid_price >= NEW.bid_price
-    ) THEN SIGNAL SQLSTATE '45000'
-SET
-    MESSAGE_TEXT = 'Bid price must be higher than the current highest bid';
+CREATE TRIGGER enforce_bid_always_higher
+BEFORE INSERT ON bids
+FOR EACH ROW
+BEGIN
+    DECLARE max_bid DECIMAL(10, 2);
+    DECLARE min_increment INTEGER;
+    DECLARE total_price DECIMAL(10, 2);
 
-END IF;
+    -- Get the maximum bid amount for the auction
+    SELECT COALESCE(MAX(bid_amount), 0) INTO max_bid
+    FROM bids
+    WHERE auction_id = NEW.auction_id;
 
+    -- Get the minimum bid increment for the auction
+    SELECT min_bid_increment INTO min_increment
+    FROM auctions
+    WHERE auction_id = NEW.auction_id;
+
+    -- Get the total price of products in the auction
+    SELECT COALESCE(SUM(price), 0) INTO total_price
+    FROM products
+    WHERE auction_id = NEW.auction_id;
+
+    -- Check if the new bid amount is valid
+    IF NEW.bid_amount < GREATEST(max_bid + min_increment, total_price) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'bid amount must be greater than highest bid plus minimum increment or total price of products in the auction';
+    END IF;
 END ~;
 
--- todo: check this trigger
-CREATE TRIGGER prevent_bids_lower_than_increment BEFORE
-INSERT
-    ON bids FOR EACH ROW BEGIN IF EXISTS (
-        SELECT
-            *
-        FROM
-            bids b
-        WHERE
-            b.auction_id = NEW.auction_id
-            AND NEW.bid_price < (
-                SELECT
-                    MAX(b2.bid_price) + a.min_bid_increment
-                FROM
-                    bids b2 NATURAL
-                    JOIN auctions a
-                WHERE
-                    b2.auction_id = NEW.auction_id
-                    AND a.closed = 0
-            )
-    ) THEN SIGNAL SQLSTATE '45000'
-SET
-    MESSAGE_TEXT = "Bid price is lower than the minimum bid increment";
 
-END IF;
 
+CREATE TRIGGER update_or_insert_shipping_address_on_bid
+AFTER INSERT ON bids
+FOR EACH ROW
+BEGIN
+    IF EXISTS (SELECT 1 FROM shipping_addresses WHERE auction_id = NEW.auction_id) THEN
+        UPDATE shipping_addresses
+        SET address = (SELECT CONCAT_WS(', ', u.street, u.street_number, u.city, u.zip_code, u.country)
+                       FROM users u
+                       WHERE u.username = NEW.bidder_username)
+        WHERE auction_id = NEW.auction_id;
+    ELSE
+        INSERT INTO shipping_addresses (auction_id, address)
+        VALUES (NEW.auction_id, 
+                (SELECT CONCAT_WS(', ', u.street, u.street_number, u.city, u.zip_code, u.country)
+                 FROM users u
+                 WHERE u.username = NEW.bidder_username));
+    END IF;
 END ~;
 
--- todo: check this trigger
--- if the auction has no products, the auction is deleted
-CREATE TRIGGER delete_auction_if_no_products
-AFTER
-    DELETE ON products FOR EACH ROW BEGIN
-DELETE FROM
-    auctions
-WHERE
-    auction_id = OLD.auction_id
-    AND NOT EXISTS (
-        SELECT
-            1
-        FROM
-            products
-        WHERE
-            auction_id = OLD.auction_id
-    );
-
-END ~;
-
--- todo: check this trigger
--- if the auction is closed, the product auction_id cannot be changed
-CREATE TRIGGER auction_closed_no_product_changes BEFORE
+CREATE TRIGGER prevent_product_changes_when_auction_closed BEFORE
 UPDATE
     ON products FOR EACH ROW BEGIN IF EXISTS (
         SELECT
-            *
+            auction_id, closed
         FROM
             auctions a
         WHERE
@@ -174,24 +125,73 @@ UPDATE
             AND a.closed = 1
     ) THEN SIGNAL SQLSTATE '45000'
 SET
-    MESSAGE_TEXT = "Cannot change auction_id of a closed auction";
+    MESSAGE_TEXT = "you cannot update a product from a closed auction";
 
 END IF;
 
 END ~;
 
--- Prevent deletion of a user if they are the highest bidder in any auction
--- todo: check this trigger
-CREATE TRIGGER prevent_delete_highest_bidder BEFORE DELETE ON users FOR EACH ROW BEGIN IF EXISTS (
+CREATE TRIGGER prevent_product_price_changes_when_auctioned_with_bids BEFORE
+UPDATE
+    ON products FOR EACH ROW BEGIN IF ( EXISTS (
+        SELECT
+            auction_id, closed
+        FROM
+            auctions a
+        WHERE
+            a.auction_id = OLD.auction_id
+            AND EXISTS (
+                SELECT
+                    1
+                FROM
+                    bids b
+                WHERE
+                    b.auction_id = a.auction_id
+    ))) THEN SIGNAL SQLSTATE '45000'
+SET
+    MESSAGE_TEXT = "you cannot update a product's price when it is auctioned with bids";
+END IF;
+
+END~;
+
+DELIMITER `~;`
+
+
+CREATE TRIGGER prevent_product_auction_changes_when_not_allowed BEFORE
+UPDATE 
+    ON products FOR EACH ROW BEGIN IF(
+        OLD.auction_id IS NOT NULL AND ( EXISTS (
+        SELECT
+            auction_id, closed
+        FROM
+            auctions a
+        WHERE
+            a.auction_id = OLD.auction_id
+            AND EXISTS (
+                SELECT
+                    1
+                FROM
+                    bids b
+                WHERE
+                    b.auction_id = a.auction_id
+            )
+    ) OR (SELECT COUNT(*) FROM products p WHERE p.auction_id = OLD.auction_id) <= 2)) THEN SIGNAL SQLSTATE '45000'
+SET MESSAGE_TEXT = "you cannot update a product's auction when the auction has bids or less than 2 products";
+END IF;
+END ~;
+
+DELIMITER `~;`
+
+CREATE TRIGGER prevent_delete_highest_bidder BEFORE DELETE ON users FOR EACH ROW BEGIN IF( EXISTS (
     SELECT
         *
     FROM
         bids b1
     WHERE
         b1.bidder_username = OLD.username
-        AND b1.bid_price = (
+        AND b1.bid_amount = (
             SELECT
-                MAX(b2.bid_price)
+                MAX(b2.bid_amount)
             FROM
                 bids b2
             WHERE
@@ -206,10 +206,42 @@ CREATE TRIGGER prevent_delete_highest_bidder BEFORE DELETE ON users FOR EACH ROW
                 a.auction_id = b1.auction_id
                 AND a.closed = 0
         )
-) THEN SIGNAL SQLSTATE '45000'
+    )) THEN SIGNAL SQLSTATE '45000'
 SET
-    MESSAGE_TEXT = "Cannot delete user who is the highest bidder in an active auction";
+    MESSAGE_TEXT = "you cannot delete a user who is the highest bidder in an open auction";
+END IF;
+END ~;
 
+
+DELIMITER `~;`
+
+CREATE TRIGGER prevent_delete_auction_with_bids BEFORE DELETE ON auctions FOR EACH ROW BEGIN IF (EXISTS (
+    SELECT
+        *
+    FROM
+        bids b
+    WHERE
+        b.auction_id = OLD.auction_id
+    )) THEN SIGNAL SQLSTATE '45000'
+SET
+    MESSAGE_TEXT = "you cannot delete an auction when it has bids placed already";
 END IF;
 
-END ~;
+END~;
+DELIMITER `~;`
+
+CREATE TRIGGER prevent_closing_auction_with_no_bids 
+BEFORE UPDATE ON auctions 
+FOR EACH ROW 
+BEGIN 
+    IF (NEW.closed = 1 AND NOT EXISTS (
+        SELECT 1 
+        FROM bids 
+        WHERE auction_id = OLD.auction_id
+    )) THEN 
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = "you cannot close an auction that has no bids places";
+    END IF;
+END;
+
+
