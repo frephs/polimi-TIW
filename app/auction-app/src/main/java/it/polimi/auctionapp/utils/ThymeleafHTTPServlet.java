@@ -14,9 +14,8 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
 import java.io.Serial;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.SQLException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ThymeleafHTTPServlet extends HttpServlet {
@@ -65,6 +64,8 @@ public class ThymeleafHTTPServlet extends HttpServlet {
             contextAttributes.clearContext(request);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            contextAttributes.clearContext(request);
         }
     }
 
@@ -78,6 +79,26 @@ public class ThymeleafHTTPServlet extends HttpServlet {
             response.sendRedirect(getServletContext().getContextPath() + path);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (IllegalStateException ignored) {}
+    }
+
+    public void checkAllRequiredParams(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        String... requiredParams
+    ) throws SQLException {
+        List<String> missingParamList = new ArrayList<>();
+        for (String param : requiredParams) {
+            if (request.getParameter(param) == null || request.getParameter(param).isEmpty()) {
+                missingParamList.add(param);
+            }
+        }
+
+        if (!missingParamList.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            throw new SQLException(
+                "Bad request: missing required parameter: " + String.join(", ", missingParamList)
+            );
         }
     }
 
