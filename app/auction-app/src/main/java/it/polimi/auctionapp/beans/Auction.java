@@ -1,11 +1,12 @@
 package it.polimi.auctionapp.beans;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Auction {
+public class Auction implements Serializable {
 
     private Integer id;
     private String seller_username;
