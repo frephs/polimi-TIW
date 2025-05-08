@@ -1,13 +1,10 @@
 package it.polimi.auctionapp.beans;
 
-import it.polimi.auctionapp.utils.SQLConnectionHandler;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class Product {
+public class Product implements Serializable {
 
     private Integer id;
     private String name;
@@ -88,6 +85,4 @@ public class Product {
         }
         return false;
     }
-
-    
 }
