@@ -110,7 +110,7 @@ function createWonAuctionsSection(
         .join('');
 
     wonAuctionsSection.innerHTML = `
-        <h2>Won Auctions</h2>
+        <h2>Won Auctions</h2>2
         <div class="winner">
             <p>All the items in these sections are yours! Await the shipment and enjoy your new products!</p>
         </div>
@@ -126,7 +126,9 @@ function createWonAuctionCard(auction: Auction, shippingAddress: String): string
     const productRows = auction.products
         .map((product: Product) => `<tr><td>${product.name}</td></tr>`)
         .join('');
-    const shippingAddressRow = shippingAddress ? `<tr><td>${shippingAddress}</td></tr>` : '';
+    const shippingAddressRow = shippingAddress
+        ? `<tr><td><b>Shipping: address:</b> ${shippingAddress}</td></tr>`
+        : '';
     const productImages = auction.products
         .map(
             (product: Product) => `<img src="/image/${product.imageFilename}" alt="Product Image">`,
