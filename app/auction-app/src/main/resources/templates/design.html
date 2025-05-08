@@ -262,6 +262,128 @@
                     />
                 </div>
             </section>
+
+            <section id="modal" style="position: relative; display: block; border-radius: 10px">
+                <h1>Modal</h1>
+                <div class="modal" style="border-radius: 10px">
+                    <div class="modal-content" style="max-height: 20vh;">
+                        <div class="close-button"></div>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, quas ipsum.
+                        Vitae asperiores, animi voluptates delectus possimus ratione, labore autem
+                        nostrum alias facilis suscipit incidunt quo in, aperiam dolorem quis?
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate excepturi aliquid sit suscipit voluptates exercitationem asperiores nulla consectetur tempore deleniti itaque similique quidem quo, repellat vitae ex maiores molestiae? Officiis!
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam nesciunt ratione corporis similique nulla possimus sint nisi vitae error, totam ab officiis autem neque dolorem adipisci voluptatem in dolores quos.
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, molestiae libero corporis veritatis temporibus nobis eum aperiam inventore totam architecto culpa facere cum dignissimos ab. Praesentium illo est placeat voluptates.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate excepturi aliquid sit suscipit voluptates exercitationem asperiores nulla consectetur tempore deleniti itaque similique quidem quo, repellat vitae ex maiores molestiae? Officiis!
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam nesciunt ratione corporis similique nulla possimus sint nisi vitae error, totam ab officiis autem neque dolorem adipisci voluptatem in dolores quos.
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, molestiae libero corporis veritatis temporibus nobis eum aperiam inventore totam architecto culpa facere cum dignissimos ab. Praesentium illo est placeat voluptates.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate excepturi aliquid sit suscipit voluptates exercitationem asperiores nulla consectetur tempore deleniti itaque similique quidem quo, repellat vitae ex maiores molestiae? Officiis!
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam nesciunt ratione corporis similique nulla possimus sint nisi vitae error, totam ab officiis autem neque dolorem adipisci voluptatem in dolores quos.
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, molestiae libero corporis veritatis temporibus nobis eum aperiam inventore totam architecto culpa facere cum dignissimos ab. Praesentium illo est placeat voluptates.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate excepturi aliquid sit suscipit voluptates exercitationem asperiores nulla consectetur tempore deleniti itaque similique quidem quo, repellat vitae ex maiores molestiae? Officiis!
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam nesciunt ratione corporis similique nulla possimus sint nisi vitae error, totam ab officiis autem neque dolorem adipisci voluptatem in dolores quos.
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, molestiae libero corporis veritatis temporibus nobis eum aperiam inventore totam architecto culpa facere cum dignissimos ab. Praesentium illo est placeat voluptates.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h1>Tags</h1>
+                <p>
+                    <span class="auction-card-tag">Tag 1</span>
+                    <span class="auction-card-tag">Tag 2</span>
+                    <span class="auction-card-tag user">Tag 3</span>
+                </p>
+            </section>
+
+            <section>
+                <h1>Cards</h1>
+                <div
+                    style="
+                        display: grid;
+                        width: 100%;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 20px;
+                        align-content: center;
+                        align-items: start;
+                    "
+                >
+                    <!-- Sample Auction Card 1 -->
+                    <div class="auction-card">
+                        <div class="auction-card-author" style="margin-left: 10px">
+                            Auction by
+                            <form action="/buy/search" method="get" style="display: inline">
+                                <button type="submit" class="no-style-button">
+                                    <div class="auction-card-tag user">seller123</div>
+                                    <input type="hidden" name="q" value="seller123" />
+                                </button>
+                            </form>
+                        </div>
+                        <div class="auction-card-detail">
+                            <table style="margin-top: 10px">
+                                <thead>
+                                    <tr>
+                                        <th>Starting at:</th>
+                                        <th>Bid increase:</th>
+                                        <th>Time left:</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>€100</td>
+                                        <td>€10</td>
+                                        <td>2h 30m</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <span style="margin-top: 10px"><b>Gallery</b></span>
+                        <div class="photo-stack">
+                            <img
+                                src="https://picsum.photos/1200/900?grayscale&blur=2"
+                                alt="Product 1"
+                            />
+                            <img
+                                src="https://picsum.photos/1200/900?grayscale&blur=2"
+                                alt="Product 2"
+                            />
+                        </div>
+                        <div>
+                            <div class="auction-card-tags">
+                                <form action="/buy/search" method="get" style="display: inline">
+                                    <button type="submit" class="no-style-button">
+                                        <div class="auction-card-tag">Product 1</div>
+                                        <input type="hidden" name="q" value="Product 1" />
+                                    </button>
+                                </form>
+                                <form action="/buy/search" method="get" style="display: inline">
+                                    <button type="submit" class="no-style-button">
+                                        <div class="auction-card-tag">Product 2</div>
+                                        <input type="hidden" name="q" value="Product 2" />
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <div
+                            style="
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                                align-content: center;
+                                margin-top: 20px;
+                            "
+                        >
+                            <form action="/buy/auction" method="get" style="width: calc(100%)">
+                                <button style="width: calc(100% - 25px)" type="submit">Bid</button>
+                                <input type="hidden" name="id" value="1" />
+                            </form>
+                        </div>
+                    </div>
+            </section>
         </main>
         <footer>
             <p>&copy; 2025 YourAuction. All rights reserved.</p>
