@@ -7,3 +7,4 @@ mvnw
 mvn
 mvnw.cmd
 app/auction-app/src/main/resources/it/polimi/auctionapp/utils/config.properties
+app/auction-app/src/main/webapp/scripts/generated
