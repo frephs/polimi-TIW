@@ -1,27 +1,29 @@
-import { Auction, Product } from '../prototypes';
-import { generateWelcomeMessage } from '../utils';
+import { Auction, Product, User } from '../prototypes.js';
+import { generateWelcomeMessage } from '../utils.js';
 
 export function generateBuySection(
     auctions: Auction[],
     wonAuctions: Auction[],
     closedAuctionShippingAddresses: Record<number, string>,
+    user: User,
 ) {
     const container = document.querySelector('section#buy') as HTMLElement;
 
-    container.appendChild(generateWelcomeSection());
+    container.innerHTML = '';
+    container.appendChild(generateWelcomeSection(user));
     container.appendChild(generateSearchResultSection(auctions));
     container.appendChild(createWonAuctionsSection(wonAuctions, closedAuctionShippingAddresses));
 
     return container;
 }
 
-function generateWelcomeSection(): HTMLElement {
+function generateWelcomeSection(user: User): HTMLElement {
     const welcomeSection = document.createElement('section');
     welcomeSection.id = 'buy.welcome';
     welcomeSection.innerHTML = `
-    <p>${generateWelcomeMessage()}</p>
+    <p>${generateWelcomeMessage(user)}</p>
     <p>Welcome to yourAuction platform. Search for products, bid on items, and find great deals!</p>
-        <form style="display: flex; align-items: center; align-content: center;" action="/buy/search" method="get">
+        <form style="display: flex; align-items: center; align-content: center;" action="/yourauction/buy/search" method="get">
             <div style="margin: 50px 200px; display: flex; align-items: center; align-content: center; flex-direction: row;">
                 <input type="text" style="margin-top: 10px;" name="q" id="buy-search-button" placeholder="Search for auctions and items...">
                 <button type="submit">Search</button>
@@ -57,14 +59,28 @@ function generateSearchResultSection(auctions: Auction[]): HTMLElement {
 function createAuctionCard(auction: Auction): string {
     const productImages = auction.products
         .map(
-            (product: Product) => `<img src="/image/${product.imageFilename}" alt="Product Image">`,
+            (product: Product) =>
+                `<img src="/yourauction/image/${product.imageFilename}" alt="Product Image">`,
+        )
+        .join('');
+
+    const productTags = auction.products
+        .map(
+            (product: Product) => `
+                <form action="/yourauction/buy/search" method="get" style="display: inline">
+                    <button type="submit" class="no-style-button">
+                        <div class="auction-card-tag">${product.name}</div>
+                        <input type="hidden" name="q" value="${product.name}">
+                    </button>
+                </form>
+            `,
         )
         .join('');
 
     return `
         <div class="auction-card">
             <div class="auction-card-author" style="margin-left: 10px;">
-                Auction by <button class="no-style-button">${auction.sellerUsername}</button>
+                Auction by <button class="no-style-button"> <div class="auction-card-tag user">${auction.sellerUsername}</div></button>
             </div>
             <div class="auction-card-detail">
                 <table style="margin-top: 10px;">
@@ -86,7 +102,8 @@ function createAuctionCard(auction: Auction): string {
             </div>
             <span style="margin-top: 10px;"><b>Gallery</b></span>
             <div class="photo-stack">${productImages}</div>
-            <form action="/buy/auction" method="get" style="width: calc(100%);">
+            <div class="auction-card-tags">${productTags}</div>
+            <form action="/yourauction/buy/auction" method="get" style="width: calc(100%);">
                 <button style="width: calc(100% - 25px);" type="submit">Bid</button>
                 <input type="hidden" name="id" value="${auction.id}">
             </form>
@@ -110,8 +127,8 @@ function createWonAuctionsSection(
         .join('');
 
     wonAuctionsSection.innerHTML = `
-        <h2>Won Auctions</h2>2
-        <div class="winner">
+        <h2>Won Auctions</h2>
+        <div class="winner" style="background: url('/yourauction/images/confetti.gif')">
             <p>All the items in these sections are yours! Await the shipment and enjoy your new products!</p>
         </div>
         <div id="won-auction-list" style="display: grid; width: 100%; grid-template-columns: 1fr 1fr 1fr; gap: 20px; align-content: center; align-items: start;">
@@ -131,7 +148,8 @@ function createWonAuctionCard(auction: Auction, shippingAddress: String): string
         : '';
     const productImages = auction.products
         .map(
-            (product: Product) => `<img src="/image/${product.imageFilename}" alt="Product Image">`,
+            (product: Product) =>
+                `<img src="/yourauction/image/${product.imageFilename}" alt="Product Image">`,
         )
         .join('');
 

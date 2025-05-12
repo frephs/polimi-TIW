@@ -1,4 +1,4 @@
-import { Auction, Bid, Product } from '../prototypes';
+import { Auction, Bid, Product } from '../prototypes.js';
 
 export function generateBuyAuctionDetails(auction: Auction, bids: Bid[]): string {
     return `
@@ -61,7 +61,7 @@ function generateProductRow(product: Product): string {
     <td>€${product.price}</td>
     <td>${product.description}</td>
     <td>
-        <img src="/image/${product.imageFilename}" alt="Product Image" style="max-width: 100px; max-height: 100px" />
+        <img src="/yourauction/image/${product.imageFilename}" alt="Product Image" style="max-width: 100px; max-height: 100px" />
     </td>
 </tr>
     `;
@@ -174,7 +174,7 @@ function generatePlaceBidSection(auction: Auction): string {
     return `
 <section id="place-bid">
     <h3>Place a Bid</h3>
-    <form action="/buy/auction/bid/" method="post">
+    <form action="/yourauction/buy/auction/bid/" method="post">
         <label for="bid-amount">Your Bid (€):</label>
         <input type="hidden" name="auction-id" id="auction_id" value="${auction.id}" />
         <input type="number" id="bid-amount" name="bid-amount" required min="${minBid}" step="${auction.minimumBidIncrement}" value="${minBid}" />

@@ -1,4 +1,4 @@
-import { Auction, Bid, Product } from '../prototypes';
+import { Auction, Bid, Product } from '../prototypes.js';
 
 export function generateSellAuctionDetails(
     auction: Auction,
@@ -15,12 +15,12 @@ export function generateSellAuctionDetails(
     `;
 }
 
-function generateAuctionHeader(auction: any): string {
+function generateAuctionHeader(auction: Auction): string {
     return `
         <section>
             <h1>
                 Auction
-                <span>${auction.getId()}</span>
+                <span>${auction.id}</span>
             </h1>
         </section>
     `;
@@ -59,7 +59,7 @@ function generateProductsSection(auction: Auction): string {
 function generateProductRow(product: Product, auction: Auction): string {
     return `
         <tr>
-            <form action="/sell/product/edit/" enctype="multipart/form-data" method="post">
+            <form action="/yourauction/sell/product/edit/" enctype="multipart/form-data" method="post">
                 <td>
                     <input type="hidden" name="id" value="${product.id}" />
                     <input type="text" name="product-name" value="${product.name}" required ${!auction.isOpen() ? 'disabled' : ''} />
@@ -85,7 +85,7 @@ function generateProductRow(product: Product, auction: Auction): string {
                 </td>
                 <td>
                     <div style="display: flex; flex-direction: column; align-items: center; align-content: center;">
-                        <img src="/image/${product.imageFilename}" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
+                        <img src="/yourauction/image/${product.imageFilename}" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
                         <input
                             type="file"
                             style="border: none; padding: 10px; box-shadow: none; background: none;"
@@ -97,7 +97,7 @@ function generateProductRow(product: Product, auction: Auction): string {
                     </div>
                 </td>
                 <td>
-                    <button type="submit" ${!auction.isOpen() ? 'disabled' : ''}>Update</button>
+                    <button type="submit" class="update-product-btn" ${!auction.isOpen() ? 'disabled' : ''}>Update</button>
                 </td>
             </form>
         </tr>
@@ -227,7 +227,7 @@ function generateCloseAuctionForm(auction: Auction): string {
             <legend>Close auction</legend>
             <p>An auction can be closed once the deadline has passed and at least a bid has been placed.</p>
             <p>Once the auction is closed, it cannot be reopened.</p>
-            <form action="/sell/auction/close/" method="post">
+            <form action="/yourauction/sell/auction/close/" method="post">
                 <input type="hidden" name="id" value="${auction.id}" />
                 <button
                     name="auction-close-id"
@@ -248,7 +248,7 @@ function generateDeleteAuctionForm(auction: Auction): string {
             <legend>Delete auction</legend>
             <p>An auction can be deleted up until there are no bids placed.</p>
             <p>Once an auction is deleted, it cannot be recovered.</p>
-            <form action="/sell/auction/delete/" method="post">
+            <form action="/yourauction/sell/auction/delete/" method="post">
                 <input type="hidden" name="id" value="${auction.id}" />
                 <button
                     type="submit"

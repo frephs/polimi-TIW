@@ -1,4 +1,4 @@
-import { User } from '../prototypes';
+import { User } from '../prototypes.js';
 
 export function updateUserDetails(user: User) {
     document.querySelector('#logout h1 span')!.textContent = user.name;

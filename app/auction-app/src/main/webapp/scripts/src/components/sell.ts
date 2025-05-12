@@ -1,25 +1,27 @@
-import { Auction, Product } from '../prototypes';
-import { generateWelcomeMessage } from '../utils';
+import { Auction, Product, User } from '../prototypes.js';
+import { generateWelcomeMessage } from '../utils.js';
 
 export function generateSellSection(
     closed_auctions: Auction[],
     open_auctions: Auction[],
     products: Product[],
+    unauctioned_products: Product[],
     shipping_addresses: Record<number, String>,
+    user: User,
 ): void {
     document.querySelector('section#sell')!.innerHTML = `
         <section id="sell">
-            ${generateSellWelcomeSection()}
+            ${generateSellWelcomeSection(user)}
             ${generateProductsSection(products, open_auctions)}
-            ${generateAuctionsSection(open_auctions, closed_auctions, products, shipping_addresses)}
+            ${generateAuctionsSection(open_auctions, closed_auctions, unauctioned_products, shipping_addresses)}
         </section>
     `;
 }
 
-function generateSellWelcomeSection(): string {
+function generateSellWelcomeSection(user: User): string {
     return `
         <section>
-            ${generateWelcomeMessage()}
+            ${generateWelcomeMessage(user)}
             <p>In this page you can manage your products and auctions.</p>
         </section>
     `;
@@ -39,7 +41,7 @@ function generateProductsSection(products: Product[], auctions: Auction[]): stri
 
 function generateAddProductForm(): string {
     return `
-        <form action="/sell/product/new" method="post" enctype="multipart/form-data">
+        <form action="/yourauction/sell/product/new" method="post" enctype="multipart/form-data">
             <fieldset style="display: block">
                 <legend>Add a new product</legend>
                 <label for="name">Product Name:</label>
@@ -76,7 +78,11 @@ function generateEditProductsTable(products: Product[], auctions: Auction[]): st
                         <th>Submit edit</th>
                     </thead>
                     <tbody>
-                        ${products.map((p) => generateEditProductRow(p, auctions)).join('')}
+                        ${products
+                            .map((p) => {
+                                return generateEditProductRow(p, auctions);
+                            })
+                            .join('')}
                     </tbody>
                 </table>
             </div>
@@ -87,9 +93,8 @@ function generateEditProductsTable(products: Product[], auctions: Auction[]): st
 function generateEditProductRow(product: Product, auctions: Auction[]): string {
     return `
         <tr id="product-${product.id}">
-            <form action="/sell/product/edit/" enctype="multipart/form-data" method="post">
-                <input type="hidden" name="product-id" value="${product.id}" />
                 <td>
+                <input type="hidden" name="product-id" value="${product.id}" />
                     <input type="text" name="product-name" value="${product.name}" required />
                 </td>
                 <td>
@@ -114,8 +119,8 @@ function generateEditProductRow(product: Product, auctions: Auction[]): string {
                 <td>
                     <select 
                         name="product-auction-id" 
-                        ${product.isAuctioned() && !product.canChangeAuction(auctions) ? 'disabled' : ''} 
-                        title="${product.isAuctioned() && !product.canChangeAuction(auctions) ? 'Product auction cannot be changed unless there are no bids placed and there are at least two other products' : ''}"
+                        ${!product.canChangeAuction(auctions) ? 'disabled' : ''} 
+                        title="${!product.canChangeAuction(auctions) ? 'Product auction cannot be changed unless there are no bids placed and there are at least two other products' : ''}"
                     >
                         <option value="0">No auction</option>
                         ${generateAuctionOptions(product.auctionId, auctions)}
@@ -123,7 +128,7 @@ function generateEditProductRow(product: Product, auctions: Auction[]): string {
                 </td>
                 <td>
                     <div style="display: flex; flex-direction: column; align-items: center; align-content: center;">
-                        <img src="/image/${product.imageFilename}" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
+                        <img src="/yourauction/image/${product.imageFilename}" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
                         <input 
                             type="file" 
                             style="border: none; padding: 10px; box-shadow: none; background: none;" 
@@ -134,19 +139,17 @@ function generateEditProductRow(product: Product, auctions: Auction[]): string {
                     </div>
                 </td>
                 <td>
-                    <button type="submit">Update</button>
+                    <button type="submit" class="update-product-btn">Update</button>
                 </td>
-            </form>
         </tr>
     `;
 }
 
 function generateAuctionOptions(selectedAuctionId: number, auctions: Auction[]): string {
-    // Replace with dynamic data fetching logic
     return auctions
         .map(
             (auction) => `
-        <option value="${auction.id}" ${auction.id === selectedAuctionId ? 'selected' : ''}>Auct. ${auction.id}</option>
+        <option value="${auction.id}" ${auction.id === selectedAuctionId ? ' selected' : ''}>Auct. ${auction.id}</option>
     `,
         )
         .join('');
@@ -172,17 +175,25 @@ function generateCreateAuctionForm(products: Product[]): string {
     return `
         <div style="width: 100%">
             <h3>Create a new auction</h3>
-            <form action="/sell/auction/new" method="post">
+            <form action="/yourauction/sell/auction/new" method="post">
                 <div class="flex-row">
                     <div>
                         <fieldset style="display: block">
                             <legend>Auction details</legend>
                             <label for="final-bid-submission-date">Bid submission date</label>
-                            <input type="date" name="final-bid-submission-date" id="final-bid-submission-date" required />
+                            <input type="date" name="final-bid-submission-date" id="final-bid-submission-date" value="${new Date().toISOString().split('T')[0]}" required />
                             <label for="final-bid-submission-time"></label>
-                            <input type="time" name="final-bid-submission-time" id="final-bid-submission-time" required />
+                            <input type="time" name="final-bid-submission-time" id="final-bid-submission-time" required value="${new Date().toLocaleTimeString(
+                                'it-IT',
+                                {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                },
+                            )}"/>
                             <label for="min-bid-increment">Minimum bid-increment (€)</label>
                             <input type="number" name="min-bid-increment" id="min-bid-increment" required step="1" min="1" value="1" />
+                            <button  type="submit">Create Auction</button>
+
                         </fieldset>
                     </div>
                     <div>
@@ -192,7 +203,6 @@ function generateCreateAuctionForm(products: Product[]): string {
                         </fieldset>
                     </div>
                 </div>
-                <button style="float: right; margin-top: 20px" type="submit">Create Auction</button>
             </form>
         </div>
     `;
@@ -229,7 +239,7 @@ function generateUnauctionedProductRow(product: Product): string {
             <td>${product.name}</td>
             <td>€ ${product.price}</td>
             <td>${product.description}</td>
-            <td><img src="/image/${product.imageFilename}" alt="Product Image" style="max-width: 100px; max-height: 100px;" /></td>
+            <td><img src="/yourauction/image/${product.imageFilename}" alt="Product Image" style="max-width: 100px; max-height: 100px;" /></td>
         </tr>
     `;
 }
@@ -267,12 +277,12 @@ function generateOpenAuctionRow(auction: Auction): string {
     return `
         <tr>
             <td>${auction.id}</td>
-            <td>${auction.currentHighestBid ? `€ ${auction.currentHighestBid}` : '<div class="info"> <p> No bids yet</p></div>'}</td>
+            <td>${auction.currentHighestBid ? '€ ' + auction.currentHighestBid?.bidAmount + ' by ' + auction.currentHighestBid?.bidderUsername + ' @ ' + auction.currentHighestBid?.getFormattedBidTimestamp() : "<div class='info'><p> No bids yet</p> </div>"}"</td>
             <td>€ ${auction.minimumBidIncrement}</td>
-            <td>${auction.products.map((product: any) => `<a href="#product-${product.id}">${product.name}</a>`).join(', ')}</td>
-            <td>${auction.endTime}</td>
+            <td>${auction.products.map((product: any) => `<a class="auction-link" href="#product-${product.id}">${product.name}</a>`).join(', ')}</td>
+            <td>${auction.getFormattedEndTime()}</td>
             <td>
-                <form action="/sell/auction/close/" method="post">
+                <form action="/yourauction/sell/auction/close/" method="post">
                     <input type="hidden" name="id" value="${auction.id}" />
                     <button 
                         type="submit" 
@@ -282,7 +292,7 @@ function generateOpenAuctionRow(auction: Auction): string {
                         Close Auction
                     </button>
                 </form>
-                <form action="/sell/auction/delete/" method="post">
+                <form action="/yourauction/sell/auction/delete/" method="post">
                     <input type="hidden" name="id" value="${auction.id}" />
                     <button 
                         type="submit" 
@@ -293,7 +303,7 @@ function generateOpenAuctionRow(auction: Auction): string {
                         Delete Auction
                     </button>
                 </form>
-                <form action="/sell/auction" method="get">
+                <form action="/yourauction/sell/auction" method="get">
                     <input type="hidden" name="id" value="${auction.id}" />
                     <button type="submit" class="details-button">Auction details</button>
                 </form>
@@ -326,8 +336,8 @@ function generateClosedAuctionsTable(
                 </thead>
                 <tbody>
                     ${auctions
-                        .map((auction, index) => {
-                            generateClosedAuctionRow(auction, shippingAddresses[auction.id]);
+                        .map((auction) => {
+                            return generateClosedAuctionRow(auction, shippingAddresses[auction.id]);
                         })
                         .join('')}
                 </tbody>
@@ -339,12 +349,12 @@ function generateClosedAuctionsTable(
 function generateClosedAuctionRow(auction: Auction, shippingAddress: String | null): string {
     return `
         <tr>
-            <td>€ ${auction.currentHighestBid}</td>
+            <td>€ ${auction.currentHighestBid?.bidAmount} by ${auction.currentHighestBid?.bidderUsername} @ ${auction.currentHighestBid?.getFormattedBidTimestamp()}</td>
             <td>${auction.endTime}</td>
             <td>${auction.currentHighestBid?.bidderUsername}</td>
             <td>${shippingAddress || '<div class="info"> <p>No bids yet</p></div>'}</td>
             <td>
-                <form action="/sell/auction" method="get">
+                <form action="/yourauction/sell/auction" method="get">
                     <input type="hidden" name="id" value="${auction.id}" />
                     <button type="submit">Auction details</button>
                 </form>

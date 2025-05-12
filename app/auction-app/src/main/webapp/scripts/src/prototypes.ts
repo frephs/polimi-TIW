@@ -5,18 +5,12 @@ export class Address {
     public street: string;
     public streetNumber: number;
 
-    constructor(
-        country: string,
-        zipCode: number,
-        city: string,
-        street: string,
-        streetNumber: number,
-    ) {
-        this.country = country;
-        this.zipCode = zipCode;
-        this.city = city;
-        this.street = street;
-        this.streetNumber = streetNumber;
+    constructor(object: any) {
+        this.country = object.country;
+        this.zipCode = object.zipCode;
+        this.city = object.city;
+        this.street = object.street;
+        this.streetNumber = object.streetNumber;
     }
 }
 
@@ -26,11 +20,11 @@ export class User {
     public surname: string;
     public address: Address;
 
-    constructor(username: string, name: string, surname: string, address: Address) {
-        this.username = username;
-        this.name = name;
-        this.surname = surname;
-        this.address = address;
+    constructor(object: any) {
+        this.username = object.username;
+        this.name = object.name;
+        this.surname = object.surname;
+        this.address = new Address(object.address);
     }
 }
 
@@ -40,16 +34,11 @@ export class Bid {
     public bidAmount: number;
     public bidTimestamp: string; // ISO 8601 format
 
-    constructor(
-        auctionId: number,
-        bidderUsername: string,
-        bidAmount: number,
-        bidTimestamp: string,
-    ) {
-        this.auctionId = auctionId;
-        this.bidderUsername = bidderUsername;
-        this.bidAmount = bidAmount;
-        this.bidTimestamp = bidTimestamp;
+    constructor(object: any) {
+        this.auctionId = object.auction_id;
+        this.bidderUsername = object.bidder_username;
+        this.bidAmount = object.bid_amount;
+        this.bidTimestamp = object.bid_timestamp;
     }
 
     public getRoundedBidAmount(): number {
@@ -70,31 +59,31 @@ export class Product {
     public imageFilename: string;
     public auctionId: number;
 
-    constructor(
-        id: number,
-        name: string,
-        description: string,
-        price: number,
-        imageFilename: string,
-        auctionId: number,
-    ) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.imageFilename = imageFilename;
-        this.auctionId = auctionId;
+    constructor(object: any) {
+        this.id = object.id;
+        this.name = object.name;
+        this.description = object.description;
+        this.price = object.price;
+        this.imageFilename = object.image_filename;
+        this.auctionId = object.auctionId
+            ? object.auctionId
+            : object.auction_id
+              ? object.auction_id
+              : null;
     }
 
     public isAuctioned(): boolean {
-        return this.auctionId !== 0;
+        return this.auctionId !== null;
     }
 
     public canChangeAuction(auctions: Auction[]): boolean {
-        return auctions.some(
-            (auction) =>
-                auction.products.some((product) => product.id === this.id) &&
-                auction.products.length > 2,
+        return (
+            !this.isAuctioned() ||
+            auctions.some(
+                (auction) =>
+                    auction.products.some((product) => product.id === this.id) &&
+                    auction.products.length > 2,
+            )
         );
     }
 
@@ -118,24 +107,21 @@ export class Auction {
     public currentHighestBid: Bid | null;
     public products: Product[];
 
-    constructor(
-        id: number,
-        sellerUsername: string,
-        startTime: string,
-        endTime: string,
-        minimumBidIncrement: number,
-        isClosed: boolean,
-        currentHighestBid: Bid | null,
-        products: Product[],
-    ) {
-        this.id = id;
-        this.sellerUsername = sellerUsername;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.minimumBidIncrement = minimumBidIncrement;
-        this.isClosed = isClosed;
-        this.currentHighestBid = currentHighestBid;
-        this.products = products;
+    constructor(object: any) {
+        this.id = object.id;
+        this.sellerUsername = object.seller_username
+            ? object.seller_username
+            : object.sellerUsername
+              ? object.sellerUsername
+              : null;
+        this.startTime = object.start_time;
+        this.endTime = object.end_time;
+        this.minimumBidIncrement = object.minimum_bid_increment;
+        this.isClosed = object.is_closed;
+        this.currentHighestBid = object.currentHighestBid
+            ? new Bid(object.currentHighestBid)
+            : null;
+        this.products = object.products.map((p: any) => new Product(p));
     }
 
     public getFormattedEndTime(): string {
@@ -149,13 +135,14 @@ export class Auction {
         const remainingMillis = endTime - currentTime;
 
         if (remainingMillis <= 0) {
-            return '0d 0h';
+            return '0d 0h 0m';
         }
 
         const days = Math.floor(remainingMillis / (24 * 60 * 60 * 1000));
         const hours = Math.floor((remainingMillis / (60 * 60 * 1000)) % 24);
+        const minutes = Math.floor((remainingMillis / (60 * 1000)) % 60);
 
-        return `${days}d ${hours}h`;
+        return `${days}d ${hours}h ${minutes}m`;
     }
 
     public canBeDeleted(): boolean {
