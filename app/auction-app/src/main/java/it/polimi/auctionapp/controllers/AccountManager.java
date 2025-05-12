@@ -24,9 +24,23 @@ public class AccountManager {
         public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
             if (request.getSession().getAttribute("user") == null) {
-                processTemplate(request, response, "/account");
+                processTemplate(request, response, "/account/index");
             } else {
-                processTemplate(request, response, "/account-details");
+                sendRedirect(request, response, "/account/details");
+            }
+        }
+    }
+
+    @WebServlet("/account/details")
+    public static class AccountDetailsServlet extends ThymeleafHTTPServlet {
+
+        @Override
+        public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+            if (request.getSession().getAttribute("user") == null) {
+                processTemplate(request, response, "/account/index");
+            } else {
+                processTemplate(request, response, "/account/details");
             }
         }
     }
