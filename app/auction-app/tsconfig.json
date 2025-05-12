@@ -1,15 +1,13 @@
 {
-  "compilerOptions": {
-    "module": "es6",
-    "target": "es2016",
-    "rootDir": "./src/main/webapp/scripts/src/",
-    "outDir": "./src/main/webapp/scripts/generated",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true
-  },
-  "exclude": [
-    "target"
-  ]
+    "compilerOptions": {
+        "module": "es6",
+        "target": "es2022",
+        "rootDir": "./src/main/webapp/scripts/src/",
+        "outDir": "./src/main/webapp/scripts/generated",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "skipLibCheck": true
+    },
+    "exclude": ["target"]
 }
