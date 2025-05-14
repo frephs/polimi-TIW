@@ -349,15 +349,20 @@ public class SellingController {
                     productId
                 );
 
-                String price_string = request.getParameter("product-price");
                 productDataAccessObject.updateProductDetails(
                     productId,
                     request.getParameter("product-name"),
-                    request.getParameter("product-description"),
-                    price_string != null
-                        ? Float.parseFloat(price_string)
-                        : productDataAccessObject.getProductPrice(productId)
-                ); //TODO ADD CHECK POSITIVE CONSTRAINTS
+                    request.getParameter("product-description")
+                );
+
+                String price_string = request.getParameter("product-price");
+
+                if (!Objects.equals(price_string, "") && price_string != null) {
+                    productDataAccessObject.updateProductPrice(
+                        productId,
+                        Float.parseFloat(price_string)
+                    );
+                }
 
                 if (
                     !Objects.equals(request.getParameter("product-image"), "") &&
