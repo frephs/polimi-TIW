@@ -37,11 +37,7 @@ public class AccountManager {
         @Override
         public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-            if (request.getSession().getAttribute("user") == null) {
-                processTemplate(request, response, "/account/index");
-            } else {
-                processTemplate(request, response, "/account/details");
-            }
+            processTemplate(request, response, "/account/details");
         }
     }
 
