@@ -120,8 +120,7 @@ public class ThymeleafHTTPServlet extends HttpServlet {
                     "'>" +
                     (s.contains("=")
                             ? (s.split("\\?")[0] +
-                                ": " +
-                                (s.split("=").length > 1 ? s.split("=")[1] : ""))
+                                (s.split("=").length > 1 ? (": " + s.split("=")[1]) : ""))
                             : s) +
                     "</a>"
                 );
