@@ -5,6 +5,7 @@ import it.polimi.auctionapp.beans.Address;
 import it.polimi.auctionapp.beans.User;
 import it.polimi.auctionapp.utils.MessageType;
 import it.polimi.auctionapp.utils.ThymeleafHTTPServlet;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -61,16 +62,8 @@ public class AccountManager {
             } catch (SQLException e) {
                 contextAttributes.setFlash("message", MessageType.ERROR.wrap(e.getMessage()));
             } finally {
-                if (request.getSession().getAttribute("from") != null) {
-                    sendRedirect(
-                        request,
-                        response,
-                        "/" + request.getSession().getAttribute("from")
-                    );
-                    request.getSession().removeAttribute("from");
-                } else {
-                    sendRedirect(request, response, "/account");
-                }
+                sendRedirect(request, response, "/controller");
+                //removed session attribute 'from' removal here
             }
         }
     }
@@ -168,6 +161,11 @@ public class AccountManager {
         }
     }
 
+    @MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+    )
     @WebServlet("/account/update/username")
     public static class UpdateUsernameServlet extends ThymeleafHTTPServlet {
 
@@ -210,6 +208,11 @@ public class AccountManager {
         }
     }
 
+    @MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+    )
     @WebServlet("/account/update/password")
     public static class UpdatePasswordServlet extends ThymeleafHTTPServlet {
 
@@ -243,6 +246,11 @@ public class AccountManager {
         }
     }
 
+    @MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+    )
     @WebServlet("/account/update/details")
     public static class UpdateManagerServlet extends ThymeleafHTTPServlet {
 
@@ -303,6 +311,16 @@ public class AccountManager {
             } finally {
                 sendRedirect(request, response, "/account");
             }
+        }
+    }
+
+    @WebServlet("/controller")
+    public static class TemplateServlet extends ThymeleafHTTPServlet {
+
+        public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+            processTemplate(request, response, "controller");
+            request.getSession().removeAttribute("from");
         }
     }
 }
