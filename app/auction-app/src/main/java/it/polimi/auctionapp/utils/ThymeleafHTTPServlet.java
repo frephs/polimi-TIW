@@ -1,5 +1,7 @@
 package it.polimi.auctionapp.utils;
 
+import com.google.gson.Gson;
+import it.polimi.auctionapp.beans.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -57,15 +59,38 @@ public class ThymeleafHTTPServlet extends HttpServlet {
             WebContext context = new WebContext(webExchange);
 
             response.setCharacterEncoding("UTF-8");
-            response.setContentType("text/html");
-
+            contextAttributes.set("page", path);
+            contextAttributes.set("user", (User) request.getSession().getAttribute("user"));
             contextAttributes.updateContext(request);
-            templateEngine.process(path, context, response.getWriter());
+            if (
+                ("XMLHttpRequest".equals(request.getHeader("X-Requested-With")) &&
+                    response.getStatus() == HttpServletResponse.SC_OK &&
+                    (path.startsWith("/sell") || path.startsWith("/buy"))) ||
+                path.startsWith("/account/details")
+            ) {
+                response.setContentType("application/json");
+                String json = new Gson().toJson(contextAttributes.attributesMap);
+                response.getWriter().write(json);
+                //templateEngine.process("controller", context, response.getWriter());
+            } else {
+                response.setContentType("text/html");
+                if (
+                    (path.startsWith("/sell") || path.startsWith("/buy")) ||
+                    path.startsWith("/account/details")
+                ) {
+                    request
+                        .getSession()
+                        .setAttribute("from", request.getRequestURI().split("/")[2]);
+                    sendRedirect(request, response, "/controller");
+                    //templateEngine.process("controller", context, response.getWriter());
+                } else {
+                    templateEngine.process(path, context, response.getWriter());
+                }
+            }
+
             contextAttributes.clearContext(request);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            contextAttributes.clearContext(request);
         }
     }
 
@@ -77,6 +102,7 @@ public class ThymeleafHTTPServlet extends HttpServlet {
         try {
             contextAttributes.updateContext(request);
             response.setStatus(HttpServletResponse.SC_SEE_OTHER);
+            response.setHeader("location", path);
             response.sendRedirect(getServletContext().getContextPath() + path);
         } catch (IOException e) {
             throw new RuntimeException(e);
