@@ -107,24 +107,35 @@ public class ProductDAO {
         return products;
     }
 
-    public void updateProductDetails(
-        Integer product_id,
-        String name,
-        String description,
-        Float price
-    ) throws SQLException {
-        String query =
-            "UPDATE products SET name = ?, description = ?, price = ? WHERE product_id = ?";
+    public void updateProductDetails(Integer product_id, String name, String description)
+        throws SQLException {
+        String query = "UPDATE products SET name = ?, description = ? WHERE product_id = ?";
         PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
             .prepareStatement(query);
         preparedStatement.setString(1, name);
         preparedStatement.setString(2, description);
-        preparedStatement.setFloat(3, price);
-        preparedStatement.setInt(4, product_id);
+        preparedStatement.setInt(3, product_id);
         try {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new SQLException("There was a problem updating the product: " + e.getMessage());
+            throw new SQLException(
+                "There was a problem updating the product details: " + e.getMessage()
+            );
+        }
+    }
+
+    public void updateProductPrice(Integer product_id, Float price) throws SQLException {
+        String query = "UPDATE products SET price=? WHERE product_id = ?";
+        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
+            .prepareStatement(query);
+        preparedStatement.setFloat(1, price);
+        preparedStatement.setInt(2, product_id);
+        try {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(
+                "There was a problem updating the product's price: " + e.getMessage()
+            );
         }
     }
 
