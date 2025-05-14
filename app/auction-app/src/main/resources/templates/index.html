@@ -7,11 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" th:href="@{styles/style.css}">
     <link rel="stylesheet"  th:href="@{styles/landing.css}">
-    <link rel="icon" th:href="@{icon.png}">
+    <link rel="icon" th:href="@{icon.png}" >
     <link
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         rel="stylesheet"
     />
+
+    <script th:if="session.user!=null" type="module" th:src="@{scripts/generated/home.js}"></script>
 </head>
 
 <body>
@@ -33,7 +35,18 @@
                 <a th:href="@{/buy}">Buy</a>
             </li>
             <li>
-                <a th:href="@{/account}">YourAccount</a>
+                <a
+                    th:if="session.user==null"
+                    th:href="@{/account/details}"
+                    id="nav-link-account-details"
+                >
+                    YourAccount
+                </a>
+                <a
+                    th:if="session.user!=null"
+                    th:href="@{/controller}"
+                    id="nav-link-controller"
+                >YourAccount</a>
             </li>
         </ul>
     </nav>
