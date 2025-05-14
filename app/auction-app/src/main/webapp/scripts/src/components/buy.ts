@@ -104,7 +104,7 @@ function createAuctionCard(auction: Auction): string {
             <div class="photo-stack">${productImages}</div>
             <div class="auction-card-tags">${productTags}</div>
             <form action="/yourauction/buy/auction" method="get" style="width: calc(100%);">
-                <button style="width: calc(100% - 25px);" type="submit">Bid</button>
+                <button style="width: calc(100% - 25px);" type="submit" class="bid-button" >Bid</button>
                 <input type="hidden" name="id" value="${auction.id}">
             </form>
         </div>

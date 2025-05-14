@@ -7,10 +7,10 @@ export class Address {
 
     constructor(object: any) {
         this.country = object.country;
-        this.zipCode = object.zipCode;
+        this.zipCode = object.zip_code;
         this.city = object.city;
         this.street = object.street;
-        this.streetNumber = object.streetNumber;
+        this.streetNumber = object.street_number;
     }
 }
 
