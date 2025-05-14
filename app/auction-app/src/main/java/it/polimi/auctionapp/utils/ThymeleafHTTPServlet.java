@@ -152,10 +152,8 @@ public class ThymeleafHTTPServlet extends HttpServlet {
         }
 
         public void clearContext(HttpServletRequest request) {
-            for (String key : attributesMap.keySet()) {
-                attributesMap.remove(key);
-            }
-            request
+            attributesMap = new HashMap<>();
+            if (request.getSession(false) != null) request
                 .getSession()
                 .getAttributeNames()
                 .asIterator()
