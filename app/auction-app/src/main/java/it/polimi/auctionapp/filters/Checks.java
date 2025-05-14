@@ -11,7 +11,11 @@ import java.io.IOException;
 
 public class Checks {
 
-    @WebFilter(urlPatterns = { "/buy/*", "/sell/*", "/account/update/*" })
+    @WebFilter(
+        urlPatterns = {
+            "/buy/*", "/sell/*", "/account/update/*", "/account/details", "/controller",
+        }
+    )
     public static class LoginFilter implements Filter {
 
         @Override
