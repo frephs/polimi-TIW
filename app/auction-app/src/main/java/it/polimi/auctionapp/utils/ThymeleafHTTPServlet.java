@@ -76,6 +76,7 @@ public class ThymeleafHTTPServlet extends HttpServlet {
     ) {
         try {
             contextAttributes.updateContext(request);
+            response.setStatus(HttpServletResponse.SC_SEE_OTHER);
             response.sendRedirect(getServletContext().getContextPath() + path);
         } catch (IOException e) {
             throw new RuntimeException(e);
