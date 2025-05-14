@@ -1,10 +1,14 @@
 nav {
     background: linear-gradient(72deg, #146b27c2 6.74%, #80c73dbb 82.36%);
-    padding:20px;
+    padding: 20px;
     margin: 0px;
     width: 100%;
 }
 
-body section{
-    margin:30px 200px;
+body section {
+    margin: 30px 200px;
+}
+
+section section {
+    margin: 30px 0;
 }
