@@ -6,12 +6,13 @@ export function generateBuySection(
     wonAuctions: Auction[],
     closedAuctionShippingAddresses: Record<number, string>,
     user: User,
+    searchQuery: string,
 ) {
     const container = document.querySelector('section#buy') as HTMLElement;
 
     container.innerHTML = '';
     container.appendChild(generateWelcomeSection(user));
-    container.appendChild(generateSearchResultSection(auctions));
+    container.appendChild(generateSearchResultSection(auctions, searchQuery));
     container.appendChild(createWonAuctionsSection(wonAuctions, closedAuctionShippingAddresses));
 
     return container;
@@ -33,21 +34,29 @@ function generateWelcomeSection(user: User): HTMLElement {
     return welcomeSection;
 }
 
-function generateSearchResultSection(auctions: Auction[]): HTMLElement {
+function generateSearchResultSection(auctions: Auction[], searchQuery: string): HTMLElement {
     if (!auctions || auctions.length === 0) {
         const noAuctionsWarning = document.createElement('div');
-        noAuctionsWarning.className = 'warning';
-        noAuctionsWarning.innerHTML = '<p>No auctions found for your search query.</p>';
+        noAuctionsWarning.className = !searchQuery ? 'info' : 'warning';
+        noAuctionsWarning.innerHTML = !searchQuery
+            ? '<p>Use the search bar to look for products!</p>'
+            : '<p>No auctions found for your search query.</p>';
         return noAuctionsWarning;
     }
 
     const auctionsSection = document.createElement('section');
     auctionsSection.id = 'auctions';
 
-    const auctionList = auctions.map(createAuctionCard).join('');
+    const auctionList = auctions.map((auction) => createAuctionCard(auction, searchQuery)).join('');
 
     auctionsSection.innerHTML = `
-        <h2>Search Results</h2>
+        ${createPreviousSearchResultsSection(
+            JSON.parse(window.sessionStorage.getItem('searchedProducts') || '[]').map(
+                (product: any) => new Product(product),
+            ),
+        )}
+        
+        <h2 style="margin-top: 20px">Search Results</h2>
         <div id="auction-list" style="display: grid; width: 100%; grid-template-columns: 1fr 1fr 1fr; gap: 20px; align-content: center; align-items: start;">
             ${auctionList}
         </div>
@@ -56,7 +65,42 @@ function generateSearchResultSection(auctions: Auction[]): HTMLElement {
     return auctionsSection;
 }
 
-function createAuctionCard(auction: Auction): string {
+function createPreviousSearchResultsSection(products: Product[]): string {
+    return products
+        ? `
+        <h2 style="margin-bottom: 15px">Products you viewed in the past</h2>
+        ${products.map((product) => {
+            return `
+                <form action="/yourauction/buy/search" method="get" style="display: inline">
+                    <button type="submit" class="no-style-button">
+                        <div class="auction-card-tag" style="padding:20px">${product.name}</div>
+                        <input type="hidden" name="q" value="${product.name}">
+                    </button>
+                </form>
+            `;
+        })}
+    `
+        : ``;
+}
+
+function createAuctionCard(auction: Auction, searchQuery: string): string {
+    const searchedProducts: Product[] = JSON.parse(
+        window.sessionStorage.getItem('searchedProducts') || '[]',
+    );
+
+    if (searchQuery != '') {
+        auction.products
+            .filter(
+                (product: Product) =>
+                    !searchedProducts.some(
+                        (previousProduct: Product) => previousProduct.name === product.name,
+                    ),
+            )
+            .forEach((product) => searchedProducts.push(product));
+    }
+
+    window.sessionStorage.setItem('searchedProducts', JSON.stringify(searchedProducts));
+
     const productImages = auction.products
         .map(
             (product: Product) =>

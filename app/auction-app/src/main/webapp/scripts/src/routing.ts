@@ -44,6 +44,7 @@ export function controllerSwitcher(response: any, pageSections: Map<string, HTML
                 response.wonAuctions.map((auction: any) => new Auction(auction)),
                 response.closed_auction_shipping_addresses,
                 new User(response.user),
+                response.searchQuery,
             );
             showPage('buy', pageSections);
             processForms(pageSections);

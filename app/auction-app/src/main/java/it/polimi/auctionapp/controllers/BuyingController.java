@@ -29,6 +29,7 @@ public class BuyingController {
         public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
             String searchQuery = request.getParameter("q");
+            contextAttributes.set("searchQuery", searchQuery);
             try {
                 if (searchQuery != null) {
                     contextAttributes.set(
