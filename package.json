@@ -4,6 +4,7 @@
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
     "prettier-plugin-java": "^2.6.0",
+    "reveal.js": "^5.2.1",
     "typescript": "^5.8.3"
   },
   "scripts": {

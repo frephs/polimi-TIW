@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   contentStyleType="text/css"
+   height="699px"
+   preserveAspectRatio="none"
+   style="width:1318px;height:699px;background:#FFFFFF;"
+   version="1.1"
+   viewBox="0 0 1318 699"
+   width="1318px"
+   zoomAndPan="magnify"
+   id="svg28"
+   sodipodi:docname="architecture.svg"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview28"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.62804006"
+     inkscape:cx="620.9795"
+     inkscape:cy="531.81321"
+     inkscape:window-width="1920"
+     inkscape:window-height="1131"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg28" />
+  <defs
+     id="defs1">
+    <filter
+       height="1.88125"
+       id="f13q7gkyrxj996"
+       width="1.88125"
+       x="-0.315625"
+       y="-0.315625">
+      <feGaussianBlur
+         result="blurOut"
+         stdDeviation="2.0"
+         id="feGaussianBlur1" />
+      <feColorMatrix
+         in="blurOut"
+         result="blurOut2"
+         type="matrix"
+         values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"
+         id="feColorMatrix1" />
+      <feOffset
+         dx="4.0"
+         dy="4.0"
+         in="blurOut2"
+         result="blurOut3"
+         id="feOffset1" />
+      <feBlend
+         in="SourceGraphic"
+         in2="blurOut3"
+         mode="normal"
+         id="feBlend1" />
+    </filter>
+  </defs>
+  <g
+     id="g28"
+     transform="translate(1.5922551,-3.1845102)"
+     inkscape:export-filename="architecture.svg"
+     inkscape:export-xdpi="96"
+     inkscape:export-ydpi="96">
+    <!--cluster Build & Compilation-->
+    <g
+       id="cluster_Build &amp; Compilation">
+      <path
+         d="m 8.5,316.14 h 142.4375 a 3.75,3.75 0 0 1 2.5,2.5 l 7,22.5679 H 596.5 a 2.5,2.5 0 0 1 2.5,2.5 V 406.71 a 2.5,2.5 0 0 1 -2.5,2.5 H 8.5 A 2.5,2.5 0 0 1 6,406.71 v -88.07 a 2.5,2.5 0 0 1 2.5,-2.5"
+         fill="#f5deb3"
+         filter="url(#f13q7gkyrxj996)"
+         style="stroke:#000000;stroke-width:1.5"
+         id="path1" />
+      <line
+         style="stroke:#000000;stroke-width:1.5"
+         x1="6"
+         x2="160.4375"
+         y1="341.20789"
+         y2="341.20789"
+         id="line1" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         font-weight="bold"
+         lengthAdjust="spacing"
+         textLength="141.4375"
+         x="10"
+         y="333.1059"
+         id="text1">Build &amp; Compilation</text>
+    </g>
+    <!--cluster Client Tier-->
+    <g
+       id="cluster_Client Tier">
+      <path
+         d="m 640.5,152.57 h 74.375 a 3.75,3.75 0 0 1 2.5,2.5 l 7,22.5679 H 867.5 a 2.5,2.5 0 0 1 2.5,2.5 V 243.14 a 2.5,2.5 0 0 1 -2.5,2.5 h -227 a 2.5,2.5 0 0 1 -2.5,-2.5 v -88.07 a 2.5,2.5 0 0 1 2.5,-2.5"
+         fill="#98fb98"
+         filter="url(#f13q7gkyrxj996)"
+         style="stroke:#000000;stroke-width:1.5"
+         id="path2" />
+      <line
+         style="stroke:#000000;stroke-width:1.5"
+         x1="638"
+         x2="724.375"
+         y1="177.63789"
+         y2="177.63789"
+         id="line2" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         font-weight="bold"
+         lengthAdjust="spacing"
+         textLength="73.375"
+         x="642"
+         y="169.5359"
+         id="text2">Client Tier</text>
+    </g>
+    <!--cluster Application Tier-->
+    <g
+       id="cluster_Application Tier">
+      <path
+         d="m 625.5,316.14 h 113.5625 a 3.75,3.75 0 0 1 2.5,2.5 l 7,22.5679 H 957.5 a 2.5,2.5 0 0 1 2.5,2.5 V 678.38 a 2.5,2.5 0 0 1 -2.5,2.5 h -332 a 2.5,2.5 0 0 1 -2.5,-2.5 V 318.64 a 2.5,2.5 0 0 1 2.5,-2.5"
+         fill="#f08080"
+         filter="url(#f13q7gkyrxj996)"
+         style="stroke:#000000;stroke-width:1.5"
+         id="path3" />
+      <line
+         style="stroke:#000000;stroke-width:1.5"
+         x1="623"
+         x2="748.5625"
+         y1="341.20789"
+         y2="341.20789"
+         id="line3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         font-weight="bold"
+         lengthAdjust="spacing"
+         textLength="112.5625"
+         x="627"
+         y="333.1059"
+         id="text3">Application Tier</text>
+    </g>
+    <!--cluster Business & Data Tier-->
+    <g
+       id="cluster_Business &amp; Data Tier">
+      <path
+         d="m 986.5,578.27 h 147.4375 a 3.75,3.75 0 0 1 2.5,2.5 l 7,22.5679 H 1306.5 a 2.5,2.5 0 0 1 2.5,2.5 V 687.91 a 2.5,2.5 0 0 1 -2.5,2.5 h -320 a 2.5,2.5 0 0 1 -2.5,-2.5 V 580.77 a 2.5,2.5 0 0 1 2.5,-2.5"
+         fill="#b0c4de"
+         filter="url(#f13q7gkyrxj996)"
+         style="stroke:#000000;stroke-width:1.5"
+         id="path4" />
+      <line
+         style="stroke:#000000;stroke-width:1.5"
+         x1="984"
+         x2="1143.4375"
+         y1="603.33789"
+         y2="603.33789"
+         id="line4" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         font-weight="bold"
+         lengthAdjust="spacing"
+         textLength="146.4375"
+         x="988"
+         y="595.2359"
+         id="text4">Business &amp; Data Tier</text>
+    </g>
+    <!--entity NODE-->
+    <g
+       id="elem_NODE">
+      <rect
+         fill="#ffffff"
+         filter="url(#f13q7gkyrxj996)"
+         height="39.067902"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="226"
+         x="22"
+         y="354.14001"
+         id="rect4" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="206"
+         x="32"
+         y="379.1059"
+         id="text5">Node.js (TypeScript to JS build)</text>
+    </g>
+    <!--entity WAR-->
+    <g
+       id="elem_WAR">
+      <rect
+         fill="#ffffff"
+         filter="url(#f13q7gkyrxj996)"
+         height="39.067902"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="299"
+         x="283.5"
+         y="354.14001"
+         id="rect5" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="279"
+         x="293.5"
+         y="379.1059"
+         id="text6">Maven gradle + Jakarta Servlet WAR build</text>
+    </g>
+    <!--entity CCT-->
+    <g
+       id="elem_CCT">
+      <rect
+         fill="#ffffff"
+         filter="url(#f13q7gkyrxj996)"
+         height="39.067902"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="200"
+         x="654"
+         y="190.57001"
+         id="rect6" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="180"
+         x="664"
+         y="215.5359"
+         id="text7">Static resources and forms</text>
+    </g>
+    <!--entity CT-->
+    <g
+       id="elem_CT">
+      <rect
+         fill="#ffffff"
+         filter="url(#f13q7gkyrxj996)"
+         height="39.067902"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="144"
+         x="682"
+         y="474.20999"
+         id="rect7" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="124"
+         x="692"
+         y="499.1759"
+         id="text8">Servlet Controllers</text>
+    </g>
+    <!--entity TT-->
+    <g
+       id="elem_TT">
+      <rect
+         fill="#ffffff"
+         filter="url(#f13q7gkyrxj996)"
+         height="39.067902"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="164"
+         x="639"
+         y="625.81"
+         id="rect8" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="144"
+         x="649"
+         y="650.77588"
+         id="text9">Thymeleaf Templates</text>
+    </g>
+    <!--entity B-->
+    <g
+       id="elem_B">
+      <rect
+         fill="#ffffff"
+         filter="url(#f13q7gkyrxj996)"
+         height="39.067902"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="61"
+         x="883.5"
+         y="354.14001"
+         id="rect9" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="41"
+         x="893.5"
+         y="379.1059"
+         id="text10">Beans</text>
+    </g>
+    <!--entity STATIC-->
+    <g
+       id="elem_STATIC">
+      <rect
+         fill="#ffffff"
+         filter="url(#f13q7gkyrxj996)"
+         height="39.067902"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="130"
+         x="689"
+         y="354.14001"
+         id="rect10" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="110"
+         x="699"
+         y="379.1059"
+         id="text11">Static Resources</text>
+    </g>
+    <!--entity SS-->
+    <g
+       id="elem_SS">
+      <rect
+         fill="#ffffff"
+         filter="url(#f13q7gkyrxj996)"
+         height="39.067902"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="106"
+         x="838"
+         y="625.81"
+         id="rect11" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="86"
+         x="848"
+         y="650.77588"
+         id="text12">local storage</text>
+    </g>
+    <!--entity DAO-->
+    <g
+       id="elem_DAO">
+      <rect
+         fill="#ffffff"
+         filter="url(#f13q7gkyrxj996)"
+         height="58.135799"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="100"
+         x="1000"
+         y="616.27002"
+         id="rect12" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="80"
+         x="1010"
+         y="641.2359"
+         id="text13">Data Access</text>
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="51"
+         x="1024.5"
+         y="660.30389"
+         id="text14">Objects</text>
+    </g>
+    <!--entity DB-->
+    <g
+       id="elem_DB">
+      <path
+         d="m 1209.5,631.31 c 0,-10 41.5,-10 41.5,-10 0,0 41.5,0 41.5,10 v 28.0679 c 0,10 -41.5,10 -41.5,10 0,0 -41.5,0 -41.5,-10 V 631.31"
+         fill="#ffffff"
+         filter="url(#f13q7gkyrxj996)"
+         style="stroke:#181818;stroke-width:0.5"
+         id="path14" />
+      <path
+         d="m 1209.5,631.31 c 0,10 41.5,10 41.5,10 0,0 41.5,0 41.5,-10"
+         fill="none"
+         style="stroke:#181818;stroke-width:0.5"
+         id="path15" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="63"
+         x="1219.5"
+         y="660.27588"
+         id="text15">Database</text>
+    </g>
+    <!--entity Dev-->
+    <g
+       id="elem_Dev">
+      <circle
+         cx="281"
+         cy="177.57001"
+         fill="#da70d6"
+         filter="url(#f13q7gkyrxj996)"
+         style="stroke:#181818;stroke-width:0.5"
+         id="ellipse15"
+         r="8" />
+      <path
+         d="m 281,185.57 v 27 m -13,-19 h 26 m -13,19 -13,15 m 13,-15 13,15"
+         fill="none"
+         filter="url(#f13q7gkyrxj996)"
+         style="stroke:#181818;stroke-width:0.5"
+         id="path16" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="68"
+         x="247"
+         y="247.0359"
+         id="text16">Developer</text>
+    </g>
+    <!--entity C-->
+    <g
+       id="elem_C">
+      <circle
+         cx="754"
+         cy="14"
+         fill="#add8e6"
+         filter="url(#f13q7gkyrxj996)"
+         style="stroke:#181818;stroke-width:0.5"
+         id="ellipse16"
+         r="8" />
+      <path
+         d="M 754,22 V 49 M 741,30 h 26 m -13,19 -13,15 m 13,-15 13,15"
+         fill="none"
+         filter="url(#f13q7gkyrxj996)"
+         style="stroke:#181818;stroke-width:0.5"
+         id="path17" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="39"
+         x="734.5"
+         y="83.465897"
+         id="text17">Client</text>
+    </g>
+    <!--link Dev to NODE-->
+    <g
+       id="link_Dev_NODE">
+      <path
+         d="M 246.77,248.98 C 216.93,282 178.942,324.0376 155.862,349.5876"
+         fill="none"
+         id="Dev-to-NODE"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="160.8412,350.0427 155.1916,350.3297 154.9047,344.6801 151.84,354.04 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon17" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="49"
+         x="217.74001"
+         y="296.03699"
+         id="text18">Compile</text>
+    </g>
+    <!--link Dev to WAR-->
+    <g
+       id="link_Dev_WAR">
+      <path
+         d="m 315.49,247.77 c 31.01,32.96 71.1991,75.6796 95.5891,101.6096"
+         fill="none"
+         id="Dev-to-WAR"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="411.9373,344.4538 411.7643,350.108 406.1101,349.9349 415.19,353.75 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon18" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="30"
+         x="362.56"
+         y="296.03699"
+         id="text19">Build</text>
+    </g>
+    <!--link C to CCT-->
+    <g
+       id="link_C_CCT">
+      <path
+         d="m 754,87.89 c 0,32.71 0,71.35 0,96.31"
+         fill="none"
+         id="C-to-CCT"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="758,181.2 754,185.2 750,181.2 754,190.2 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon19" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="29"
+         x="755"
+         y="132.467"
+         id="text20">Uses</text>
+    </g>
+    <!--link WAR to CT-->
+    <g
+       id="link_WAR_CT">
+      <path
+         d="m 484.57,393.64 c 59.82,22 152.2188,55.9889 212.0888,78.0089"
+         fill="none"
+         id="WAR-to-CT"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="695.224,466.8592 697.5973,471.9941 692.4624,474.3674 702.29,473.72 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon20" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="47"
+         x="613.71997"
+         y="440.10699"
+         id="text21">deploys</text>
+    </g>
+    <!--link CT to SS-->
+    <g
+       id="link_CT_SS">
+      <path
+         d="m 771.35,513.69 c 26.35,28.77 72.1181,78.7448 98.3881,107.4348"
+         fill="none"
+         id="CT-to-SS"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="870.6623,616.211 870.4134,621.8624 864.762,621.6135 873.79,625.55 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon21" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="87"
+         x="815.29999"
+         y="558.16699"
+         id="text22">save images in</text>
+    </g>
+    <!--reverse link CCT to STATIC-->
+    <g
+       id="link_CCT_STATIC">
+      <path
+         d="m 754,235.95 c 0,31.05 0,86.61 0,117.74"
+         fill="none"
+         id="CCT-backto-STATIC"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="750,238.95 754,234.95 758,238.95 754,229.95 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon22" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="58"
+         x="755"
+         y="296.03699"
+         id="text23">Response</text>
+    </g>
+    <!--link CT to TT-->
+    <g
+       id="link_CT_TT">
+      <path
+         d="m 747.61,513.49 c -2.89,8.95 -6.2,19.84 -8.61,29.78 -6.89,28.41 -11.4585,55.9651 -14.4885,76.3651"
+         fill="none"
+         id="CT-to-TT"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="728.9089,617.2553 724.3646,620.6243 720.9957,616.08 723.63,625.57 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon23" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="46"
+         x="740"
+         y="558.16699"
+         id="text24">process</text>
+    </g>
+    <!--reverse link STATIC to CT-->
+    <g
+       id="link_STATIC_CT">
+      <path
+         d="m 754,399.64 c 0,22.03 0,52.16 0,74.18"
+         fill="none"
+         id="STATIC-backto-CT"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="750,402.64 754,398.64 758,402.64 754,393.64 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon24" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="32"
+         x="755"
+         y="440.10699"
+         id="text25">serve</text>
+    </g>
+    <!--link CT to DAO-->
+    <g
+       id="link_CT_DAO">
+      <path
+         d="m 826.25,511.84 c 41.5,12.03 93.24,30.95 133.75,58.43 20.43,13.86 37.2865,27.4212 54.0865,41.9112"
+         fill="none"
+         id="CT-to-DAO"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="1014.4273,607.1929 1014.8438,612.8344 1009.2023,613.2509 1018.63,616.1 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon25" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="49"
+         x="946.03003"
+         y="558.16699"
+         id="text26">Request</text>
+    </g>
+    <!--link DAO to DB-->
+    <g
+       id="link_DAO_DB">
+      <path
+         d="m 1106.46,645.34 c 33.49,0 64.94,0 96.54,0"
+         fill="none"
+         id="DAO-DB"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="1109.46,649.34 1105.46,645.34 1109.46,641.34 1100.46,645.34 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon26" />
+      <polygon
+         fill="#181818"
+         points="1200,641.34 1204,645.34 1200,649.34 1209,645.34 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon27" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="73"
+         x="1118.25"
+         y="638.237"
+         id="text27">SQL Queries</text>
+    </g>
+    <!--reverse link B to DAO-->
+    <g
+       id="link_B_DAO">
+      <path
+         d="m 927.5773,398.923 c 17.26,31.02 49.2427,89.317 76.4227,144.347 11.95,24.2 24.59,52.16 33.59,72.53"
+         fill="none"
+         id="B-backto-DAO"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="925.5406,403.4894 927.0911,398.0492 932.5313,399.5997 924.66,393.68 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon28" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="55"
+         x="989.33002"
+         y="499.13699"
+         id="text28">response</text>
+    </g>
+    <!--SRC=[TLF1ZjCm4BtxAqQjX40eV425aDAK0olOQZT6NBYupZJrrh6DxNIf4F_EJ9AMYAKvHB7dpSnxRoRfQ5nGKNMG3ghnpyQra6EF8bq3sdV1EtIvpcUB455dvLexXpIuLxtD4d_cqfhMTOG6JI-CGYYTVOGDdj3wW15KuWCiVTG7qqpXoXhEeLW5Iofno3jBB8G8IXzLYx1OzyOsy0egecEioiQx1IoV3wWo_190pvKeBEvzW- -U4hoMvu2rZYPao1xkQjXncJSBxdI_tNpa2YRZl_bVr0aTj54rfFWjtAcZYbb1ZV5aCSEtyd4iDDJXqrJcjn2ihIW-3DLN4rkytX9s1QEKcRP9lJGOILDG5jk8HE25hZgJS4qpIBwF6XCery3UnouDJAfANfWm5L4DFVbs1LyJ9Z4tj0p16ZqOUUay6AzzLFO_hIVjbNSvUcinJZtb3G_buToXHRK7YLsWYU6O86ybh56v4RA-WPZaFrxa3-1Qbl9JTIF3UarY4gqOQHxXzTzXyUGAsdh7Bh593GRhpqdGuN9F-1KasWSm7TL8O1ovE3Kj-d0rc5XHrqJMpx8bHqBqH7QiEYHCsLINJCNvZYVZ24bhlb6qR_Enf8ne-QTuEPe1MshkyTrjTq_qXuxMRChjt9U6S3kLSCpWhn6rdgtlZ3jdiwmVFQOi-FI-Y4o5OsiArG-VuQ77Q6YpE5nOt7EGO_7gnXy0]-->
+  </g>
+</svg>

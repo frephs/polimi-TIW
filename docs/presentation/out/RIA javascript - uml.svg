@@ -1,0 +1,1532 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   contentStyleType="text/css"
+   height="722.83484"
+   preserveAspectRatio="none"
+   version="1.1"
+   viewBox="0 0 3824.0808 722.83484"
+   width="3824.0808"
+   zoomAndPan="magnify"
+   id="svg75"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="g75"
+     transform="translate(-819.66919,-14.3119)">
+    <text
+       fill="#000000"
+       font-family="sans-serif"
+       font-size="14px"
+       font-weight="bold"
+       lengthAdjust="spacing"
+       textLength="229.8125"
+       x="2203.3438"
+       y="24.9659"
+       id="text1">Components and Utils Functions</text>
+    <!--class Utils-->
+    <g
+       id="elem_Utils">
+      <rect
+         codeLine="3"
+         fill="#f1f1f1"
+         height="276.815"
+         id="Utils"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="556"
+         x="3063"
+         y="47.067902" />
+      <circle
+         cx="3321.75"
+         cy="63.067902"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse1"
+         r="11" />
+      <path
+         d="m 3321.8594,58.5992 q -0.9219,0 -1.6563,0.3125 -0.7187,0.3125 -1.2187,0.9062 -0.5,0.5781 -0.7813,1.4531 -0.2656,0.875 -0.2656,1.9688 0,1.4375 0.4375,2.4844 0.4531,1.0468 1.2969,1.5937 0.8594,0.5469 2.1719,0.5469 0.7812,0 1.4687,-0.125 0.7031,-0.1406 1.7031,-0.4531 v 1.875 q -0.8593,0.3281 -1.625,0.4531 -0.75,0.125 -1.7656,0.125 -1.9219,0 -3.2344,-0.7969 -1.2968,-0.8125 -1.9531,-2.2812 -0.6562,-1.4844 -0.6562,-3.4532 0,-1.4218 0.3906,-2.5937 0.4062,-1.1875 1.1875,-2.0625 0.7812,-0.875 1.9219,-1.3438 1.1406,-0.4843 2.6093,-0.4843 0.9532,0 1.8438,0.2031 0.9062,0.1875 1.8437,0.6562 l -0.8281,1.7813 q -0.7812,-0.375 -1.4375,-0.5625 -0.6562,-0.2031 -1.4531,-0.2031 z"
+         fill="#000000"
+         id="path1" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="30"
+         x="3342.25"
+         y="68.499901"
+         id="text2">Utils</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="3064"
+         x2="3618"
+         y1="79.067902"
+         y2="79.067902"
+         id="line2" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="3064"
+         x2="3618"
+         y1="87.067902"
+         y2="87.067902"
+         id="line3" />
+      <circle
+         cx="3074"
+         cy="102.1019"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse3"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="307"
+         x="3083"
+         y="106.0339"
+         id="text3">generateWelcomeMessage(user: User): string</text>
+      <circle
+         cx="3074"
+         cy="121.1698"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse4"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="335"
+         x="3083"
+         y="125.1018"
+         id="text4">generateModalBox(content: string): HTMLElement</text>
+      <circle
+         cx="3074"
+         cy="140.2377"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse5"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="247"
+         x="3083"
+         y="144.16969"
+         id="text5">showMessage(message: string): void</text>
+      <circle
+         cx="3074"
+         cy="159.3056"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse6"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="134"
+         x="3083"
+         y="163.23759"
+         id="text6">hideMessage(): void</text>
+      <circle
+         cx="3074"
+         cy="178.3735"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse7"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="295"
+         x="3083"
+         y="182.3055"
+         id="text7">showBreadcrumb(breadcrumb: string): void</text>
+      <circle
+         cx="3074"
+         cy="197.4415"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse8"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="416"
+         x="3083"
+         y="201.3734"
+         id="text8">hideAllPages(pageSections: Map&lt;string, HTMLElement&gt;): void</text>
+      <circle
+         cx="3074"
+         cy="216.5094"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse9"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="487"
+         x="3083"
+         y="220.44141"
+         id="text9">showPage(page: string, pageSections: Map&lt;string, HTMLElement&gt;): void</text>
+      <circle
+         cx="3074"
+         cy="235.5773"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse10"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="412"
+         x="3083"
+         y="239.50929"
+         id="text10">showModal(pageSection: HTMLElement, content: string): void</text>
+      <circle
+         cx="3074"
+         cy="254.6452"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse11"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="422"
+         x="3083"
+         y="258.57721"
+         id="text11">processForms(pageSections: Map&lt;string, HTMLElement&gt;): void</text>
+      <circle
+         cx="3074"
+         cy="273.7131"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse12"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="441"
+         x="3083"
+         y="277.64511"
+         id="text12">processNavLinks(pageSections: Map&lt;string, HTMLElement&gt;): void</text>
+      <circle
+         cx="3074"
+         cy="292.78101"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse13"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="530"
+         x="3083"
+         y="296.71301"
+         id="text13">processUpdateProductsForms(pageSections: Map&lt;string, HTMLElement&gt;): void</text>
+      <circle
+         cx="3074"
+         cy="311.849"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse14"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="444"
+         x="3083"
+         y="315.78091"
+         id="text14">processRedirects(pageSections: Map&lt;string, HTMLElement&gt;): void</text>
+    </g>
+    <!--class Requests-->
+    <g
+       id="elem_Requests">
+      <rect
+         codeLine="18"
+         fill="#f1f1f1"
+         height="86.135803"
+         id="Requests"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="959"
+         x="3684.5"
+         y="142.4079" />
+      <circle
+         cx="4128.75"
+         cy="158.4079"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse15"
+         r="11" />
+      <path
+         d="m 4128.8594,153.9392 q -0.9219,0 -1.6563,0.3125 -0.7187,0.3125 -1.2187,0.9062 -0.5,0.5781 -0.7813,1.4531 -0.2656,0.875 -0.2656,1.9688 0,1.4375 0.4375,2.4844 0.4531,1.0468 1.2969,1.5937 0.8594,0.5469 2.1719,0.5469 0.7812,0 1.4687,-0.125 0.7031,-0.1406 1.7031,-0.4531 v 1.875 q -0.8593,0.3281 -1.625,0.4531 -0.75,0.125 -1.7656,0.125 -1.9219,0 -3.2344,-0.7969 -1.2968,-0.8125 -1.9531,-2.2812 -0.6562,-1.4844 -0.6562,-3.4532 0,-1.4218 0.3906,-2.5937 0.4062,-1.1875 1.1875,-2.0625 0.7812,-0.875 1.9219,-1.3438 1.1406,-0.4843 2.6093,-0.4843 0.9532,0 1.8438,0.2031 0.9062,0.1875 1.8437,0.6562 l -0.8281,1.7813 q -0.7812,-0.375 -1.4375,-0.5625 -0.6562,-0.2031 -1.4531,-0.2031 z"
+         fill="#000000"
+         id="path15" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="62"
+         x="4149.25"
+         y="163.8399"
+         id="text15">Requests</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="3685.5"
+         x2="4642.5"
+         y1="174.4079"
+         y2="174.4079"
+         id="line15" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="3685.5"
+         x2="4642.5"
+         y1="182.4079"
+         y2="182.4079"
+         id="line16" />
+      <circle
+         cx="3695.5"
+         cy="197.44189"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse16"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="933"
+         x="3704.5"
+         y="201.3739"
+         id="text16">makeXHRequest(method: string, url: string, data: FormData, jsonParserCallback: Function, pageSections: Map&lt;string, HTMLElement&gt;): void</text>
+      <circle
+         cx="3695.5"
+         cy="216.5098"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse17"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="824"
+         x="3704.5"
+         y="220.4418"
+         id="text17">processXHRResponse(xhr: XMLHttpRequest, jsonParserCallback: Function, pageSections: Map&lt;string, HTMLElement&gt;): void</text>
+    </g>
+    <!--class Routing-->
+    <g
+       id="elem_Routing">
+      <rect
+         codeLine="23"
+         fill="#f1f1f1"
+         height="67.067902"
+         id="Routing"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="580"
+         x="2417"
+         y="151.9379" />
+      <circle
+         cx="2676.25"
+         cy="167.9379"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse18"
+         r="11" />
+      <path
+         d="m 2676.3594,163.4692 q -0.9219,0 -1.6563,0.3125 -0.7187,0.3125 -1.2187,0.9062 -0.5,0.5781 -0.7813,1.4531 -0.2656,0.875 -0.2656,1.9688 0,1.4375 0.4375,2.4844 0.4531,1.0468 1.2969,1.5937 0.8594,0.5469 2.1719,0.5469 0.7812,0 1.4687,-0.125 0.7031,-0.1406 1.7031,-0.4531 v 1.875 q -0.8593,0.3281 -1.625,0.4531 -0.75,0.125 -1.7656,0.125 -1.9219,0 -3.2344,-0.7969 -1.2968,-0.8125 -1.9531,-2.2812 -0.6562,-1.4844 -0.6562,-3.4532 0,-1.4218 0.3906,-2.5937 0.4062,-1.1875 1.1875,-2.0625 0.7812,-0.875 1.9219,-1.3438 1.1406,-0.4843 2.6093,-0.4843 0.9532,0 1.8438,0.2031 0.9062,0.1875 1.8437,0.6562 l -0.8281,1.7813 q -0.7812,-0.375 -1.4375,-0.5625 -0.6562,-0.2031 -1.4531,-0.2031 z"
+         fill="#000000"
+         id="path18" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="53"
+         x="2696.75"
+         y="173.3699"
+         id="text18">Routing</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="2418"
+         x2="2996"
+         y1="183.9379"
+         y2="183.9379"
+         id="line18" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="2418"
+         x2="2996"
+         y1="191.9379"
+         y2="191.9379"
+         id="line19" />
+      <circle
+         cx="2428"
+         cy="206.97189"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse19"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="554"
+         x="2437"
+         y="210.9039"
+         id="text19">controllerSwitcher(response: any, pageSections: Map&lt;string, HTMLElement&gt;): void</text>
+    </g>
+    <!--class Buy-->
+    <g
+       id="elem_Buy"
+       transform="translate(812.91919,-424.35404)">
+      <rect
+         codeLine="27"
+         fill="#f1f1f1"
+         height="181.4754"
+         id="Buy"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="1184"
+         x="7"
+         y="479.14789" />
+      <circle
+         cx="582.25"
+         cy="495.14789"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse20"
+         r="11" />
+      <path
+         d="m 582.3594,490.6792 q -0.9219,0 -1.6563,0.3125 -0.7187,0.3125 -1.2187,0.9062 -0.5,0.5781 -0.7813,1.4531 -0.2656,0.875 -0.2656,1.9688 0,1.4375 0.4375,2.4844 0.4531,1.0468 1.2969,1.5937 0.8594,0.5469 2.1719,0.5469 0.7812,0 1.4687,-0.125 0.7031,-0.1406 1.7031,-0.4531 v 1.875 q -0.8593,0.3281 -1.625,0.4531 -0.75,0.125 -1.7656,0.125 -1.9219,0 -3.2344,-0.7969 -1.2968,-0.8125 -1.9531,-2.2812 -0.6562,-1.4844 -0.6562,-3.4532 0,-1.4218 0.3906,-2.5937 0.4062,-1.1875 1.1875,-2.0625 0.7812,-0.875 1.9219,-1.3438 1.1406,-0.4843 2.6093,-0.4843 0.9532,0 1.8438,0.2031 0.9062,0.1875 1.8437,0.6562 l -0.8281,1.7813 q -0.7812,-0.375 -1.4375,-0.5625 -0.6562,-0.2031 -1.4531,-0.2031 z"
+         fill="#000000"
+         id="path20" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="25"
+         x="602.75"
+         y="500.5799"
+         id="text20">Buy</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="8"
+         x2="1190"
+         y1="511.14789"
+         y2="511.14789"
+         id="line20" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="8"
+         x2="1190"
+         y1="519.14789"
+         y2="519.14789"
+         id="line21" />
+      <circle
+         cx="18"
+         cy="534.18188"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse21"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="1158"
+         x="27"
+         y="538.11389"
+         id="text21">generateBuySection(auctions: Auction[], wonAuctions: Auction[], closedAuctionShippingAddresses: Record&lt;number, string&gt;, user: User, searchQuery: string): HTMLElement</text>
+      <circle
+         cx="18"
+         cy="553.24982"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse22"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="349"
+         x="27"
+         y="557.18182"
+         id="text22">generateWelcomeSection(user: User): HTMLElement</text>
+      <circle
+         cx="18"
+         cy="572.31769"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse23"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="575"
+         x="27"
+         y="576.24969"
+         id="text23">generateSearchResultSection(auctions: Auction[], searchQuery: string): HTMLElement</text>
+      <circle
+         cx="18"
+         cy="591.38562"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse24"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="429"
+         x="27"
+         y="595.31763"
+         id="text24">createPreviousSearchResultsSection(products: Product[]): string</text>
+      <circle
+         cx="18"
+         cy="610.45349"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse25"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="432"
+         x="27"
+         y="614.3855"
+         id="text25">createAuctionCard(auction: Auction, searchQuery: string): string</text>
+      <circle
+         cx="18"
+         cy="629.52148"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse26"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="849"
+         x="27"
+         y="633.45343"
+         id="text26">createWonAuctionsSection(wonAuctions: Auction[], closedAuctionShippingAddresses: Record&lt;number, string&gt;): HTMLElement</text>
+      <circle
+         cx="18"
+         cy="648.58942"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse27"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="492"
+         x="27"
+         y="652.52142"
+         id="text27">createWonAuctionCard(auction: Auction, shippingAddress: String): string</text>
+    </g>
+    <!--class Sell-->
+    <g
+       id="elem_Sell">
+      <rect
+         codeLine="37"
+         fill="#f1f1f1"
+         height="334.0188"
+         id="Sell"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="1314"
+         x="1226"
+         y="402.8779" />
+      <circle
+         cx="1866.75"
+         cy="418.8779"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse28"
+         r="11" />
+      <path
+         d="m 1866.8594,414.4092 q -0.9219,0 -1.6563,0.3125 -0.7187,0.3125 -1.2187,0.9062 -0.5,0.5781 -0.7813,1.4531 -0.2656,0.875 -0.2656,1.9688 0,1.4375 0.4375,2.4844 0.4531,1.0468 1.2969,1.5937 0.8594,0.5469 2.1719,0.5469 0.7812,0 1.4687,-0.125 0.7031,-0.1406 1.7031,-0.4531 v 1.875 q -0.8593,0.3281 -1.625,0.4531 -0.75,0.125 -1.7656,0.125 -1.9219,0 -3.2344,-0.7969 -1.2968,-0.8125 -1.9531,-2.2812 -0.6562,-1.4844 -0.6562,-3.4532 0,-1.4218 0.3906,-2.5937 0.4062,-1.1875 1.1875,-2.0625 0.7812,-0.875 1.9219,-1.3438 1.1406,-0.4843 2.6093,-0.4843 0.9532,0 1.8438,0.2031 0.9062,0.1875 1.8437,0.6562 l -0.8281,1.7813 q -0.7812,-0.375 -1.4375,-0.5625 -0.6562,-0.2031 -1.4531,-0.2031 z"
+         fill="#000000"
+         id="path28" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="24"
+         x="1887.25"
+         y="424.30991"
+         id="text28">Sell</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="1227"
+         x2="2539"
+         y1="434.8779"
+         y2="434.8779"
+         id="line28" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="1227"
+         x2="2539"
+         y1="442.8779"
+         y2="442.8779"
+         id="line29" />
+      <circle
+         cx="1237"
+         cy="457.9119"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse29"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="1288"
+         x="1246"
+         y="461.8439"
+         id="text29">generateSellSection(closed_auctions: Auction[], open_auctions: Auction[], products: Product[], unauctioned_products: Product[], shipping_addresses: Record&lt;number, String&gt;, user: User): void</text>
+      <circle
+         cx="1237"
+         cy="476.9798"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse30"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="320"
+         x="1246"
+         y="480.9118"
+         id="text30">generateSellWelcomeSection(user: User): string</text>
+      <circle
+         cx="1237"
+         cy="496.0477"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse31"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="489"
+         x="1246"
+         y="499.97971"
+         id="text31">generateProductsSection(products: Product[], auctions: Auction[]): string</text>
+      <circle
+         cx="1237"
+         cy="515.1156"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse32"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="230"
+         x="1246"
+         y="519.04761"
+         id="text32">generateAddProductForm(): string</text>
+      <circle
+         cx="1237"
+         cy="534.18347"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse33"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="503"
+         x="1246"
+         y="538.11548"
+         id="text33">generateEditProductsTable(products: Product[], auctions: Auction[]): string</text>
+      <circle
+         cx="1237"
+         cy="553.25153"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse34"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="470"
+         x="1246"
+         y="557.18341"
+         id="text34">generateEditProductRow(product: Product, auctions: Auction[]): string</text>
+      <circle
+         cx="1237"
+         cy="572.3194"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse35"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="538"
+         x="1246"
+         y="576.2514"
+         id="text35">generateAuctionOptions(selectedAuctionId: number, auctions: Auction[]): string</text>
+      <circle
+         cx="1237"
+         cy="591.38733"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse36"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="1028"
+         x="1246"
+         y="595.31927"
+         id="text36">generateAuctionsSection(open_auctions: Auction[], closed_auctions: Auction[], products: Product[], shipping_addresses: Record&lt;number, String&gt;): string</text>
+      <circle
+         cx="1237"
+         cy="610.4552"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse37"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="376"
+         x="1246"
+         y="614.38721"
+         id="text37">generateCreateAuctionForm(products: Product[]): string</text>
+      <circle
+         cx="1237"
+         cy="629.52307"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse38"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="429"
+         x="1246"
+         y="633.45508"
+         id="text38">generateUnauctionedProductsTable(products: Product[]): string</text>
+      <circle
+         cx="1237"
+         cy="648.591"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse39"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="396"
+         x="1246"
+         y="652.52301"
+         id="text39">generateUnauctionedProductRow(product: Product): string</text>
+      <circle
+         cx="1237"
+         cy="667.659"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse40"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="375"
+         x="1246"
+         y="671.59088"
+         id="text40">generateOpenAuctionsTable(auctions: Auction[]): string</text>
+      <circle
+         cx="1237"
+         cy="686.72693"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse41"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="342"
+         x="1246"
+         y="690.65887"
+         id="text41">generateOpenAuctionRow(auction: Auction): string</text>
+      <circle
+         cx="1237"
+         cy="705.7948"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse42"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="695"
+         x="1246"
+         y="709.72681"
+         id="text42">generateClosedAuctionsTable(auctions: Auction[], shippingAddresses: Record&lt;number, String&gt;): string</text>
+      <circle
+         cx="1237"
+         cy="724.86267"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse43"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="564"
+         x="1246"
+         y="728.79468"
+         id="text43">generateClosedAuctionRow(auction: Auction, shippingAddress: String | null): string</text>
+    </g>
+    <!--class AccountDetails-->
+    <g
+       id="elem_AccountDetails">
+      <rect
+         codeLine="55"
+         fill="#f1f1f1"
+         height="67.067902"
+         id="AccountDetails"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="264"
+         x="2575"
+         y="536.35791" />
+      <circle
+         cx="2652.75"
+         cy="552.35791"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse44"
+         r="11" />
+      <path
+         d="m 2652.8594,547.8892 q -0.9219,0 -1.6563,0.3125 -0.7187,0.3125 -1.2187,0.9062 -0.5,0.5781 -0.7813,1.4531 -0.2656,0.875 -0.2656,1.9688 0,1.4375 0.4375,2.4844 0.4531,1.0468 1.2969,1.5937 0.8594,0.5469 2.1719,0.5469 0.7812,0 1.4687,-0.125 0.7031,-0.1406 1.7031,-0.4531 v 1.875 q -0.8593,0.3281 -1.625,0.4531 -0.75,0.125 -1.7656,0.125 -1.9219,0 -3.2344,-0.7969 -1.2968,-0.8125 -1.9531,-2.2812 -0.6562,-1.4844 -0.6562,-3.4532 0,-1.4218 0.3906,-2.5937 0.4062,-1.1875 1.1875,-2.0625 0.7812,-0.875 1.9219,-1.3438 1.1406,-0.4843 2.6093,-0.4843 0.9532,0 1.8438,0.2031 0.9062,0.1875 1.8437,0.6562 l -0.8281,1.7813 q -0.7812,-0.375 -1.4375,-0.5625 -0.6562,-0.2031 -1.4531,-0.2031 z"
+         fill="#000000"
+         id="path44" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="100"
+         x="2673.25"
+         y="557.78992"
+         id="text44">AccountDetails</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="2576"
+         x2="2838"
+         y1="568.35791"
+         y2="568.35791"
+         id="line44" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="2576"
+         x2="2838"
+         y1="576.35791"
+         y2="576.35791"
+         id="line45" />
+      <circle
+         cx="2586"
+         cy="591.39191"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse45"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="238"
+         x="2595"
+         y="595.32391"
+         id="text45">updateUserDetails(user: User): void</text>
+    </g>
+    <!--class BuyAuctionDetails-->
+    <g
+       id="elem_BuyAuctionDetails">
+      <rect
+         codeLine="59"
+         fill="#f1f1f1"
+         height="238.6792"
+         id="BuyAuctionDetails"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="451"
+         x="2874.5"
+         y="450.54791" />
+      <circle
+         cx="3034.75"
+         cy="466.54791"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse46"
+         r="11" />
+      <path
+         d="m 3034.8594,462.0792 q -0.9219,0 -1.6563,0.3125 -0.7187,0.3125 -1.2187,0.9062 -0.5,0.5781 -0.7813,1.4531 -0.2656,0.875 -0.2656,1.9688 0,1.4375 0.4375,2.4844 0.4531,1.0468 1.2969,1.5937 0.8594,0.5469 2.1719,0.5469 0.7812,0 1.4687,-0.125 0.7031,-0.1406 1.7031,-0.4531 v 1.875 q -0.8593,0.3281 -1.625,0.4531 -0.75,0.125 -1.7656,0.125 -1.9219,0 -3.2344,-0.7969 -1.2968,-0.8125 -1.9531,-2.2812 -0.6562,-1.4844 -0.6562,-3.4532 0,-1.4218 0.3906,-2.5937 0.4062,-1.1875 1.1875,-2.0625 0.7812,-0.875 1.9219,-1.3438 1.1406,-0.4843 2.6093,-0.4843 0.9532,0 1.8438,0.2031 0.9062,0.1875 1.8437,0.6562 l -0.8281,1.7813 q -0.7812,-0.375 -1.4375,-0.5625 -0.6562,-0.2031 -1.4531,-0.2031 z"
+         fill="#000000"
+         id="path46" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="122"
+         x="3055.25"
+         y="471.97989"
+         id="text46">BuyAuctionDetails</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="2875.5"
+         x2="3324.5"
+         y1="482.54791"
+         y2="482.54791"
+         id="line46" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="2875.5"
+         x2="3324.5"
+         y1="490.54791"
+         y2="490.54791"
+         id="line47" />
+      <circle
+         cx="2885.5"
+         cy="505.58191"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse47"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="425"
+         x="2894.5"
+         y="509.51389"
+         id="text47">generateBuyAuctionDetails(auction: Auction, bids: Bid[]): string</text>
+      <circle
+         cx="2885.5"
+         cy="524.64978"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse48"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="326"
+         x="2894.5"
+         y="528.58179"
+         id="text48">generateAuctionHeader(auction: Auction): string</text>
+      <circle
+         cx="2885.5"
+         cy="543.71771"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse49"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="334"
+         x="2894.5"
+         y="547.64972"
+         id="text49">generateProductsSection(auction: Auction): string</text>
+      <circle
+         cx="2885.5"
+         cy="562.78558"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse50"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="310"
+         x="2894.5"
+         y="566.71759"
+         id="text50">generateProductRow(product: Product): string</text>
+      <circle
+         cx="2885.5"
+         cy="581.85352"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse51"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="304"
+         x="2894.5"
+         y="585.78552"
+         id="text51">generateAuctionInfo(auction: Auction): string</text>
+      <circle
+         cx="2885.5"
+         cy="600.92151"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse52"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="332"
+         x="2894.5"
+         y="604.85339"
+         id="text52">generateRemainingTime(auction: Auction): string</text>
+      <circle
+         cx="2885.5"
+         cy="619.98938"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse53"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="322"
+         x="2894.5"
+         y="623.92139"
+         id="text53">generateAuctionClosed(auction: Auction): string</text>
+      <circle
+         cx="2885.5"
+         cy="639.05731"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse54"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="264"
+         x="2894.5"
+         y="642.98932"
+         id="text54">generateBidsSection(bids: Bid[]): string</text>
+      <circle
+         cx="2885.5"
+         cy="658.12518"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse55"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="219"
+         x="2894.5"
+         y="662.05719"
+         id="text55">generateBidRow(bid: Bid): string</text>
+      <circle
+         cx="2885.5"
+         cy="677.19312"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse56"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="332"
+         x="2894.5"
+         y="681.12512"
+         id="text56">generatePlaceBidSection(auction: Auction): string</text>
+    </g>
+    <!--class SellAuctionDetails-->
+    <g
+       id="elem_SellAuctionDetails">
+      <rect
+         codeLine="72"
+         fill="#f1f1f1"
+         height="257.7471"
+         id="SellAuctionDetails"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="758"
+         x="3361"
+         y="441.01791" />
+      <circle
+         cx="3675.25"
+         cy="457.01791"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse57"
+         r="11" />
+      <path
+         d="m 3675.3594,452.5492 q -0.9219,0 -1.6563,0.3125 -0.7187,0.3125 -1.2187,0.9062 -0.5,0.5781 -0.7813,1.4531 -0.2656,0.875 -0.2656,1.9688 0,1.4375 0.4375,2.4844 0.4531,1.0468 1.2969,1.5937 0.8594,0.5469 2.1719,0.5469 0.7812,0 1.4687,-0.125 0.7031,-0.1406 1.7031,-0.4531 v 1.875 q -0.8593,0.3281 -1.625,0.4531 -0.75,0.125 -1.7656,0.125 -1.9219,0 -3.2344,-0.7969 -1.2968,-0.8125 -1.9531,-2.2812 -0.6562,-1.4844 -0.6562,-3.4532 0,-1.4218 0.3906,-2.5937 0.4062,-1.1875 1.1875,-2.0625 0.7812,-0.875 1.9219,-1.3438 1.1406,-0.4843 2.6093,-0.4843 0.9532,0 1.8438,0.2031 0.9062,0.1875 1.8437,0.6562 l -0.8281,1.7813 q -0.7812,-0.375 -1.4375,-0.5625 -0.6562,-0.2031 -1.4531,-0.2031 z"
+         fill="#000000"
+         id="path57" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="121"
+         x="3695.75"
+         y="462.44989"
+         id="text57">SellAuctionDetails</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="3362"
+         x2="4118"
+         y1="473.01791"
+         y2="473.01791"
+         id="line57" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="3362"
+         x2="4118"
+         y1="481.01791"
+         y2="481.01791"
+         id="line58" />
+      <circle
+         cx="3372"
+         cy="496.05191"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse58"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="732"
+         x="3381"
+         y="499.98389"
+         id="text58">generateSellAuctionDetails(auction: Auction, bids: Bid[], closedAuctionShippingAddress: string | null): string</text>
+      <circle
+         cx="3372"
+         cy="515.11981"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse59"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="326"
+         x="3381"
+         y="519.05182"
+         id="text59">generateAuctionHeader(auction: Auction): string</text>
+      <circle
+         cx="3372"
+         cy="534.18768"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse60"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="334"
+         x="3381"
+         y="538.11969"
+         id="text60">generateProductsSection(auction: Auction): string</text>
+      <circle
+         cx="3372"
+         cy="553.25562"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse61"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="427"
+         x="3381"
+         y="557.18762"
+         id="text61">generateProductRow(product: Product, auction: Auction): string</text>
+      <circle
+         cx="3372"
+         cy="572.32349"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse62"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="689"
+         x="3381"
+         y="576.25549"
+         id="text62">generateBidsSection(auction: Auction, bids: Bid[], closedAuctionShippingAddress: string | null): string</text>
+      <circle
+         cx="3372"
+         cy="591.39148"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse63"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="396"
+         x="3381"
+         y="595.32343"
+         id="text63">generateAuctionStatus(auction: Auction, bids: Bid[]): string</text>
+      <circle
+         cx="3372"
+         cy="610.45941"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse64"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="632"
+         x="3381"
+         y="614.39142"
+         id="text64">generateWinnerSection(auction: Auction, closedAuctionShippingAddress: string | null): string</text>
+      <circle
+         cx="3372"
+         cy="629.52728"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse65"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="252"
+         x="3381"
+         y="633.45929"
+         id="text65">generateBidsTable(bids: Bid[]): string</text>
+      <circle
+         cx="3372"
+         cy="648.59521"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse66"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="375"
+         x="3381"
+         y="652.52722"
+         id="text66">generateAuctionActionsSection(auction: Auction): string</text>
+      <circle
+         cx="3372"
+         cy="667.66309"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse67"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="347"
+         x="3381"
+         y="671.59509"
+         id="text67">generateCloseAuctionForm(auction: Auction): string</text>
+      <circle
+         cx="3372"
+         cy="686.73102"
+         fill="#84be84"
+         style="stroke:#038048;stroke-width:1"
+         id="ellipse68"
+         r="3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="354"
+         x="3381"
+         y="690.66302"
+         id="text68">generateDeleteAuctionForm(auction: Auction): string</text>
+    </g>
+    <!--link Utils to Requests-->
+    <g
+       id="link_Utils_Requests">
+      <path
+         codeLine="86"
+         d="m 3619.34,185.4679 c 21.22,0 36.98,0 58.99,0"
+         fill="none"
+         id="Utils-to-Requests"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="3684.33,185.4679 3675.33,181.4679 3679.33,185.4679 3675.33,189.4679 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon68" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="29"
+         x="3637.25"
+         y="178.3649"
+         id="text69">Uses</text>
+    </g>
+    <!--reverse link Routing to Utils-->
+    <g
+       id="link_Routing_Utils">
+      <path
+         codeLine="87"
+         d="m 3003.1,185.4679 c 21.84,0 37.86,0 59.63,0"
+         fill="none"
+         id="Routing-backto-Utils"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="2997.1,185.4679 3006.1,189.4679 3002.1,185.4679 3006.1,181.4679 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon69" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="29"
+         x="3015.5"
+         y="178.3649"
+         id="text70">Uses</text>
+    </g>
+    <!--link Routing to Buy-->
+    <!--link Routing to Sell-->
+    <g
+       id="link_Routing_Sell">
+      <path
+         codeLine="89"
+         d="m 2636.03,219.4079 c -88.51,41.08 -240.8776,111.7941 -389.2476,180.6541"
+         fill="none"
+         id="Routing-to-Sell"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="2241.34,402.5879 2251.1875,402.4274 2245.8753,400.483 2247.8197,395.1708 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon71" />
+      <polygon
+         fill="#181818"
+         points="2241.34,402.5879 2251.1875,402.4274 2245.8753,400.483 2247.8197,395.1708 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon71-6"
+         transform="rotate(37.496449,2485.8712,-71.819121)" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="51"
+         x="2345.3301"
+         y="368.7749"
+         id="text72">Controls</text>
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="51"
+         x="2345.3301"
+         y="368.7749"
+         id="text72-5"
+         transform="translate(-155.56257,-200.23656)">Controls</text>
+    </g>
+    <!--link Routing to AccountDetails-->
+    <g
+       id="link_Routing_AccountDetails">
+      <path
+         codeLine="90"
+         d="m 2707,219.4079 c 0,72.29 0,238.15 0,310.49"
+         fill="none"
+         id="Routing-to-AccountDetails"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="2707,535.8979 2711,526.8979 2707,530.8979 2703,526.8979 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon72" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="51"
+         x="2708"
+         y="368.7749"
+         id="text73">Controls</text>
+    </g>
+    <!--link Routing to BuyAuctionDetails-->
+    <g
+       id="link_Routing_BuyAuctionDetails">
+      <path
+         codeLine="91"
+         d="m 2740.85,219.4079 c 52.22,50.82 150.72,146.6655 233,226.7355"
+         fill="none"
+         id="Routing-to-BuyAuctionDetails"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="2978.15,450.3279 2974.4897,441.1845 2974.5667,446.8408 2968.9103,446.9178 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon73" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="51"
+         x="2892.72"
+         y="368.7749"
+         id="text74">Controls</text>
+    </g>
+    <!--link Routing to SellAuctionDetails-->
+    <g
+       id="link_Routing_SellAuctionDetails">
+      <path
+         codeLine="92"
+         d="m 2780.73,219.4779 c 68.01,29.69 172.21,73.3 265.27,104.4 129.55,43.3 167.69,35 297,79 33.51,11.4 62.6213,22.0867 96.9213,35.4867"
+         fill="none"
+         id="Routing-to-SellAuctionDetails"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="3445.51,440.5479 3438.5826,433.5472 3440.8528,438.7285 3435.6715,440.9987 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon74" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="51"
+         x="3236.55"
+         y="368.7749"
+         id="text75">Controls</text>
+    </g>
+    <!--SRC=[pLZTJjim5BxdANoPQUK5eWcfm12JwCPQ44W88JS-enwEdTaE36rxzvqaTfeqSKWBciP5IUtpyvs_pqujjmB8aKep9K5QGwXavD9oOSX9BXFBbJHxUucWnhZbNti4_zwJUv2WgOKh48bAOGR6q7k8SWCw9fVu-IucncekxpSKPefHSQX-HecI5drwCPG_lPYTVHIGugfJCYlrv4sdrV-6_AFYp0ckEAinj7SA4uSQA4jqdYwZPVqODZGLuXmDcIZ3pmLKQOZ9Z6OVAfL94-f1rr-XNIfx7nEogwaoNKqWhJHDI3UB3GEPLWacvKJfTBTWd87FzF6CouTNsRZC65R_N2kM9_RraER0k4RLROtyyUqyXnyv6Blkw9G-mFMfMyPkiol5rlNBjLX_mKXeJ8eOZl5fGhuR9S-fngu_ea8iQV8Gr_EpM-bTb8Xd3WQ7qq3qSuMJTJqxExKsSoZVrlCwDIgtA5LdfkWnhOG0lNZYDbc1ZhH35IDZFE_iw31_xX0AhZbB4SsznMdrT7Cx8KzAJllM4w4CCBUmMF4iG_zJnX2f0HITGw8q-o1nya5FN2aFiB0rO-4YK9silkQWdmTfQOFyFDuM-OMr5gKNh6ikx62eO-4ao6d5QC4ZLxbfcZVUVkRcBYPk0czkDmcwikBS7r7DFAWQKmXHZvchTPKyXBSjt40Yrhv3KRITn6In4KdTe0iGejEXnQ8FgW9_rri-bO7it-cf1ZQYTB9ehrV0mxwZmUGikbtTvfLc34FTstjqU_8UQAe9wGauP0_pxnGBAer2OXyPjzxr1LqAUBNZXiMvUlBcQclR1L49VCbAXSY0mEpK_Vm9Zn1VdEsDrfaEjz9G0xwoYqBWZff4KLPk1BjuvSjrbxzOq_4s-geOqlw2kVJvhLnlKPY6Sk5park2AMjoNDXhXvfsA4xJKn_48FsHtzYfGlImu3H9L2xjCLZQV0N8onjTGHXk9-goJlEeTm0spJGE_hP43_GbPuZtaBCNH-SKh_buJnbRe4rgsr9lc_xpp22_gT5kvf1IBd7zWgSmMikVWcLBZDR2xDPf695lt2oYHybIC9WeGPD2zkK4jmxV5tgcApBSDCEt3G-XCmd_QOVLHyfMDVrd2LfOQlCTf_YAItm8Gtu3b4LEAYOUpohJzh6y5Vqt3yonYiTucx0ZDN5kgfzezZM_NzdzW_KhRid9ncyB-5RkkhSyj-c_xkDMyLuMuyz2vMjVUwky4GVsDiw9W5Jt91Xm5PRy2m00]-->
+    <path
+       style="fill:#2e2e2e;stroke:#000000;stroke-width:0.8;stroke-opacity:0.995239"
+       d="M 2398.7713,191.71236 2008.3941,156.9497"
+       id="path75" />
+  </g>
+</svg>

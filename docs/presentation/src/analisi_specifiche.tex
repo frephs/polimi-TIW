@@ -1,0 +1,431 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{textcomp}
+\usepackage{hyperref}
+\usepackage{parskip}
+\usepackage{array}
+\usepackage[table]{xcolor}
+\usepackage{adjustbox}
+
+\usepackage[left=3.7cm,right=3.7cm]{geometry}
+
+\usepackage{caption}
+
+
+\newcommand*\ttvar[1]{\texttt{\expandafter\dottvar\detokenize{#1}\relax}}
+\newcommand*\dottvar[1]{\ifx\relax#1\else
+  \expandafter\ifx\string.#1\string.\allowbreak\else#1\fi
+  \expandafter\dottvar\fi}
+\renewcommand{\theparagraph}{\Alph{paragraph}}
+
+\newcommand{\sig}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\sigxs}[1]{\scriptsize{\sig{#1}}}
+
+\usepackage{tikz}
+
+\newcommand{\proc}[1]{%
+  \tikz[baseline=(char.base)]{%
+    \node[ fill=gray!20, rounded corners=2pt, inner sep=3pt] (char) {\texttt{\detokenize{#1}}};%
+  }%
+}
+
+
+\usetikzlibrary{automata,positioning}
+
+
+\newcommand{\red}[1]{%
+  \tikz[baseline=(char.base)]{%
+    \node[ fill=gray!20, rounded corners=5pt, inner sep=4pt, text=red!90] (char) {\texttt{\detokenize{#1}}};%
+  }%
+}
+
+\definecolor{darkgreen}{RGB}{0,128,0}
+
+\newcommand{\green}[1]{%
+  \tikz[baseline=(char.base)]{%
+    \node[ fill=gray!20, rounded corners=5pt, inner sep=4pt, text=darkgreen!90] (char) {\texttt{\detokenize{#1}}};%
+  }%
+}
+
+
+
+\newcommand{\blue}[1]{%
+  \tikz[baseline=(char.base)]{%
+    \node[ fill=gray!20, rounded corners=5pt, inner sep=4pt, text=blue!90] (char) {\texttt{\detokenize{#1}}};%
+  }%
+}
+
+
+\newcommand{\orange}[1]{%
+  \tikz[baseline=(char.base)]{%
+    \node[ fill=gray!20, rounded corners=5pt, inner sep=4pt, text=orange!90] (char) {\texttt{\detokenize{#1}}};%
+  }%
+}
+
+\newcommand{\purple}[1]{%
+  \tikz[baseline=(char.base)]{%
+    \node[ fill=gray!20, rounded corners=5pt, inner sep=4pt, text=purple!90] (char) {\texttt{\detokenize{#1}}};%
+  }%
+}
+
+\newcommand{\ent}[1]{
+    \red{#1}
+}
+
+\newcommand{\rel}[1]{
+    \green{#1}
+}
+
+\newcommand{\attr}[1]{
+    \blue{#1}
+}
+
+\newcommand{\page}[1]{
+    \red{#1}
+}
+
+\newcommand{\view}[1]{
+    \green{#1}
+}
+
+\newcommand{\act}[1]{
+    \blue{#1}
+}
+
+\newcommand{\ev}[1]{
+    \orange{#1}
+}
+
+
+
+
+
+\usepackage{listings}
+\usepackage{xcolor}
+
+% Define colors for syntax highlighting
+\definecolor{mybackground}{rgb}{0.99,0.99,0.99}
+\definecolor{mykeyword}{rgb}{0.0,0.0,0.7}
+\definecolor{mycomment}{rgb}{0.0,0.5,0.0}
+
+\lstdefinestyle{VHDL}{
+    language=VHDL,
+    backgroundcolor=\color{mybackground},
+    basicstyle=\ttfamily\scriptsize,
+    keywordstyle=\color{mykeyword},
+    commentstyle=\color{mycomment},
+    morecomment=[s][\color{mycomment}]{--},
+    breaklines=true,
+    xleftmargin=1em,
+    xrightmargin=1em,
+    aboveskip=1em,
+    belowskip=1em,
+    frame=none, % Remove the border
+}
+
+\title{Tecnologie informatiche per il web - Analisi della specifica di progetto e documentazione \\ \vspace{0.3cm}\large{ Prof. Piero Fraternali - Anno Accademico 2024/2025}
+}
+\author{Francesco Genovese (codice persona 10765842 - matricola 983101)}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\begin{abstract}
+ Si analizza la specifica di progetto fornita e i requisiti.
+\end{abstract}
+\newpage
+\section{Database requirements}
+Legenda:
+\ent{Entita'}
+\rel{Relazioni}
+\attr{Attributi}
+\subsection{Specifica}
+
+Un'applicazione web consente la gestione di aste online.
+
+Gli \ent{utenti} accedono tramite login e possono vendere e acquistare articoli all'asta. Ogni utente ha \attr{username}, \attr{password}, \attr{nome}, \attr{cognome} e \ent{indirizzo} (quest'ultimo è usato per la spedizione degli articoli comperati). Ogni \ent{articolo} ha \attr{codice}, \attr{nome}, \attr{descrizione}, \attr{immagine} e \attr{prezzo}.
+
+La HOME page contiene due link, uno per accedere alla pagina VENDO e uno per accedere alla pagina ACQUISTO. La pagina VENDO mostra una lista delle aste \rel{create dall'utente} e non ancora chiuse, una lista delle aste da lui create e chiuse e due form, uno per creare un nuovo articolo e uno per creare una nuova asta per vendere gli articoli dell'utente.
+
+ll prim form consente di inserire nel database un articolo con tutti i suoi dati, che sono obbligatori. Il secondo form mostra l'elenco degli articoli presenti nel database e disponibili per la vendita e dà la possibilità di selezionarne più di uno per creare un'asta che li comprende. 
+
+Un'\ent{asta} è formata da \rel{uno o piu' articoli} messi in vendita, il prezzo iniziale dell'insieme di articoli, il \attr{rialzo minimo} di ogni offerta (espresso come un numero intero di euro) e \attr{una scadenza} (data e ora, es. 19-04-2021 alle 24:00). Il prezzo iniziale dell'asta è ottenuto come somma del prezzo degli articoli compresi nell'offerta. Lo \rel{stesso articolo non puo' essere incluso in aste diverse}. 
+
+Una volta venduto, un articolo non deve essere più disponibile per l'inserimento in ulteriori aste. La lista delle aste nella pagina VENDO è ordinata per data+ora crescente. 
+
+L'elenco riporta: codice e nome degli articoli compresi nell'asta, offerta massima, tempo mancante (numero di giorni e ore) tra il momento (data ora) del login e la data e ora di chiusura dell'asta. 
+
+Cliccando su un'asta nell'elenco compare una pagina DETTAGLIO ASTA che riporta per un'asta aperta tutti i \rel{dati dell'asta e la lista delle offerte} (nome utente, prezzo offerto, data e ora dell'offerta) ordinata per data+ora decrescente. 
+
+Un bottone CHIUDI permette all'utente di \attr{chiudere l' asta} se è giunta l'ora della scadenza (si ignori il caso di aste scadute ma non chiuse dall'utente e non ci si occupi della chiusura automatica di aste dopo la scadenza).
+
+Se l'asta è chiusa, la pagina riporta tutti i dati dell'asta, il nome dell'aggiudicatario, il prezzo finale e \ent{l' indirizzo (fisso)} di spedizione dell'utente. 
+
+La pagina ACQUISTO contiene una form di ricerca per parola chiave. Quando l'acquirente invia una parola chiave la pagina ACQUISTO è aggiornata e mostra un elenco di aste aperte (la cui scadenza è posteriore alla data e ora dell'invio) per cui la parola chiave compare nel nome o nella descrizione di almeno uno degli articoli dell'asta. La lista è ordinata in modo decrescente in base al tempo (numero di giorni e ore) mancante alla chiusura.
+
+Cliccando su un'asta aperta compare la pagina OFFERTA che mostra i dati degli articoli, l'elenco delle \ent{offerte pervenute} in ordine di \attr{data+ora} decrescente e un campo di input per inserire la propria offerta, che deve essere superiore all'offerta massima corrente di un \attr{importo} pari almeno al rialzo minimo. Dopo l'invio dell'offerta la pagina OFFERTA mostra l'elenco delle offerte aggiornate. La pagina ACQUISTO contiene anche un elenco delle offerte aggiudicate all'utente con i dati degli articoli e il prezzo finale.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\section{
+Functional requirements
+}
+Legenda \page{Pagine} \view{View components} \act{Azioni} \ev{Eventi}
+
+\subsection{Specifica}
+
+\subsubsection{Versione HTML pura}
+Un'applicazione web consente la gestione di aste online.
+
+ Gli utenti accedono tramite login e possono vendere e acquistare articoli all'asta. Ogni utente ha username, password, nome, cognome e indirizzo (quest'ultimo è usato per la spedizione degli articoli comperati). Ogni articolo ha codice, nome, descrizione, immagine e prezzo.
+
+La \page{HOME} page contiene due link, quando \ev{cliccati}, uno \act{per accedere} alla pagina \view{VENDO} e uno \act{per accedere} alla pagina \view{ACQUISTO}.
+
+La pagina \page{VENDO} mostra una \view{lista delle aste create} dall'utente e non ancora chiuse, una \view{lista delle aste da lui create e chiuse }e due form, uno per creare un nuovo articolo e uno per creare una nuova asta per vendere gli articoli dell'utente.
+
+1. ll \view{primo form}, \ev{premendo submit}, consente di \act{inserire un articolo} nel database con tutti i suoi dati, che sono obbligatori.
+
+2. Il \view{secondo form}, \ev{premendo submit}, mostra l'elenco degli articoli presenti nel database e disponibili per la vendita e dà la possibilità di selezionarne piu' di uno per \act{creare un'asta} che li comprende. 
+
+Un'asta è formata da uno o più articoli messi in vendita, il prezzo iniziale dell'insieme di articoli, il rialzo minimo di ogni offerta (espresso come un numero intero di euro) e una scadenza (data e ora, es. 19-04-2021 alle 24:00). Il prezzo iniziale dell'asta è ottenuto come somma del prezzo degli articoli compresi nell'offerta. Lo stesso articolo non può essere incluso in aste diverse. 
+
+Una volta venduto, un articolo non deve essere più disponibile per l'inserimento in ulteriori aste. La lista delle aste nella pagina VENDO è ordinata per data+ora crescente. 
+
+L'elenco riporta: codice e nome degli articoli compresi nell'asta, offerta massima, tempo mancante (numero di giorni e ore) tra il momento (data ora) del login e la data e ora di chiusura dell'asta. 
+
+Cliccando su un'asta nell'elenco compare una pagina \page{DETTAGLIO ASTA} che riporta per un'asta aperta tutti i dati dell'asta e la lista delle offerte (nome utente, prezzo offerto, data e ora dell'offerta) ordinata per data+ora decrescente. 
+
+\ev{Premere il bottone} \view{CHIUDI} permette all'utente di \act{chiudere l'asta} se è giunta l'ora della scadenza (si ignori il caso di aste scadute ma non chiuse dall'utente e non ci si occupi della chiusura automatica di aste dopo la scadenza).
+
+Se l'asta è chiusa, la pagina riporta tutti i dati dell'asta, il nome dell'aggiudicatario, il prezzo finale e l'indirizzo (fisso) di spedizione dell'utente. 
+
+La pagina \page{ACQUISTO} contiene una \view{form di ricerca per parola chiave}. Quando l'acquirente \ev{invia una parola chiave} \act{la pagina ACQUISTO e' aggiornata} e mostra un \view{elenco di aste aperte} (la cui scadenza è posteriore alla data e ora dell'invio) per cui la parola chiave compare nel nome o nella descrizione di almeno uno degli articoli dell'asta. La lista è ordinata in modo decrescente in base al tempo (numero di giorni e ore) mancante alla chiusura.
+
+\ev{Cliccando su un'asta aperta} compare la pagina \page{OFFERTA} che mostra i \view{dettagli articoli}, l'\view{elenco delle offerte} pervenute in ordine di data+ora decrescente e un \view{campo di input} che \ev{al submit } per \act{inserire l'offerta}, che deve essere superiore all'offerta massima corrente di un importo pari almeno al rialzo minimo. 
+
+Dopo l'\ev{invio dell'offerta} la pagina OFFERTA mostra \view{l'elenco delle offerte aggiornate}. La pagina ACQUISTO contiene anche un \view{elenco delle offerte aggiudicate} all'utente con i dati degli articoli e il prezzo finale.
+
+\subsubsection{Versione con JavaScript}
+
+Si realizzi un'applicazione client server web che estende e/o modifica le specifiche precedenti come segue:
+- Dopo il login, l'intera applicazione e' realizzata con \page{un'unica pagina.}
+
+- Se l'\ev{utente accede per la prima volta} l'applicazione mostra il contenuto della pagina ACQUISTO.
+
+- Se l'utente \ev{ha gia' usato l'applicazione}, questa mostra il contenuto della pagina VENDO se l'ultima azione dell'utente è stata la creazione di un'asta; altrimenti mostra il contenuto della pagina ACQUISTO con l'elenco (eventualmente vuoto) delle aste su cui l'utente ha cliccato in precedenza e che sono ancora aperte.
+
+- L'informazione dell'ultima azione compiuta e delle aste visitate è memorizzata a lato client per la durata di un mese.
+
+- Ogni interazione dell'utente è gestita senza ricaricare completamente la pagina, ma produce l'invocazione asincrona del server e l'eventuale modifica solo del contenuto da aggiornare a seguito dell'evento.
+
+\subsection{Functional analysis summary}
+
+\subsubsection{Pages and view components}
+Legenda \page{pagine} \view{view component} \blue{javascript version only} \orange{extra}
+\begin{itemize}
+\item \page{HOME} $\to$ /welcome
+    \begin{itemize}
+        \item \view{link VENDO} 
+        \item \view{link ACQUISTO}
+        \item \orange{link ACCOUNT}
+    \end{itemize}
+\item \page{VENDO} $\to$ /sell
+    \begin{itemize}
+        \item \view{lista aste create}
+        \item \view{lista aste chiuse}
+        \item \view{form CARICA articolo}
+        \item \view{form CREA asta}
+        \item \orange{form MODIFICA dettagli articoli}
+    \end{itemize}
+\item \page{DETTAGLIO ASTA} $\to$ /sell/auction/
+\begin{itemize}
+    \item \view{dettagli dell'asta}
+    \item \view{lista offerte}
+    \item \view{bottone CHIUDI}
+    \item \orange{bottone ELIMINA}
+    \item \orange{form MODIFICA dettagli articoli}
+\end{itemize}
+\item \page{ACQUISTO} $\to$ /buy, /buy/search
+\begin{itemize}
+    \item \view{form RICERCA}
+    \item \view{lista aste risultati ricerca}
+    \item \view{lista offerte aggiudicate}
+    \item \blue{RIA: lista prodotti cercati in precedenza}
+\end{itemize}
+
+\item \page{OFFERTA}  $\to$ /buy/auction/
+\begin{itemize}
+    \item \view{dettagli articoli}
+    \item \view{elenco offerte}
+    \item \view{form NUOVA offerta}
+\end{itemize}
+\item \page{ACCOUNT}  $\to$ /account/
+\begin{itemize}
+    \item \view{form LOGIN}
+    \item \orange{form SIGNIN}
+\end{itemize}
+
+\item \page{DETTAGLI ACCOUNT}  $\to$ /account/details
+\begin{itemize}
+    \item \view{bottone LOGOUT}
+    \item \orange{form ELIMINA account}
+    \item \orange{form ELIMINA aste}
+    \item \orange{form ELIMINA prodotti}
+    \item \orange{form MODIFICA dettagli utente}
+\end{itemize}
+\end{itemize}
+
+
+\newpage
+\subsubsection{Events and corresponding actions}
+Legenda \page{pagine} \act{azioni} \ev{eventi} \purple{extra}
+\begin{itemize}
+    \item \ev{Submit form LOGIN} 
+    \begin{itemize}
+        \item \act{Verifica} credenziali
+        \item Se proveniente da un redirect, \act{reindirizzato} alla sezione di origine.
+        \item Altrimenti \act{caricato} \page{/ACCOUNT/DETAILS} o il \page{CONTROLLER} nel caso di RIA
+    \end{itemize}
+
+    \item \ev{Submit form SIGNUP} 
+    \begin{itemize}
+        \item \act{Inserimento} dettagli nel database
+        \item \act{Ricarica} la pagina \page{/ACCOUNT} con un messaggio di successo
+    \end{itemize}
+
+    \item \ev{Submit form LOGOUT} 
+    \begin{itemize}
+        \item La sessione dell'utente viene \act{invalidata}.
+        \item \act{Reindirizzamento} a \page{/WELCOME} con messaggio di successo.
+    \end{itemize}
+
+    \item \ev{Submit form ADD product} 
+    \begin{itemize}
+        \item \act{Inserimento} nel database dopo la validazione.
+        \item \page{/SELL} viene \act{ricaricata}.
+    \end{itemize}
+
+    \item \ev{Submit form CREATE auction} 
+    \begin{itemize}
+        \item \act{Creazione} del record per l'asta dopo la validazione
+        \item \act{Aggiornamento} dei valori FK di auction dei prodotti nel database
+        \item \page{/SELL} viene \act{ricaricata}.
+    \end{itemize}
+
+    \item \ev{Submit form CLOSE auction} 
+    \begin{itemize}
+        \item \act{Aggiornamento} del valore \ttvar{is_closed} per l'asta
+        \item \page{/SELL} viene \act{ricaricata}.
+    \end{itemize}
+
+    \item \ev{Submit form ADD bid} 
+    \begin{itemize}
+        \item \act{Creazione} del record per l'offerta
+        \item \page{/BUY/AUCTION/} viene \act{ricaricata}.
+    \end{itemize}
+
+    \item \ev{Submit form SEARCH auction} 
+    \begin{itemize}
+        \item \act{Query} al database
+        \item \page{/BUY/SEARCH} viene \act{ricaricata}.
+    \end{itemize}
+
+    \item \ev{Click Link Auction DETAILS}
+    \begin{itemize}
+        \item Vengono \act{recuperati} i dettagli dell'asta e le offerte associate. Per il venditore viene caricata \page{/SELL/AUCTION} per un compratore \page{/BUY/AUCTION}
+    \end{itemize}
+
+    \item \purple{Submit form UPDATE username}
+    \begin{itemize}
+        \item \act{Verifica} della password 
+        \item Lo username viene \act{aggiornato} nel database.
+        \item \page{/ACCOUNT/DETAILS} viene \act{ricaricata} con un messaggio di successo.
+    \end{itemize}
+
+    \item \purple{Submit form UPDATE password}
+    \begin{itemize}
+        \item \act{Verifica} della password corrente 
+        \item La password viene \act{aggiornata} nel database.
+        \item \page{/ACCOUNT/DETAILS} viene \act{ricaricata} con un messaggio di successo.
+    \end{itemize}
+
+    \item \purple{Submit form UPDATE account details}
+    \begin{itemize}
+        \item I dati personali e l'indirizzo vengono \act{aggiornati} nel database.
+        \item \page{/ACCOUNT/DETAILS} viene \act{ricaricata} con un messaggio di successo.
+    \end{itemize}
+
+    \item \purple{Submit form DELETE account} 
+    \begin{itemize}
+        \item \act{Verifica} della password e \act{rimozione} dell'account dal database.
+        \item L'utente viene \act{reindirizzato} a \page{/WELCOME} con un messaggio di successo.
+    \end{itemize}
+
+    \item \purple{Submit form DELETE auction} 
+    \begin{itemize}
+        \item L'asta viene \act{eliminata} dal database se non ci sono offerte.
+        \item \page{/SELL} viene \act{ricaricata} con un messaggio di successo.
+    \end{itemize}
+
+    \item \purple{Submit form DELETE all auctions} 
+    \begin{itemize}
+        \item Tutte le aste dell'utente vengono \act{eliminate} dal database se non ci sono offerte.
+        \item \page{/ACCOUNT/DETAILS} viene \act{ricaricata} con un messaggio di successo.
+    \end{itemize}
+
+    \item \purple{Submit form EDIT product} 
+    \begin{itemize}
+        \item I dettagli del prodotto vengono \act{aggiornati} nel database.
+        \item \page{/SELL} viene \act{ricaricata} con un messaggio di successo.
+    \end{itemize}
+
+    \item \purple{Submit form DELETE product} 
+    \begin{itemize}
+        \item Il prodotto viene \act{eliminato} dal database se non appartiene ad un'asta.
+        \item \page{/SELL} viene \act{ricaricata} con un messaggio di successo.
+    \end{itemize}
+
+    \item \purple{Submit form DELETE all products} 
+    \begin{itemize}
+        \item Tutti i prodotti dell'utente vengono \act{eliminati} dal database se non appartengono ad un'asta.
+        \item \page{/ACCOUNT/DETAILS} viene \act{ricaricata} con un messaggio di successo.
+    \end{itemize}
+\end{itemize}
+
+\end{document}
+
+
+

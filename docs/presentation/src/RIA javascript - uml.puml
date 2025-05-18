@@ -1,0 +1,95 @@
+@startuml
+title Components and Utils Functions
+
+class Utils {
+    + generateWelcomeMessage(user: User): string
+    + generateModalBox(content: string): HTMLElement
+    + showMessage(message: string): void
+    + hideMessage(): void
+    + showBreadcrumb(breadcrumb: string): void
+    + hideAllPages(pageSections: Map<string, HTMLElement>): void
+    + showPage(page: string, pageSections: Map<string, HTMLElement>): void
+    + showModal(pageSection: HTMLElement, content: string): void
+    + processForms(pageSections: Map<string, HTMLElement>): void
+    + processNavLinks(pageSections: Map<string, HTMLElement>): void
+    + processUpdateProductsForms(pageSections: Map<string, HTMLElement>): void
+    + processRedirects(pageSections: Map<string, HTMLElement>): void
+}
+
+class Requests {
+    + makeXHRequest(method: string, url: string, data: FormData, jsonParserCallback: Function, pageSections: Map<string, HTMLElement>): void
+    + processXHRResponse(xhr: XMLHttpRequest, jsonParserCallback: Function, pageSections: Map<string, HTMLElement>): void
+}
+
+class Routing {
+    + controllerSwitcher(response: any, pageSections: Map<string, HTMLElement>): void
+}
+
+class Buy {
+    + generateBuySection(auctions: Auction[], wonAuctions: Auction[], closedAuctionShippingAddresses: Record<number, string>, user: User, searchQuery: string): HTMLElement
+    + generateWelcomeSection(user: User): HTMLElement
+    + generateSearchResultSection(auctions: Auction[], searchQuery: string): HTMLElement
+    + createPreviousSearchResultsSection(products: Product[]): string
+    + createAuctionCard(auction: Auction, searchQuery: string): string
+    + createWonAuctionsSection(wonAuctions: Auction[], closedAuctionShippingAddresses: Record<number, string>): HTMLElement
+    + createWonAuctionCard(auction: Auction, shippingAddress: String): string
+}
+
+class Sell {
+    + generateSellSection(closed_auctions: Auction[], open_auctions: Auction[], products: Product[], unauctioned_products: Product[], shipping_addresses: Record<number, String>, user: User): void
+    + generateSellWelcomeSection(user: User): string
+    + generateProductsSection(products: Product[], auctions: Auction[]): string
+    + generateAddProductForm(): string
+    + generateEditProductsTable(products: Product[], auctions: Auction[]): string
+    + generateEditProductRow(product: Product, auctions: Auction[]): string
+    + generateAuctionOptions(selectedAuctionId: number, auctions: Auction[]): string
+    + generateAuctionsSection(open_auctions: Auction[], closed_auctions: Auction[], products: Product[], shipping_addresses: Record<number, String>): string
+    + generateCreateAuctionForm(products: Product[]): string
+    + generateUnauctionedProductsTable(products: Product[]): string
+    + generateUnauctionedProductRow(product: Product): string
+    + generateOpenAuctionsTable(auctions: Auction[]): string
+    + generateOpenAuctionRow(auction: Auction): string
+    + generateClosedAuctionsTable(auctions: Auction[], shippingAddresses: Record<number, String>): string
+    + generateClosedAuctionRow(auction: Auction, shippingAddress: String | null): string
+}
+
+class AccountDetails {
+    + updateUserDetails(user: User): void
+}
+
+class BuyAuctionDetails {
+    + generateBuyAuctionDetails(auction: Auction, bids: Bid[]): string
+    + generateAuctionHeader(auction: Auction): string
+    + generateProductsSection(auction: Auction): string
+    + generateProductRow(product: Product): string
+    + generateAuctionInfo(auction: Auction): string
+    + generateRemainingTime(auction: Auction): string
+    + generateAuctionClosed(auction: Auction): string
+    + generateBidsSection(bids: Bid[]): string
+    + generateBidRow(bid: Bid): string
+    + generatePlaceBidSection(auction: Auction): string
+}
+
+class SellAuctionDetails {
+    + generateSellAuctionDetails(auction: Auction, bids: Bid[], closedAuctionShippingAddress: string | null): string
+    + generateAuctionHeader(auction: Auction): string
+    + generateProductsSection(auction: Auction): string
+    + generateProductRow(product: Product, auction: Auction): string
+    + generateBidsSection(auction: Auction, bids: Bid[], closedAuctionShippingAddress: string | null): string
+    + generateAuctionStatus(auction: Auction, bids: Bid[]): string
+    + generateWinnerSection(auction: Auction, closedAuctionShippingAddress: string | null): string
+    + generateBidsTable(bids: Bid[]): string
+    + generateAuctionActionsSection(auction: Auction): string
+    + generateCloseAuctionForm(auction: Auction): string
+    + generateDeleteAuctionForm(auction: Auction): string
+}
+
+Utils -right-> Requests : Uses
+Utils -left-> Routing : Uses
+Routing --> Buy : Controls
+Routing --> Sell : Controls
+Routing --> AccountDetails : Controls
+Routing --> BuyAuctionDetails : Controls
+Routing --> SellAuctionDetails : Controls
+
+@enduml

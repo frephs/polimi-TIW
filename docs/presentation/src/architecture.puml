@@ -1,0 +1,52 @@
+@startuml
+skinparam shadowing true
+skinparam componentStyle rectangle
+skinparam defaultTextAlignment center
+
+actor Developer as Dev #orchid
+actor Client as C #lightblue
+
+
+package "Build & Compilation" #wheat {
+    component "Node.js (TypeScript to JS build)" as NODE #white
+    component "Maven gradle + Jakarta Servlet WAR build" as WAR #white
+}
+
+Dev --> NODE: Compile
+Dev --> WAR: Build 
+
+package "Client Tier" #palegreen {
+    component "Static resources and forms" as CCT #white
+
+}
+
+
+C --> CCT : Uses
+
+
+
+package "Application Tier" #lightcoral {
+    component "Servlet Controllers" as CT #white
+    component "Thymeleaf Templates" as TT #white
+    component "Beans" as B #white
+    component "Static Resources" as STATIC #white
+    component "local storage" as SS #white
+}
+WAR -down-> CT : deploys
+CT -down-> SS : save images in
+
+
+STATIC -up-> CCT : Response
+
+CT -down-> TT : process
+CT -up-> STATIC : serve
+package "Business & Data Tier" #lightsteelblue {
+    component "Data Access\nObjects" as DAO #white
+    database "Database" as DB #white
+}
+
+CT -down-> DAO : Request
+DAO <-right-> DB : SQL Queries
+DAO -left-> B : response
+
+
