@@ -383,7 +383,7 @@ Generic POST Request Sequence Diagram in the RIA version
 
 ---
 ## Web components styling
-<iframe width="100%" height="800" src="../../app/auction-app/src/main/resources/templates/design.html" frameborder="0" style="zoom: 0.65; border-radius:20px" allowfullscreen></iframe>
+<iframe width="100%" height="800" src="../../../app/auction-app/src/main/resources/templates/design.html" frameborder="0" style="zoom: 0.65; border-radius:20px" allowfullscreen></iframe>
 
 ---
 
