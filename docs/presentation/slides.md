@@ -328,6 +328,9 @@ END;
 ### IFML diagram
 <img src="out/ifml_diagram.svg" data-preview-image>
 
+--
+## Summary: client and server events and actions
+<img src="out/event-actions-table.png" data-preview-image style="border-radius:20px; padding-top:-5px">
 ---
 
 ## Application Architecture
