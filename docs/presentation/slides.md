@@ -1,6 +1,6 @@
 # Tiw - 2025
 
-*Project presentation*
+_Project presentation_
 
 **Author**: Francesco Genovese
 
@@ -11,6 +11,7 @@
 ---
 
 ## Database requirements
+
 <img src="out/1_database_requirements.png" height ="600" data-preview-image style="border-radius:20px">
 <img src="out/2_database_requirements.png" height="600" data-preview-image style="border-radius:20px">
 --
@@ -80,7 +81,8 @@ CREATE TABLE shipping_addresses (
     FOREIGN KEY (auction_id) REFERENCES auctions (auction_id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 ```
--- 
+
+--
 
 ### Triggers
 
@@ -142,7 +144,7 @@ BEGIN
         WHERE auction_id = NEW.auction_id;
     ELSE
         INSERT INTO shipping_addresses (auction_id, address)
-        VALUES (NEW.auction_id, 
+        VALUES (NEW.auction_id,
                 (SELECT CONCAT_WS(', ', u.street, u.street_number, u.city, u.zip_code, u.country)
                  FROM users u
                  WHERE u.username = NEW.bidder_username));
@@ -195,7 +197,7 @@ DELIMITER `~;`
 
 
 CREATE TRIGGER prevent_product_auction_changes_when_not_allowed BEFORE
-UPDATE 
+UPDATE
     ON products FOR EACH ROW BEGIN IF(
         OLD.auction_id IS NOT NULL AND OLD.auction_id != NEW.auction_id AND ( EXISTS (
         SELECT
@@ -291,24 +293,27 @@ END IF;
 END~;
 DELIMITER `~;`
 
-CREATE TRIGGER prevent_closing_auction_with_no_bids 
-BEFORE UPDATE ON auctions 
-FOR EACH ROW 
-BEGIN 
+CREATE TRIGGER prevent_closing_auction_with_no_bids
+BEFORE UPDATE ON auctions
+FOR EACH ROW
+BEGIN
     IF (NEW.closed = 1 AND NOT EXISTS (
-        SELECT 1 
-        FROM bids 
+        SELECT 1
+        FROM bids
         WHERE auction_id = OLD.auction_id
-    )) THEN 
-        SIGNAL SQLSTATE '45000' 
+    )) THEN
+        SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = "you cannot close an auction that has no bids places";
     END IF;
 END;
 
 
 ```
---- 
+
+---
+
 ## Functional requirements
+
 <img src="out/functional_requirements_1.png" height="600" data-preview-image style="border-radius:20px">
 <img src="out/functional_requirements_2.png" height="600" data-preview-image style="border-radius:20px">
 --
@@ -324,7 +329,9 @@ END;
 <img src="out/ifml_diagram.svg" data-preview-image>
 
 ---
+
 ## Application Architecture
+
 <img src="out/architecture.svg" data-preview-image>
 -- 
 ## Application structure (RIA)
@@ -332,48 +339,50 @@ END;
 ---
 
 ## Components
+
 ### Database access objects
-<img height="500" style="border-radius: 20px" src="out/DAO_uml.png" data-preview-image>
---
+
+## <img height="500" style="border-radius: 20px" src="out/DAO_uml.png" data-preview-image>
+
 ### Beans
-<img  style="border-radius: 20px" src="out/uml_beans.png" data-preview-image>
---
+
+## <img  style="border-radius: 20px" src="out/uml_beans.png" data-preview-image>
 
 ### Utility classes
-<img height="600" style="border-radius: 20px" src="out/uml_utility_classes.png" data-preview-image>
---
+
+## <img height="600" style="border-radius: 20px" src="out/uml_utility_classes.png" data-preview-image>
+
 ### Controllers
-<img  style="border-radius: 20px" src="out/uml_controllers.png" data-preview-image>
---
+
+## <img  style="border-radius: 20px" src="out/uml_controllers.png" data-preview-image>
+
 ### Javascript client controller
-<img width="1200" style="border-radius: 20px" src="out/RIA javascript - uml.svg" data-preview-image>
----
+
+## <img width="1200" style="border-radius: 20px" src="out/RIA javascript - uml.svg" data-preview-image>
 
 ## Api endpoints and sitemap
+
 <img src="out/endpoint-tree.svg" data-preview-image>
 
 ---
-
 
 ### Sequence Diagrams - 1
 
 Generic GET Request Sequence Diagram in the pure HTML version
 
-<img height="500" src="out/sequence_diagram_get.svg" data-preview-image>
---
+## <img height="500" src="out/sequence_diagram_get.svg" data-preview-image>
 
 ### Sequence Diagrams - 2
 
 Generic POST Request Sequence Diagram in the pure HTML version
 
-<img height="500" src="out/sequence_diagram_post.svg" data-preview-image>
---
+## <img height="500" src="out/sequence_diagram_post.svg" data-preview-image>
 
 ### Sequence Diagrams - 3
+
 Generic GET Request Sequence Diagram in the RIA version
 
-<img height="500" src="out/sequence_diagram_get_ria.svg" data-preview-image>
---
+## <img height="500" src="out/sequence_diagram_get_ria.svg" data-preview-image>
 
 ### Sequence Diagrams - 4
 
@@ -382,21 +391,25 @@ Generic POST Request Sequence Diagram in the RIA version
 <img height="500" src="out/sequence_diagram_post_ria.svg" data-preview-image>
 
 ---
+
 ## Web components styling
-<iframe width="100%" height="800" src="../../../app/auction-app/src/main/resources/templates/design.html" frameborder="0" style="zoom: 0.65; border-radius:20px" allowfullscreen></iframe>
+
+<iframe width="100%" height="800" src="src/design/design.html" frameborder="0" style="zoom: 0.65; border-radius:20px" allowfullscreen></iframe>
 
 ---
 
 ## Extra features
+
 - **Edit** and **delete** features for auctions, products and user's details.
 - **Triple-level request validation**: includes database triggers.
 - **Messaging** and feedback system.
 - **Passwords are saved hashed** in the database.
 - **Breadcrumbs** for navigation.
+
 ---
 
-
 ## Technology stack
+
 Application
 
 <img width="50" src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/html.png" alt="HTML" title="HTML"/>
@@ -416,10 +429,7 @@ Development, Deployment and Testing
 <img width="50" src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/tomcat.png" alt="Tomcat" title="Tomcat"/>
 <img width="50" src="https://raw.githubusercontent.com/marwin1991/profile-technology-icons/refs/heads/main/icons/npm.png" alt="npm" title="npm"/>
 
-
-
 Documentation
-
 
 <img width="70" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/1280px_Markdown_with_White_Background.png/640px-1280px_Markdown_with_White_Background.png" alt="Markdown" title="Markdown"/>
 <img width="50" src="https://mermaid.live/favicon.svg" alt="Mermaid" title="Mermaid"/>
