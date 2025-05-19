@@ -8,17 +8,22 @@ _Project presentation_
 
 **Professor**: Piero Fraternali
 
+<img src="out/polimilogo.svg" height="70">
 ---
 
 ## Database requirements
 
-<img src="out/1_database_requirements.png" height ="600" data-preview-image style="border-radius:20px">
-<img src="out/2_database_requirements.png" height="600" data-preview-image style="border-radius:20px">
+<img src="out/1_database_requirements.png" height ="500" data-preview-image style="border-radius:20px">
+<img src="out/2_database_requirements.png" height="500" data-preview-image style="border-radius:20px">
+
 --
+
 ## Entity Relationship and implementation
-<img src="out/er-implementation.svg" data-preview-image>
+<img height="400" src="out/er-implementation.svg" data-preview-image>
 --
+
 ## SQL code
+
 ### DDL
 
 ```sql
@@ -314,8 +319,8 @@ END;
 
 ## Functional requirements
 
-<img src="out/functional_requirements_1.png" height="600" data-preview-image style="border-radius:20px">
-<img src="out/functional_requirements_2.png" height="600" data-preview-image style="border-radius:20px">
+<img src="out/functional_requirements_1.png" height="500" data-preview-image style="border-radius:20px">
+<img src="out/functional_requirements_2.png" height="500" data-preview-image style="border-radius:20px">
 --
 <img src="out/functional_requirements_3.png" height="600" data-preview-image style="border-radius:20px">
 <img src="out/functional_requirements_4.png" height="600" data-preview-image style="border-radius:20px">
@@ -325,8 +330,9 @@ END;
 --
 <img src="out/functional_requirements_6.png" height="600" data-preview-image style="border-radius:20px">
 --
+
 ### IFML diagram
-<img src="out/ifml_diagram.svg" data-preview-image>
+<img height="500" src="out/ifml_diagram.svg" data-preview-image>
 
 --
 ## Summary: client and server events and actions
@@ -335,10 +341,10 @@ END;
 
 ## Application Architecture
 
-<img src="out/architecture.svg" data-preview-image>
+<img height="400" src="out/architecture.svg" data-preview-image>
 -- 
 ## Application structure (RIA)
-<img src="out/architecture_ria.svg" data-preview-image>  
+<img height="400" src="out/architecture_ria.svg" data-preview-image>  
 ---
 
 ## Components
@@ -349,7 +355,7 @@ END;
 --
 ### Beans
 
-## <img  style="border-radius: 20px" src="out/uml_beans.png" data-preview-image>
+## <img height="300" style="border-radius: 20px;" src="out/uml_beans.png" data-preview-image>
 --
 ### Utility classes
 
@@ -357,7 +363,7 @@ END;
 --
 ### Controllers
 
-## <img  style="border-radius: 20px" src="out/uml_controllers.png" data-preview-image>
+## <img height="400" style="border-radius: 20px" src="out/uml_controllers.png" data-preview-image>
 --
 ### Javascript client controller
 
@@ -366,7 +372,7 @@ END;
 
 ## Api endpoints and sitemap
 
-<img src="out/endpoint-tree.svg" data-preview-image>
+<img height="500" src="out/endpoint-tree.svg" data-preview-image>
 
 ---
 
@@ -409,7 +415,7 @@ Generic POST Request Sequence Diagram in the RIA version
 - **Messaging** and feedback system.
 - **Passwords are saved hashed** in the database.
 - **Breadcrumbs** for navigation.
-- **Visaul form validation**.
+- **Visual form validation**.
 
 ---
 
