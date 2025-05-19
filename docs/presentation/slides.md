@@ -343,22 +343,23 @@ END;
 ### Database access objects
 
 ## <img height="500" style="border-radius: 20px" src="out/DAO_uml.png" data-preview-image>
-
+--
 ### Beans
 
 ## <img  style="border-radius: 20px" src="out/uml_beans.png" data-preview-image>
-
+--
 ### Utility classes
 
 ## <img height="600" style="border-radius: 20px" src="out/uml_utility_classes.png" data-preview-image>
-
+--
 ### Controllers
 
 ## <img  style="border-radius: 20px" src="out/uml_controllers.png" data-preview-image>
-
+--
 ### Javascript client controller
 
 ## <img width="1200" style="border-radius: 20px" src="out/RIA javascript - uml.svg" data-preview-image>
+---
 
 ## Api endpoints and sitemap
 
@@ -371,18 +372,18 @@ END;
 Generic GET Request Sequence Diagram in the pure HTML version
 
 ## <img height="500" src="out/sequence_diagram_get.svg" data-preview-image>
-
+--
 ### Sequence Diagrams - 2
 
 Generic POST Request Sequence Diagram in the pure HTML version
 
 ## <img height="500" src="out/sequence_diagram_post.svg" data-preview-image>
-
+--
 ### Sequence Diagrams - 3
 
 Generic GET Request Sequence Diagram in the RIA version
-
 ## <img height="500" src="out/sequence_diagram_get_ria.svg" data-preview-image>
+--
 
 ### Sequence Diagrams - 4
 
