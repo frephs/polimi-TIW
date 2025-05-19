@@ -8,11 +8,9 @@ actor Client as C #lightblue
 
 
 package "Build & Compilation" #wheat {
-    component "Node.js (TypeScript to JS build)" as NODE #white
     component "Maven gradle + Jakarta Servlet WAR build" as WAR #white
 }
 
-Dev --> NODE: Compile
 Dev --> WAR: Build 
 
 package "Client Tier" #palegreen {

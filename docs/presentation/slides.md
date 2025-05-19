@@ -409,6 +409,7 @@ Generic POST Request Sequence Diagram in the RIA version
 - **Messaging** and feedback system.
 - **Passwords are saved hashed** in the database.
 - **Breadcrumbs** for navigation.
+- **Visaul form validation**.
 
 ---
 
@@ -440,6 +441,7 @@ Documentation
 <img style="margin-right:-48px" width="100" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Plantuml_Logo.svg/512px-Plantuml_Logo.svg.png?20210130170304" alt="PlantUML" title="PlantUML"/>
 <img width="50" src="https://gitlab.poul.org/uploads/-/system/project/avatar/109/reveal.js-2020-05-28_09-58-06-icon-resized.png" alt="Reveal.js" title="Reveal.js"/>
 <img width="50" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/TeX_logo.svg/960px-TeX_logo.svg.png?20151211123903" alt="Tex" title="Tex"/>
+<img width="45" src="out/githubactions.svg" alt="GitHub Actions" title="GitHub Actions"/>
 
 ---
 
