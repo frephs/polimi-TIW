@@ -4,7 +4,7 @@ _Project presentation_
 
 **Author**: Francesco Genovese
 
-**Date**: 15/05/2025
+**Date**: 05/2025
 
 **Professor**: Piero Fraternali
 
