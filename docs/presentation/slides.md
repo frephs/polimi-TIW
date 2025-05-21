@@ -370,6 +370,28 @@ END;
 ## <img width="1200" style="border-radius: 20px" src="out/RIA javascript - uml.svg" data-preview-image>
 ---
 
+### Notes on the server-side components
+-  **ThymeleafServlet**: parent to each servlet, it offers a common interface to 
+    - process templates through setting [**context attributes**](#context-attributes) that are processed by the Thymeleaf engine 
+    - send redirects and messages to the client 
+    - ensure all the requests have the required parameters
+    - manage the session attributes. 
+--
+
+#### Session
+- the `user` object is stored in the session, which is created when the user logs in. The session is invalidated when the user logs out.
+- the only other session attribute are `flash_messages`, which are sistematically and promptly removed after being processed in the template
+--
+#### Cookies
+- set in the RIA version of the application to store the last accessed activity of the user, which is used to redirect the user to the last page visited after login
+
+--
+#### Context attributes
+- Used to pass data between the controller and the view. They are set in the request scope and are available for the duration of the request, until the template is loaded.
+
+
+---
+
 ## Api endpoints and sitemap
 
 <img height="500" src="out/endpoint-tree.svg" data-preview-image>
