@@ -9,8 +9,8 @@
    width="1550"
    zoomAndPan="magnify"
    id="svg37"
-   sodipodi:docname="architecture.svg"
-   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   sodipodi:docname="architecture_ria.svg"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
    inkscape:export-filename="architecture.svg"
    inkscape:export-xdpi="99.447906"
    inkscape:export-ydpi="99.447906"
@@ -27,9 +27,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="0.32975355"
-     inkscape:cx="445.78746"
-     inkscape:cy="1231.2225"
+     inkscape:zoom="1.52827"
+     inkscape:cx="1292.3109"
+     inkscape:cy="236.86913"
      inkscape:window-width="1920"
      inkscape:window-height="1131"
      inkscape:window-x="0"
@@ -117,6 +117,34 @@
          in2="blurOut3"
          mode="normal"
          id="feBlend1-6" />
+    </filter>
+    <filter
+       height="1.3884629"
+       id="f1jt0e7n0j6cx0-3"
+       width="1.162569"
+       x="-0.05822507"
+       y="-0.13913033">
+      <feGaussianBlur
+         result="blurOut"
+         stdDeviation="2"
+         id="feGaussianBlur1-6" />
+      <feColorMatrix
+         in="blurOut"
+         result="blurOut2"
+         type="matrix"
+         values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"
+         id="feColorMatrix1-0" />
+      <feOffset
+         dx="4"
+         dy="4"
+         in="blurOut2"
+         result="blurOut3"
+         id="feOffset1-6" />
+      <feBlend
+         in="SourceGraphic"
+         in2="blurOut3"
+         mode="normal"
+         id="feBlend1-2" />
     </filter>
   </defs>
   <g
@@ -394,6 +422,35 @@
          x="834.63"
          y="378.08511"
          id="text9">GUI State</text>
+    </g>
+    <g
+       class="entity"
+       data-entity="GS"
+       data-source-line="20"
+       data-uid="ent0012"
+       id="entity_GS-8"
+       transform="translate(482.54132,-93.42701)">
+      <rect
+         fill="#ffffff"
+         filter="url(#f1jt0e7n0j6cx0)"
+         height="36.296902"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5;filter:url(#f1jt0e7n0j6cx0-3)"
+         width="86.732399"
+         x="824.63"
+         y="355.09"
+         id="rect8-7" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="66.732399"
+         x="834.63"
+         y="378.08511"
+         id="text9-9"
+         transform="translate(7.1976809,0.65433462)">Cookies⠀</text>
     </g>
     <!--entity SS-->
     <g
@@ -1029,8 +1086,24 @@
          textLength="59.858398"
          x="1216.24"
          y="213.0069"
-         id="text32">manages</text>
+         id="text32" />
+      <text
+         xml:space="preserve"
+         style="font-size:13.3333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-dasharray:none;stroke-opacity:0.995239"
+         x="1259.4658"
+         y="258.58374"
+         id="text41"><tspan
+           sodipodi:role="line"
+           id="tspan41"
+           x="1259.4658"
+           y="258.58374">uses</tspan></text>
     </g>
+    <polygon
+       fill="#181818"
+       points="1284.41,215.94 1288.41,219.94 1284.41,223.94 1293.41,219.94 "
+       style="stroke:#181818;stroke-width:1"
+       id="polygon31-2"
+       transform="rotate(20.011979,1129.8745,284.58254)" />
     <!--link CT to TT-->
     <g
        class="link"
@@ -1251,6 +1324,31 @@
        transform="translate(1.8763056,3.4845675)"><tspan
          x="469.5321"
          y="589.66547"
-         id="tspan3">hosts</tspan></text>
+         id="tspan4">hosts</tspan></text>
+    <path
+       style="fill:#2e2e2e;stroke:#000000;stroke-width:0.8;stroke-opacity:0.995239"
+       d="m 1201.8844,244.8427 100.7676,34.67973"
+       id="path41" />
+    <text
+       xml:space="preserve"
+       style="font-size:13.3333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-dasharray:none;stroke-opacity:0.995239"
+       x="1227.4036"
+       y="207.54561"
+       id="text42"><tspan
+         sodipodi:role="line"
+         id="tspan42"
+         x="1227.4036"
+         y="207.54561" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:13.3333px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;writing-mode:lr-tb;direction:ltr;text-anchor:middle;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-dasharray:none;stroke-opacity:0.995239"
+       x="1243.762"
+       y="212.78029"
+       id="text43"><tspan
+         sodipodi:role="line"
+         id="tspan43"
+         x="1243.762"
+         y="212.78029"
+         style="fill:#000000;fill-opacity:1">uses</tspan></text>
   </g>
 </svg>
