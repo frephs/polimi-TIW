@@ -3,6 +3,7 @@ package it.polimi.auctionapp.utils;
 import com.google.gson.Gson;
 import it.polimi.auctionapp.beans.User;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -68,6 +69,22 @@ public class ThymeleafHTTPServlet extends HttpServlet {
                     (path.startsWith("/sell") || path.startsWith("/buy"))) ||
                 path.startsWith("/account/details")
             ) {
+                if (!path.startsWith("/account/details")) {
+                    Arrays.stream(request.getCookies())
+                        .filter(cookie -> cookie.getName().equals("neverLoggedIn"))
+                        .findFirst()
+                        .ifPresent(cookie -> {
+                            Cookie neverLoggedInCookie = new Cookie("neverLoggedIn", "false");
+                            neverLoggedInCookie.setMaxAge(0);
+                            response.addCookie(neverLoggedInCookie);
+                        });
+
+                    Cookie lastActionCookie = new Cookie("lastActivity", request.getRequestURI());
+                    lastActionCookie.setMaxAge(60 * 60 * 24 * 30);
+                    lastActionCookie.setPath("/yourauction/controller");
+                    response.addCookie(lastActionCookie);
+                }
+
                 response.setContentType("application/json");
                 String json = new Gson().toJson(contextAttributes.attributesMap);
                 response.getWriter().write(json);

@@ -7,6 +7,7 @@ import it.polimi.auctionapp.utils.MessageType;
 import it.polimi.auctionapp.utils.ThymeleafHTTPServlet;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -117,6 +118,9 @@ public class AccountManager {
                     ),
                     request.getParameter("password")
                 );
+
+                Cookie neverLoggedIn = new Cookie("neverLoggedIn", "true");
+                response.addCookie(neverLoggedIn);
                 contextAttributes.setFlash(
                     "message",
                     MessageType.SUCCESS.wrap(
