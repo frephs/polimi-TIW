@@ -397,8 +397,20 @@ Generic GET Request Sequence Diagram in the RIA version
 ### Sequence Diagrams - 4
 
 Generic POST Request Sequence Diagram in the RIA version
+## <img height="500" src="out/sequence_diagram_post_ria.svg" data-preview-image>
 
-<img height="500" src="out/sequence_diagram_post_ria.svg" data-preview-image>
+--
+## Sequence Diagram - Signup
+
+<img height="500" src="out/sequence_diagram_account_signup.svg" data-preview-image>
+
+--
+
+## Sequence Diagram - Login
+
+<img height="500" src="out/sequence_diagram_account_login.svg" data-preview-image>
+
+
 
 ---
 
