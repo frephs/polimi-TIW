@@ -169,15 +169,28 @@ export function processRedirects(pageSections: Map<string, HTMLElement>) {
         );
 
         window.sessionStorage.removeItem('from');
+    } else if (getCookie('lastActivity') !== '') {
+        makeXHRequest(
+            'GET',
+            getCookie('lastActivity'),
+            new FormData(),
+            controllerSwitcher,
+            pageSections,
+        );
+    } else if (getCookie('neverLoggedIn') === 'true') {
+        makeXHRequest('GET', '/yourauction/buy', new FormData(), controllerSwitcher, pageSections);
     } else {
         showPage('account-details', pageSections);
     }
+}
 
-    if (window.sessionStorage.getItem('ever_logged_in') === 'true') {
-        makeXHRequest('GET', 'yourauction/sell', new FormData(), controllerSwitcher, pageSections);
-    } else {
-        makeXHRequest('GET', 'yourauction/buy', new FormData(), controllerSwitcher, pageSections);
+function getCookie(name: string): string {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+        const [key, value] = cookie.split('=');
+        if (key === name) {
+            return decodeURIComponent(value);
+        }
     }
-
-    window.sessionStorage.setItem('ever_logged_in', 'true');
+    return '';
 }
