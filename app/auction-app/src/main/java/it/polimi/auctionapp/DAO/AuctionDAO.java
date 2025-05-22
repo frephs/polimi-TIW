@@ -16,24 +16,36 @@ public class AuctionDAO {
 
     public void checkAuctionExists(Integer auction_id) throws SQLException {
         String query = "SELECT * FROM auctions WHERE auction_id = ?";
-        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
-            .prepareStatement(query);
-        preparedStatement.setInt(1, auction_id);
-        ResultSet result = preparedStatement.executeQuery();
-        if (!result.next()) {
-            throw new SQLWarning("Auction does not exist. ");
+        try (Connection connection = SQLConnectionHandler.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, auction_id);
+            ResultSet result = preparedStatement.executeQuery();
+            if (!result.next()) {
+                throw new SQLWarning("Auction does not exist. ");
+            }
+            preparedStatement.close();
+        } catch (SQLWarning e) {
+            throw new SQLWarning(e);
+        } catch (SQLException e) {
+            throw new SQLException("There was a problem checking the auction: " + e.getMessage());
         }
     }
 
     public void checkAuctionIsOwnedBy(String username, Integer auction_id) throws SQLException {
         String query = "SELECT * FROM auctions WHERE auction_id = ? and seller_username=?";
-        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
-            .prepareStatement(query);
-        preparedStatement.setInt(1, auction_id);
-        preparedStatement.setString(2, username);
-        ResultSet result = preparedStatement.executeQuery();
-        if (!result.next()) {
-            throw new SQLWarning("Auction does not exist or is not owned by the user. ");
+        try (Connection connection = SQLConnectionHandler.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, auction_id);
+            preparedStatement.setString(2, username);
+            ResultSet result = preparedStatement.executeQuery();
+            if (!result.next()) {
+                throw new SQLWarning("Auction does not exist or is not owned by the user. ");
+            }
+            preparedStatement.close();
+        } catch (SQLWarning e) {
+            throw new SQLWarning(e);
+        } catch (SQLException e) {
+            throw new SQLException("There was a problem checking the auction: " + e.getMessage());
         }
     }
 
@@ -45,9 +57,14 @@ public class AuctionDAO {
         String auction_query =
             "INSERT INTO auctions(seller_username, start_time, final_bid_submission_time, min_bid_increment, closed) " +
             "VALUES(?, ?, ?, ?, ? )";
+        Connection connection = SQLConnectionHandler.getConnection();
+        connection.setAutoCommit(false);
+        Integer auction_id = null;
         try {
-            PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
-                .prepareStatement(auction_query, PreparedStatement.RETURN_GENERATED_KEYS);
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                auction_query,
+                PreparedStatement.RETURN_GENERATED_KEYS
+            );
             preparedStatement.setString(1, sellerUsername);
             preparedStatement.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
             preparedStatement.setTimestamp(3, final_bid_submission_time);
@@ -59,15 +76,19 @@ public class AuctionDAO {
             if (affectedRows != 0) {
                 try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        return generatedKeys.getInt(1);
+                        auction_id = generatedKeys.getInt(1);
                     }
                 }
             }
-            preparedStatement.close(); // FIXME close all prepared statements
+            preparedStatement.close();
+            connection.commit();
         } catch (SQLException e) {
+            connection.rollback();
             throw new SQLException("There was a problem creating the auction: " + e.getMessage());
+        } finally {
+            connection.close();
         }
-        return null;
+        return auction_id;
     }
 
     public void closeAuction(Integer auction_id) throws SQLException {
@@ -75,27 +96,39 @@ public class AuctionDAO {
             "UPDATE auctions SET closed = ?, " +
             "final_bid_submission_time = CURRENT_TIMESTAMP " +
             "WHERE auction_id = ?";
-        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
-            .prepareStatement(query);
-        preparedStatement.setBoolean(1, true);
-        preparedStatement.setInt(2, auction_id);
+
+        Connection connection = SQLConnectionHandler.getConnection();
+        connection.setAutoCommit(false);
         try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setBoolean(1, true);
+            preparedStatement.setInt(2, auction_id);
             preparedStatement.executeUpdate();
+            preparedStatement.close();
+            connection.commit();
         } catch (SQLException e) {
+            connection.rollback();
             throw new SQLException("There was a problem closing the auction: " + e.getMessage());
+        } finally {
+            connection.close();
         }
     }
 
     public void deleteAuction(Integer auction_id) throws SQLException {
         String query = "DELETE FROM auctions WHERE auction_id = ?";
-        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
-            .prepareStatement(query);
-        preparedStatement.setInt(1, auction_id);
-        preparedStatement.executeUpdate();
+        Connection connection = SQLConnectionHandler.getConnection();
+        connection.setAutoCommit(false);
         try {
-            preparedStatement.close(); // Ensure the statement is closed
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, auction_id);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            connection.commit();
         } catch (SQLException e) {
+            connection.rollback();
             throw new SQLException("There was a problem deleting the auction: " + e.getMessage());
+        } finally {
+            connection.close();
         }
     }
 
@@ -105,24 +138,27 @@ public class AuctionDAO {
             "SELECT auction_id,seller_username,start_time,start_time," +
             "final_bid_submission_time,min_bid_increment, closed FROM auctions WHERE seller_username=? " +
             "ORDER BY final_bid_submission_time ASC";
-        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
-            .prepareStatement(query);
-        preparedStatement.setString(1, seller_username);
-
-        ResultSet result = preparedStatement.executeQuery();
-        while (result.next()) {
-            auctions.add(
-                new Auction(
-                    result.getInt("auction_id"),
-                    result.getString("seller_username"),
-                    result.getTimestamp("start_time"),
-                    result.getTimestamp("final_bid_submission_time"),
-                    result.getInt("min_bid_increment"),
-                    result.getBoolean("closed"),
-                    bidDataAccessObject.getCurrentHighestBid(result.getInt("auction_id")),
-                    productDataAccessObject.getProductsByAuction(result.getInt("auction_id"))
-                )
-            );
+        try (Connection connection = SQLConnectionHandler.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, seller_username);
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()) {
+                auctions.add(
+                    new Auction(
+                        result.getInt("auction_id"),
+                        result.getString("seller_username"),
+                        result.getTimestamp("start_time"),
+                        result.getTimestamp("final_bid_submission_time"),
+                        result.getInt("min_bid_increment"),
+                        result.getBoolean("closed"),
+                        bidDataAccessObject.getCurrentHighestBid(result.getInt("auction_id")),
+                        productDataAccessObject.getProductsByAuction(result.getInt("auction_id"))
+                    )
+                );
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new SQLException("There was a problem getting the auctions: " + e.getMessage());
         }
         return auctions;
     }
@@ -132,25 +168,30 @@ public class AuctionDAO {
         String query =
             "SELECT auction_id,seller_username,start_time,start_time," +
             "final_bid_submission_time,min_bid_increment, closed FROM auctions WHERE auction_id=? ";
-        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
-            .prepareStatement(query);
-        preparedStatement.setInt(1, auction_id);
+        try (Connection connection = SQLConnectionHandler.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, auction_id);
 
-        ResultSet result = preparedStatement.executeQuery();
-        if (result.next()) {
-            auction = new Auction(
-                auction_id,
-                result.getString("seller_username"),
-                result.getTimestamp("start_time"),
-                result.getTimestamp("final_bid_submission_time"),
-                result.getInt("min_bid_increment"),
-                result.getBoolean("closed"),
-                bidDataAccessObject.getCurrentHighestBid(result.getInt("auction_id")),
-                productDataAccessObject.getProductsByAuction(result.getInt("auction_id"))
-            );
-        } else {
-            throw new SQLException("There is no auction with id " + auction_id + ".");
+            ResultSet result = preparedStatement.executeQuery();
+            if (result.next()) {
+                auction = new Auction(
+                    auction_id,
+                    result.getString("seller_username"),
+                    result.getTimestamp("start_time"),
+                    result.getTimestamp("final_bid_submission_time"),
+                    result.getInt("min_bid_increment"),
+                    result.getBoolean("closed"),
+                    bidDataAccessObject.getCurrentHighestBid(result.getInt("auction_id")),
+                    productDataAccessObject.getProductsByAuction(result.getInt("auction_id"))
+                );
+                preparedStatement.close();
+            } else {
+                throw new SQLException("There is no auction with id " + auction_id + ".");
+            }
+        } catch (SQLException e) {
+            throw new SQLException("There was a problem getting the auction: " + e.getMessage());
         }
+
         return auction;
     }
 
@@ -158,19 +199,23 @@ public class AuctionDAO {
         List<Bid> bids = new ArrayList<>();
         String query =
             "SELECT bidder_username, bid_amount, bid_timestamp FROM bids WHERE auction_id=?";
-        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
-            .prepareStatement(query);
-        preparedStatement.setInt(1, auction_id);
-        ResultSet result = preparedStatement.executeQuery();
-        while (result.next()) {
-            bids.add(
-                new Bid(
-                    auction_id,
-                    result.getString("bidder_username"),
-                    result.getFloat("bid_amount"),
-                    result.getTimestamp("bid_timestamp")
-                )
-            );
+        try (Connection connection = SQLConnectionHandler.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, auction_id);
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()) {
+                bids.add(
+                    new Bid(
+                        auction_id,
+                        result.getString("bidder_username"),
+                        result.getFloat("bid_amount"),
+                        result.getTimestamp("bid_timestamp")
+                    )
+                );
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new SQLException("There was a problem getting the bids: " + e.getMessage());
         }
         return bids;
     }
@@ -194,30 +239,35 @@ public class AuctionDAO {
                     .toArray(String[]::new)
             ) +
             ") ORDER BY a.final_bid_submission_time ASC";
-        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
-            .prepareStatement(query);
 
-        int index = 1;
-        for (String keyword : keywords) {
-            preparedStatement.setString(index++, "%" + keyword + "%");
-            preparedStatement.setString(index++, "%" + keyword + "%");
-            preparedStatement.setString(index++, "%" + keyword + "%");
-        }
+        try (Connection connection = SQLConnectionHandler.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
 
-        ResultSet result = preparedStatement.executeQuery();
-        while (result.next()) {
-            auctions.add(
-                new Auction(
-                    result.getInt("auction_id"),
-                    result.getString("seller_username"),
-                    result.getTimestamp("start_time"),
-                    result.getTimestamp("final_bid_submission_time"),
-                    result.getInt("min_bid_increment"),
-                    result.getBoolean("closed"),
-                    bidDataAccessObject.getCurrentHighestBid(result.getInt("auction_id")),
-                    productDataAccessObject.getProductsByAuction(result.getInt("auction_id"))
-                )
-            );
+            int index = 1;
+            for (String keyword : keywords) {
+                preparedStatement.setString(index++, "%" + keyword + "%");
+                preparedStatement.setString(index++, "%" + keyword + "%");
+                preparedStatement.setString(index++, "%" + keyword + "%");
+            }
+
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()) {
+                auctions.add(
+                    new Auction(
+                        result.getInt("auction_id"),
+                        result.getString("seller_username"),
+                        result.getTimestamp("start_time"),
+                        result.getTimestamp("final_bid_submission_time"),
+                        result.getInt("min_bid_increment"),
+                        result.getBoolean("closed"),
+                        bidDataAccessObject.getCurrentHighestBid(result.getInt("auction_id")),
+                        productDataAccessObject.getProductsByAuction(result.getInt("auction_id"))
+                    )
+                );
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new SQLException("There was a problem getting the auctions: " + e.getMessage());
         }
         return auctions;
     }
@@ -233,40 +283,52 @@ public class AuctionDAO {
             "(SELECT MAX(b2.bid_amount) " +
             "FROM bids b2 " +
             "WHERE b2.auction_id = b.auction_id)";
+        try (Connection connection = SQLConnectionHandler.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, username);
 
-        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
-            .prepareStatement(query);
-        preparedStatement.setString(1, username);
-
-        ResultSet result = preparedStatement.executeQuery();
-        while (result.next()) {
-            auctions.add(
-                new Auction(
-                    result.getInt("auction_id"),
-                    result.getString("seller_username"),
-                    result.getTimestamp("start_time"),
-                    result.getTimestamp("final_bid_submission_time"),
-                    result.getInt("min_bid_increment"),
-                    result.getBoolean("closed"),
-                    bidDataAccessObject.getCurrentHighestBid(result.getInt("auction_id")),
-                    productDataAccessObject.getProductsByAuction(result.getInt("auction_id"))
-                )
-            );
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()) {
+                auctions.add(
+                    new Auction(
+                        result.getInt("auction_id"),
+                        result.getString("seller_username"),
+                        result.getTimestamp("start_time"),
+                        result.getTimestamp("final_bid_submission_time"),
+                        result.getInt("min_bid_increment"),
+                        result.getBoolean("closed"),
+                        bidDataAccessObject.getCurrentHighestBid(result.getInt("auction_id")),
+                        productDataAccessObject.getProductsByAuction(result.getInt("auction_id"))
+                    )
+                );
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new SQLException("There was a problem getting the auctions: " + e.getMessage());
         }
         return auctions;
     }
 
     public String getCurrentShippingAddressForAuction(Integer auction_id) throws SQLException {
+        String address = null;
         String query =
             "SELECT s.auction_id, s.address " +
             "FROM shipping_addresses s " +
             "WHERE s.auction_id = ?";
-        PreparedStatement preparedStatement = SQLConnectionHandler.getConnection()
-            .prepareStatement(query);
-        preparedStatement.setInt(1, auction_id);
-        ResultSet result = preparedStatement.executeQuery();
-        if (result.next()) {
-            return result.getString(2);
-        } else return null;
+        try (Connection connection = SQLConnectionHandler.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, auction_id);
+            ResultSet result = preparedStatement.executeQuery();
+            if (result.next()) {
+                address = result.getString(2);
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new SQLException(
+                "There was a problem getting the shipping address for this auction: " +
+                e.getMessage()
+            );
+        }
+        return address;
     }
 }
