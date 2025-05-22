@@ -8,30 +8,26 @@ import java.sql.*;
 import java.util.Properties;
 
 public class SQLConnectionHandler {
-    private static Connection connection = null;
 
-    public static Connection getConnection() {
+    public static Connection getConnection() throws SQLException {
         try {
-             if (connection == null || connection.isClosed()  ) {
-                 return connection = createConnection();
-             }else if (connection.isReadOnly() || !connection.isValid(200)) {
-                connection.close();
-                return connection = createConnection();
-            } else {
-                return connection;
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return createConnection();
+        } catch (Exception e) {
+            throw new SQLException(
+                "There was a problem enstablishing a connection: " + e.getMessage()
+            );
         }
     }
 
-    public static Connection createConnection() {
+    public static Connection createConnection() throws Exception {
         Properties props = new Properties();
         try {
             InputStream input = new FileInputStream(SQLConnectionHandler.class.getResource("config.properties").getFile());
             props.load(input);
         } catch (FileNotFoundException e) {
-            throw new RuntimeException("Remember to create a config.properties file in the src/main/resources folder to access your database");
+            throw new Exception(
+                "Remember to create a config.properties file in the src/main/resources folder to access your database"
+            );
         } catch (IOException e) {
             throw new RuntimeException("Error loading config.properties file");
         }
@@ -45,9 +41,12 @@ public class SQLConnectionHandler {
 
             return connection;
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("JDBC Driver not found", e);
+            throw new ClassNotFoundException("JDBC Driver not found" + e.getMessage());
         } catch (SQLException e) {
-            throw new RuntimeException("Error connecting to the database, check your config.properties and remember to create the database schema from the provided dump", e);
+            throw new SQLException(
+                "Error connecting to the database, check your config.properties and remember to create the database schema from the provided dump" +
+                e.getMessage()
+            );
         }
     }
 

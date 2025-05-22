@@ -14,6 +14,7 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
 import java.io.Serial;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,8 +36,14 @@ public class ThymeleafHTTPServlet extends HttpServlet {
         templateResolver.setCharacterEncoding("UTF-8");
         templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
-
-        SQLConnectionHandler.getConnection();
+        try {
+            Connection connection = SQLConnectionHandler.getConnection();
+            connection.close();
+        } catch (SQLException e) {
+            throw new ServletException(
+                "Servlet is not currently connected to the database server " + e.getMessage()
+            );
+        }
     }
 
     public void processTemplate(
