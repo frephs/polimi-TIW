@@ -1,20 +1,28 @@
 # TIW project 2025
-This repository presents my implementation of a web application assigned as coursework for the course "Tecnologie Informatiche per il Web" (TIW) at Politecnico di Milano held by professor Pietro Fraternali.
 
-## Overview and stack
-The project consists of a web application that manages an auction system. It allows users to upload, sell and bid on group of items. The application is built using the following technologies.
-- **Frontend**: HTML, CSS, JavaScript.
-- **Backend**: Java servlets, MySQL, Apache Tomcat.
+[![Full Project Presentation](https://img.shields.io/badge/Docs-Project%20Documentation-blue?logo=markdown)](https://frephs.github.io/tiw-project-2025/)
 
-The project is delivered in two versions: 
-- a basic version with multiple pages and no JavaScript
-- a more advanced version with a single page application (SPA) using JavaScript and AJAX.
 
-## Project assignment
-The project assignment can be reviewed [here](docs/assignment.pdf). 
 
-## Development documentation
+This repository contains my implementation of the web application project for the "Tecnologie Informatiche per il Web" (TIW) course at Politecnico di Milano, taught by Professor Pietro Fraternali.
 
-## Database deployment
 
-## Project deployment and testing
+
+## Overview and Technology Stack
+
+The project is a web-based auction system where users can upload, sell, and bid on groups of items. It is developed with the following technologies:
+- **Frontend**: HTML, CSS, Typescript,
+- **Backend**: Java Servlets, MySQL, Apache Tomcat, Thymeleaf 
+- **Documentation**: Markdown, PlantUML, Mermaid, Reveal.js, TeX, GitHub Actions
+
+Two versions of the application are provided:
+- A basic multi-page version without JavaScript
+- An advanced rich internet application developed as a single-page application version using JavaScript and AJAX requests.
+
+## Project documentation
+The project documentation is available in the `docs` branch. It includes:
+- A detailed description of the project requirements
+- A description of the technologies used
+- A description of the database schema
+- A description of the web application architecture
+
