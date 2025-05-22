@@ -17,8 +17,11 @@ _Project documentation_
 <img src="out/2_database_requirements.png" height="500" data-preview-image style="border-radius:20px">
 
 --
+## Entity-Relationship Diagram
+<img height="400" src="out/er.svg" data-preview-image>
+--
 
-## Entity Relationship and implementation
+## Implementation
 <img height="400" src="out/er-implementation.svg" data-preview-image>
 --
 
