@@ -175,7 +175,7 @@ function generateCreateAuctionForm(products: Product[]): string {
     return `
         <div style="width: 100%">
             <h3>Create a new auction</h3>
-            <form action="/yourauction/sell/auction/new" method="post">
+            <form action="/yourauction/sell/auction/new" method="post" enctype="multipart/form-data">
                 <div class="flex-row">
                     <div>
                         <fieldset style="display: block">
@@ -282,7 +282,7 @@ function generateOpenAuctionRow(auction: Auction): string {
             <td>${auction.products.map((product: any) => `<a class="auction-link" href="#product-${product.id}">${product.name}</a>`).join(', ')}</td>
             <td>${auction.getFormattedEndTime()}</td>
             <td>
-                <form action="/yourauction/sell/auction/close/" method="post">
+                <form action="/yourauction/sell/auction/close/" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="${auction.id}" />
                     <button 
                         type="submit" 
@@ -292,7 +292,7 @@ function generateOpenAuctionRow(auction: Auction): string {
                         Close Auction
                     </button>
                 </form>
-                <form action="/yourauction/sell/auction/delete/" method="post">
+                <form action="/yourauction/sell/auction/delete/" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="${auction.id}" />
                     <button 
                         type="submit" 
@@ -303,7 +303,7 @@ function generateOpenAuctionRow(auction: Auction): string {
                         Delete Auction
                     </button>
                 </form>
-                <form action="/yourauction/sell/auction" method="get">
+                <form action="/yourauction/sell/auction" method="get" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="${auction.id}" />
                     <button type="submit" class="details-button">Auction details</button>
                 </form>

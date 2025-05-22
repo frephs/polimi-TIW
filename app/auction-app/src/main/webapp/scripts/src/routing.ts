@@ -69,7 +69,7 @@ export function controllerSwitcher(response: any, pageSections: Map<string, HTML
             processUpdateProductsForms(pageSections);
 
             break;
-        case '/buy/auction/details':
+        case '/buy/auction-detail':
             showModal(
                 pageSections.get('buy') as HTMLElement,
                 generateBuyAuctionDetails(

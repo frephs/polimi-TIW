@@ -174,7 +174,7 @@ function generatePlaceBidSection(auction: Auction): string {
     return `
 <section id="place-bid">
     <h3>Place a Bid</h3>
-    <form action="/yourauction/buy/auction/bid/" method="post">
+    <form action="/yourauction/buy/auction/bid/" method="post" enctype="multipart/form-data">
         <label for="bid-amount">Your Bid (€):</label>
         <input type="hidden" name="auction-id" id="auction_id" value="${auction.id}" />
         <input type="number" id="bid-amount" name="bid-amount" required min="${minBid}" step="${auction.minimumBidIncrement}" value="${minBid}" />

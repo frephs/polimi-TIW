@@ -95,6 +95,11 @@ public class SellingController {
         }
     }
 
+    @MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+    )
     @WebServlet("/sell/auction/new")
     public static class AuctionFactoryServlet extends ThymeleafHTTPServlet {
 
@@ -177,6 +182,11 @@ public class SellingController {
         }
     }
 
+    @MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+    )
     @WebServlet("/sell/auction/close/")
     public static class AuctionDestroyerServlet extends ThymeleafHTTPServlet {
 
@@ -213,6 +223,11 @@ public class SellingController {
         }
     }
 
+    @MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+    )
     @WebServlet("/sell/auction/delete/*")
     public static class AuctionDeleteServlet extends ThymeleafHTTPServlet {
 
@@ -404,6 +419,11 @@ public class SellingController {
         }
     }
 
+    @MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+    )
     @WebServlet("/sell/product/delete/")
     public static class ProductDeleteServlet extends ThymeleafHTTPServlet {
 

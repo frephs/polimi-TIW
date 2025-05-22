@@ -7,6 +7,7 @@ import it.polimi.auctionapp.beans.Bid;
 import it.polimi.auctionapp.beans.User;
 import it.polimi.auctionapp.utils.MessageType;
 import it.polimi.auctionapp.utils.ThymeleafHTTPServlet;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -69,6 +70,11 @@ public class BuyingController {
         }
     }
 
+    @MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+    )
     @WebServlet("/buy/auction")
     public static class BuyerAuctionDetailServlet extends ThymeleafHTTPServlet {
 
@@ -101,6 +107,11 @@ public class BuyingController {
         }
     }
 
+    @MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+    )
     @WebServlet("/buy/auction/bid/")
     public static class BidPlacerServlet extends ThymeleafHTTPServlet {
 
