@@ -55,7 +55,7 @@
                     Hello
                     <span style="font-style: italic" th:text="${session.user.getName()}"></span>
                 </h1>
-                <form th:action="@{account/logout}" method="post">
+                <form th:action="@{/account/logout}" method="post">
                     <button style="float: right" class="destructive" type="submit">Logout</button>
                 </form>
                 <p>Welcome to YourAuctions</p>
