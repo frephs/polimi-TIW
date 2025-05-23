@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class LandingRouter {
 
-    @WebServlet("/")
+    @WebServlet("/index.html")
     public static class DefaultRedirectServlet extends ThymeleafHTTPServlet {
 
         public void doGet(HttpServletRequest request, HttpServletResponse response)
