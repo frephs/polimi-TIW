@@ -1,6 +1,6 @@
 # TIW project 2025
 
-[![Full Project Presentation](https://img.shields.io/badge/Docs-Project%20Documentation-blue?logo=markdown)](https://frephs.github.io/polimi-tiw/)
+[![Full Project Presentation](https://img.shields.io/badge/Docs-Project%20Documentation-blue?logo=markdown)](https://frephs.github.io/polimi-TIW/)
 
 
 
